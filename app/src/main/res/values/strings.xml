@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">WanAndroid</string>
+    <string name="title_activity_onboarding_acitivity">OnboardingAcitivity</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!--onboarding start-->
+    <string name="onboarding_pre_btn_desc">Pre</string>
+    <string name="onboarding_finish_btn_desc">Finish</string>
+
+
+
+
 </resources>

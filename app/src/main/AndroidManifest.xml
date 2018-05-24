@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity
+            android:name=".ui.OnboardingAcitivity"
+            android:label="@string/title_activity_onboarding_acitivity"
+            android:theme="@style/AppTheme.Onboarding">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
