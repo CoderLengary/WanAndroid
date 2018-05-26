@@ -7,8 +7,21 @@
     <!--onboarding start-->
     <string name="onboarding_pre_btn_desc">Pre</string>
     <string name="onboarding_finish_btn_desc">Finish</string>
+    <string name="onboarding_section_1">Here,you can gain lots of high quality articles</string>
+    <string name="onboarding_intro_1">Include Gradle,Component,JNI and so on</string>
+    <string name="onboarding_section_2">Push notification if new article has arrived</string>
+    <string name="onboarding_intro_2">To make you keep up with times</string>
+    <string name="onboarding_section_3">A new world is waiting for you</string>
+    <string name="onboarding_intro_3">Explore the unknown,at this moment</string>
+    <!--onboarding end-->
 
-
-
-
+    <!--login start-->
+    <string name="title_activity_login_acitivity">Login</string>
+    <string name="login_account_hint_text">Account</string>
+    <string name="login_password_hint_text">Password</string>
+    <string name="login_re_password_hint_text">RePassword</string>
+    <string name="login_btn_desc">Login</string>
+    <string name="register_btn_desc">Register</string>
+    <string name="new_account">Don\t have a account,create one</string>
+    <!--login end-->
 </resources>

@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 
 public class OnboardingAcitivity extends AppCompatActivity {
 
@@ -109,7 +109,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
 
 
     private void onBoardingToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

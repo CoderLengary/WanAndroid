@@ -20,6 +20,8 @@
     <color name="lime_500">#CDDC39</color>
     <color name="amber_500">#FFC107</color>
     <color name="pink_500">#E91E63</color>
-
+    <color name="login_bg_color">#243143</color>
+    <color name="login_btn_color">#58CABD</color>
+    <color name="login_text_tint_color">#2E3C4E</color>
 
 </resources>

@@ -3,6 +3,7 @@
     package="com.example.lengary_l.wanandroid">
 
     <application
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +22,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".mvp.login.LoginActivity"
+            android:label="title_activity_login_acitivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 
