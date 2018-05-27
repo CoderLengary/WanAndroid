@@ -9,6 +9,7 @@ import com.example.lengary_l.wanandroid.realm.RealmHelper;
 
 import io.reactivex.Observable;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class LoginDataLocalSource implements LoginDataSource{
     @NonNull
@@ -41,6 +42,17 @@ public class LoginDataLocalSource implements LoginDataSource{
                         .equalTo("username", userName)
                         .findFirst());
         return Observable.just(loginDetailData);
+    }
+
+    @Override
+    public boolean isAccountExist(String userName) {
+        Realm realm = RealmHelper.newRealmInstance();
+        RealmResults<LoginDetailData> list =
+                realm.where(LoginDetailData.class)
+                        .equalTo("username", userName)
+                        .findAll();
+        return (list != null) && (!list.isEmpty());
+
     }
 
 

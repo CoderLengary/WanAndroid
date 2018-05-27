@@ -59,7 +59,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBoardingToMain();
+                navigateToMain();
             }
         });
 
@@ -108,7 +108,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
     }
 
 
-    private void onBoardingToMain() {
+    private void navigateToMain() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

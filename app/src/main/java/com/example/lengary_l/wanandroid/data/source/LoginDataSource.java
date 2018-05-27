@@ -13,4 +13,6 @@ public interface LoginDataSource {
 
     Observable<LoginDetailData> getLoginDetailData(@NonNull String userName);
 
+    boolean isAccountExist(String userName);
+
 }

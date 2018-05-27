@@ -33,6 +33,19 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     @Override
     public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password) {
+
+        Observable<LoginData> loginDataObservable=RetrofitClient.getInstance()
+                .create(RetrofitService.class)
+                .register(userName, password, password)
+                .filter(new Predicate<LoginData>() {
+                    @Override
+                    public boolean test(LoginData loginData) throws Exception {
+                        return loginData.getErrorCode() != -1 && loginData.getData() != null;
+                    }
+                });
+
+
+
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .login(userName,password)
@@ -63,6 +76,11 @@ public class LoginDataRemoteSource implements LoginDataSource{
     public Observable<LoginDetailData> getLoginDetailData(@NonNull String userName) {
         //Not require because the LocalDataSource has handled it
         return null;
+    }
+
+    @Override
+    public boolean isAccountExist(String userName) {
+        return false;
     }
 
 

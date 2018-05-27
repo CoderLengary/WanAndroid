@@ -17,11 +17,19 @@
 
     <!--login start-->
     <string name="title_activity_login_acitivity">Login</string>
-    <string name="login_account_hint_text">Account</string>
-    <string name="login_password_hint_text">Password</string>
-    <string name="login_re_password_hint_text">RePassword</string>
-    <string name="login_btn_desc">Login</string>
+    <string name="login_account_hint_text">Enter your username here</string>
+    <string name="login_password_hint_text">Enter your password here</string>
+    <string name="login_re_password_hint_text">Please enter your password again</string>
+    <string name="login_btn_login">Login</string>
+    <string name="login_btn_sign_up">Sign Up</string>
     <string name="register_btn_desc">Register</string>
-    <string name="new_account">Don\t have a account,create one</string>
+    <string name="link_to_sign_up">Don\t have a account?create one</string>
+    <string name="link_to_login">Already a member? Login</string>
+    <string name="login_account_desc">User Name</string>
+    <string name="login_password_desc">PASSWORD</string>
+    <string name="login_error">The username and password you entered does not match</string>
+    <string name="register_error">The username is already taken</string>
+    <string name="input_error">What you input is invalid</string>
+    <string name="repassword_not_match">The repassword and password you entered does not match</string>
     <!--login end-->
 </resources>

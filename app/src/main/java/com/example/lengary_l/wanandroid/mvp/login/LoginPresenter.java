@@ -1,4 +1,97 @@
 package com.example.lengary_l.wanandroid.mvp.login;
 
-public class LoginPresenter {
+import android.support.annotation.NonNull;
+
+import com.example.lengary_l.wanandroid.data.LoginData;
+import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
+public class LoginPresenter implements LoginContract.Presenter{
+
+    @NonNull
+    private LoginContract.View view;
+    @NonNull
+    private LoginDataRepository repository;
+
+    private CompositeDisposable compositeDisposable;
+
+
+    public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository) {
+        this.view = view;
+        this.repository = loginDataRepository;
+        this.view.setPresenter(this);
+    }
+
+    @Override
+    public void subscribe() {
+
+    }
+
+    @Override
+    public void login(String username, String password) {
+        if (repository.isAccountExist(username)){
+            getLoginDetailData(username);
+        }else {
+            getLoginData(username, password);
+        }
+    }
+
+    private void getLoginDetailData(String username){
+        repository.getLoginDetailData(username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<LoginDetailData>() {
+                    @Override
+                    public void onNext(LoginDetailData value) {
+                        view.saveUsername2Preference(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    private void getLoginData(String username,String password){
+
+        repository.getRemoteLoginData(username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<LoginData>() {
+
+                    @Override
+                    public void onNext(LoginData value) {
+                        view.saveUsername2Preference(value.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.showLoginError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void unSubscribe() {
+
+    }
+
+
 }

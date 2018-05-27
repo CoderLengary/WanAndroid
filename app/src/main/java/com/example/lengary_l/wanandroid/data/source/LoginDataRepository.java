@@ -36,4 +36,11 @@ public class LoginDataRepository implements LoginDataSource{
     public Observable<LoginDetailData> getLoginDetailData(@NonNull String userName) {
         return localDataSource.getLoginDetailData(userName);
     }
+
+    @Override
+    public boolean isAccountExist(String userName) {
+        return localDataSource.isAccountExist(userName);
+    }
+
+
 }

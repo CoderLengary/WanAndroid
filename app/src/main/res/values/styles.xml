@@ -23,5 +23,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyEditTextStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/iron</item>
+        <item name="colorControlActivated">@android:color/white</item>
+        <item name="colorControlHighlight">@android:color/white</item>
+        <item name="android:textColorHint">@color/iron</item>
+    </style>
 
 </resources>
