@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void showLoginFragment(){
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.right_in,R.anim.right_out)
                 .show(loginFragment)
                 .hide(signUpFragment)
                 .commit();
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void showSignUpFragment(){
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.left_in,R.anim.left_out)
                 .show(signUpFragment)
                 .hide(loginFragment)
                 .commit();

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.example.lengary_l.wanandroid.util.StringUtils;
 
@@ -44,6 +45,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
         initViews(view);
+
         linkLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +53,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
                 loginActivity.showLoginFragment();
             }
         });
+
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +61,8 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
                 String password = editPassword.getText().toString();
                 String rePassword = editRePassword.getText().toString();
                 if (checkValid(username,password,rePassword)){
-                    //register begin
+                    //register
+                    presenter.login(username,password,LoginType.TYPE_REGISTER);
                 }
             }
         });
@@ -79,15 +83,13 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
     }
 
     @Override
-    public void showLoginError() {
-
+    public void showLoginError( @NonNull LoginType loginType) {
+        if (loginType==LoginType.TYPE_REGISTER){
+            Snackbar.make(linkLogin, getString(R.string.register_error), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
 
-    @Override
-    public void showRegisterError() {
-        Snackbar.make(linkLogin, getString(R.string.register_error), Snackbar.LENGTH_SHORT).show();
-    }
 
     @Override
     public void saveUsername2Preference(LoginDetailData loginDetailData) {

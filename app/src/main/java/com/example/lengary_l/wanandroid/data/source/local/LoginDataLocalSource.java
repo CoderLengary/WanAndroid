@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 
@@ -29,7 +30,7 @@ public class LoginDataLocalSource implements LoginDataSource{
 
 
     @Override
-    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password) {
+    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
         //Not require because the RemoteDataSource has handled it
         return null;
     }

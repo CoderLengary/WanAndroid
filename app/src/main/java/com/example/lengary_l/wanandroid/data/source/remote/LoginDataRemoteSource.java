@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
@@ -32,44 +33,49 @@ public class LoginDataRemoteSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password) {
-
-        Observable<LoginData> loginDataObservable=RetrofitClient.getInstance()
-                .create(RetrofitService.class)
-                .register(userName, password, password)
-                .filter(new Predicate<LoginData>() {
-                    @Override
-                    public boolean test(LoginData loginData) throws Exception {
-                        return loginData.getErrorCode() != -1 && loginData.getData() != null;
-                    }
-                });
-
-
-
-        return RetrofitClient.getInstance()
-                .create(RetrofitService.class)
-                .login(userName,password)
-                .filter(new Predicate<LoginData>() {
-                    @Override
-                    public boolean test(LoginData loginData) throws Exception {
-                        return loginData.getErrorCode() != -1 && loginData.getData() != null;
-                    }
-                })
-                .doOnNext(new Consumer<LoginData>() {
-                    @Override
-                    public void accept(LoginData loginData) throws Exception {
-                        if (loginData!=null){
-                            Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
-                                    .name(RealmHelper.DATABASE_NAME)
-                                    .deleteRealmIfMigrationNeeded()
-                                    .build());
-                            realm.beginTransaction();
-                            realm.copyToRealmOrUpdate(loginData.getData());
-                            realm.commitTransaction();
-                            realm.close();
+    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
+        Observable<LoginData> loginDataObservable = null;
+        if (loginType==LoginType.TYPE_REGISTER){
+            loginDataObservable=RetrofitClient.getInstance()
+                    .create(RetrofitService.class)
+                    .register(userName, password, password)
+                    .filter(new Predicate<LoginData>() {
+                        @Override
+                        public boolean test(LoginData loginData) throws Exception {
+                            return loginData.getErrorCode() != -1 && loginData.getData() != null;
                         }
-                    }
-                });
+                    });
+        }else if (loginType==LoginType.TYPE_LOGIN){
+            loginDataObservable=RetrofitClient.getInstance()
+                    .create(RetrofitService.class)
+                    .login(userName, password)
+                    .filter(new Predicate<LoginData>() {
+                        @Override
+                        public boolean test(LoginData loginData) throws Exception {
+                            return loginData.getErrorCode() != -1 && loginData.getData() != null;
+                        }
+                    });
+        }
+        return loginDataObservable.doOnNext(new Consumer<LoginData>() {
+            @Override
+            public void accept(LoginData loginData) throws Exception {
+                if (loginData != null) {
+                    Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
+                            .name(RealmHelper.DATABASE_NAME)
+                            .deleteRealmIfMigrationNeeded()
+                            .build());
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(loginData.getData());
+                    realm.commitTransaction();
+                    realm.close();
+                }
+            }
+        });
+
+
+
+
+
     }
 
     @Override

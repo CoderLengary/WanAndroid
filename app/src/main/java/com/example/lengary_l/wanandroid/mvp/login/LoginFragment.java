@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
+import com.example.lengary_l.wanandroid.util.StringUtils;
 
 public class LoginFragment extends Fragment implements LoginContract.View{
 
@@ -42,6 +44,9 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         initViews(view);
+
+
+
         linkSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,18 +55,45 @@ public class LoginFragment extends Fragment implements LoginContract.View{
             }
         });
 
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = editUserName.getText().toString();
+                String password = editPassword.getText().toString();
+                if (checkValid(username,password)){
+                    //Login
+                    presenter.login(username,password,LoginType.TYPE_LOGIN);
+                }
+            }
+        });
+
+
+
         return view;
     }
 
-    @Override
-    public void showLoginError() {
-        Snackbar.make(linkSignUp,getString(R.string.login_error),Snackbar.LENGTH_SHORT).show();
+
+
+    private boolean checkValid(String username,String password){
+        boolean isValid = false;
+        if (StringUtils.isInvalid(username)||StringUtils.isInvalid(password)){
+            Snackbar.make(linkSignUp,getString(R.string.input_error),Snackbar.LENGTH_SHORT).show();
+        }else {
+            isValid = true;
+        }
+        return isValid;
     }
 
     @Override
-    public void showRegisterError() {
+    public void showLoginError( @NonNull LoginType loginType) {
+        if (loginType==LoginType.TYPE_LOGIN){
+            Snackbar.make(linkSignUp,getString(R.string.login_error),Snackbar.LENGTH_SHORT).show();
+        }
 
     }
+
+
 
 
 

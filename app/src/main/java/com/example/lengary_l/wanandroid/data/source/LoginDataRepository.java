@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 
 import io.reactivex.Observable;
 
@@ -28,8 +29,8 @@ public class LoginDataRepository implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password) {
-        return remoteDataSource.getRemoteLoginData(userName, password);
+    public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
+        return remoteDataSource.getRemoteLoginData(userName, password,loginType);
     }
 
     @Override
