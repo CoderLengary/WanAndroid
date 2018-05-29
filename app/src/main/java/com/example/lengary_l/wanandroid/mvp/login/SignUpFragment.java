@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
@@ -69,6 +70,23 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
+    }
+
     private boolean checkValid(String username,String password,String rePassword){
         boolean isValid = false;
         if (StringUtils.isInvalid(username)||StringUtils.isInvalid(password)||StringUtils.isInvalid(rePassword)){
@@ -95,9 +113,14 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
     public void saveUsername2Preference(LoginDetailData loginDetailData) {
         String username = loginDetailData.getUsername();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(SettingsUtil.ISLOGIN, true).apply();
+        sp.edit().putBoolean(SettingsUtil.ISLOGIN, false).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         navigateToMain();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Toast.makeText(getContext(),"No wifi",Toast.LENGTH_LONG).show();
     }
 
     @Override

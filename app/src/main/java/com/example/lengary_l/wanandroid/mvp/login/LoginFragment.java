@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
@@ -67,15 +68,27 @@ public class LoginFragment extends Fragment implements LoginContract.View{
                 }
             }
         });
-
-
-
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
 
-    private boolean checkValid(String username,String password){
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
+    }
+
+    private boolean checkValid(String username, String password){
         boolean isValid = false;
         if (StringUtils.isInvalid(username)||StringUtils.isInvalid(password)){
             Snackbar.make(linkSignUp,getString(R.string.input_error),Snackbar.LENGTH_SHORT).show();
@@ -93,7 +106,10 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     }
 
-
+    @Override
+    public void showNetworkError() {
+        Toast.makeText(getContext(),"No wifi",Toast.LENGTH_LONG).show();
+    }
 
 
 
@@ -114,7 +130,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     public void saveUsername2Preference(LoginDetailData loginDetailData) {
         String username = loginDetailData.getUsername();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(SettingsUtil.ISLOGIN, true).apply();
+        sp.edit().putBoolean(SettingsUtil.ISLOGIN, false).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         navigateToMain();
     }

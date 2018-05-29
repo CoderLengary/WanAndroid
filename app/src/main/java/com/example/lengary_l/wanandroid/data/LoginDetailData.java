@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class LoginDetailData extends RealmObject {
     @Expose
@@ -36,6 +37,7 @@ public class LoginDetailData extends RealmObject {
     private int type;
     @Expose
     @SerializedName("username")
+    @PrimaryKey
     private String username;
 
 

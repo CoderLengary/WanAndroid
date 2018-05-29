@@ -19,5 +19,7 @@ public interface LoginContract {
 
 
         void saveUsername2Preference(LoginDetailData loginDetailData);
+
+        void showNetworkError();
     }
 }

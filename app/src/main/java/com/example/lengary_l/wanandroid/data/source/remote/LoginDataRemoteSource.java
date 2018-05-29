@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
@@ -12,12 +13,12 @@ import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public class LoginDataRemoteSource implements LoginDataSource{
-
+    private static final String TAG = "LoginDataRemoteSource";
     @NonNull
     private static LoginDataRemoteSource INSTANCE;
 
@@ -34,32 +35,26 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     @Override
     public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
-        Observable<LoginData> loginDataObservable = null;
+        Log.e(TAG, "getRemoteLoginData: username"+userName+"password"+password );
+       Observable<LoginData> loginDataObservable = null;
         if (loginType==LoginType.TYPE_REGISTER){
+            Log.e(TAG, "getRemoteLoginData: is registering" );
             loginDataObservable=RetrofitClient.getInstance()
                     .create(RetrofitService.class)
-                    .register(userName, password, password)
-                    .filter(new Predicate<LoginData>() {
-                        @Override
-                        public boolean test(LoginData loginData) throws Exception {
-                            return loginData.getErrorCode() != -1 && loginData.getData() != null;
-                        }
-                    });
+                    .register(userName, password, password);
         }else if (loginType==LoginType.TYPE_LOGIN){
+            Log.e(TAG, "getRemoteLoginData: is logining" );
             loginDataObservable=RetrofitClient.getInstance()
                     .create(RetrofitService.class)
-                    .login(userName, password)
-                    .filter(new Predicate<LoginData>() {
-                        @Override
-                        public boolean test(LoginData loginData) throws Exception {
-                            return loginData.getErrorCode() != -1 && loginData.getData() != null;
-                        }
-                    });
+                    .login(userName, password);
         }
-        return loginDataObservable.doOnNext(new Consumer<LoginData>() {
+        return loginDataObservable
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Consumer<LoginData>() {
             @Override
             public void accept(LoginData loginData) throws Exception {
-                if (loginData != null) {
+                if (loginData.getData() != null) {
+                    //save the remote data to local.Only the data which is not null will be saved
                     Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                             .name(RealmHelper.DATABASE_NAME)
                             .deleteRealmIfMigrationNeeded()
@@ -68,13 +63,11 @@ public class LoginDataRemoteSource implements LoginDataSource{
                     realm.copyToRealmOrUpdate(loginData.getData());
                     realm.commitTransaction();
                     realm.close();
+                    Log.e(TAG, "save to realm to thread "+Thread.currentThread().getName() );
+                    Log.e(TAG, "save to realm "+loginData.getData().getUsername() );
                 }
             }
         });
-
-
-
-
 
     }
 
@@ -86,6 +79,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     @Override
     public boolean isAccountExist(String userName) {
+        //Not require because the LocalDataSource has handled it
         return false;
     }
 

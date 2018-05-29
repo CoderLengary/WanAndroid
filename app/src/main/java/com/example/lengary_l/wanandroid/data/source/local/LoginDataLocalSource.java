@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.data.source.local;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
@@ -13,6 +14,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class LoginDataLocalSource implements LoginDataSource{
+    private static final String TAG = "LoginDataLocalSource";
     @NonNull
     private static LoginDataLocalSource INSTANCE;
 
@@ -42,6 +44,7 @@ public class LoginDataLocalSource implements LoginDataSource{
                 realm.where(LoginDetailData.class)
                         .equalTo("username", userName)
                         .findFirst());
+        Log.e(TAG, "getLoginDetailData: get data from realm "+loginDetailData.getUsername() );
         return Observable.just(loginDetailData);
     }
 
