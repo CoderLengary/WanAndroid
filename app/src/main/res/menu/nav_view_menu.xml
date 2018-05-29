@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_sign_out"
+            android:icon="@drawable/ic_sign_out_24dp"
+            android:title="@string/nav_sign_out"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+
+        <item android:id="@+id/nav_switch_theme"
+            android:icon="@drawable/ic_brightness_6_black_24dp"
+            android:title="@string/nav_switch_theme"/>
+
+        <item android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="@string/nav_settings"
+            />
+
+        <item android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about_black_24dp"
+            android:title="@string/nav_about"/>
+
+
+    </group>
+</menu>

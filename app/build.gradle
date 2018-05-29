@@ -29,6 +29,7 @@ ext {
     runnerRulesVersion = '1.0.2'
     espressoVersion = '3.0.2'
     rxjavaVersion = '2.0.1'
+    circleimageviewVersion = '2.1.0'
 }
 
 
@@ -45,6 +46,11 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
+    //CircleImage
+    implementation "de.hdodenhof:circleimageview:$circleimageviewVersion"
+
+
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "com.android.support.test:runner:$runnerRulesVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"

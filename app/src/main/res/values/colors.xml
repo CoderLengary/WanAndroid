@@ -12,6 +12,7 @@
     <color name="indicator_selected">@android:color/white</color>
     <color name="indicator_unselected">#4D000000</color>
 
+    <color name="colorNavItemUnselected">#757575</color>
 
     <color name="cyan_500">#00BCD4</color>
     <color name="green_500">#4CAF50</color>
