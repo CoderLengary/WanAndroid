@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.getBoolean(SettingsUtil.ISLOGIN,false)){
+        if (sp.getBoolean(SettingsUtil.KEY_ISLOGIN,false)){
             navigateToMainActivity();
         }else {
             loginFragment = LoginFragment.newInstance();

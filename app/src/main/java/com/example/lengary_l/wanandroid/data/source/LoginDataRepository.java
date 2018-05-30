@@ -37,9 +37,9 @@ public class LoginDataRepository implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLoginDetailData(@NonNull String userName) {
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
         Log.e(TAG, "getLoginDetailData: " );
-        return localDataSource.getLoginDetailData(userName);
+        return localDataSource.getLocalLoginData(userName);
     }
 
     @Override

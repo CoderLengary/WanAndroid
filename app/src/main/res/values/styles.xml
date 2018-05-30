@@ -30,5 +30,10 @@
         <item name="android:textColorHint">@color/iron</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
+    
+    <style name="WindowAnimationFadeInOut">
+        <item name="android:windowEnterAnimation"></item>
+        <item name="android:windowExitAnimation"></item>
+    </style>
 
 </resources>

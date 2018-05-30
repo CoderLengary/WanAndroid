@@ -53,7 +53,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
                 .doOnNext(new Consumer<LoginData>() {
             @Override
             public void accept(LoginData loginData) throws Exception {
-                if (loginData.getData() != null) {
+                if (loginData.getErrorCode()!=-1||loginData.getData() != null) {
                     //save the remote data to local.Only the data which is not null will be saved
                     Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                             .name(RealmHelper.DATABASE_NAME)
@@ -72,7 +72,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLoginDetailData(@NonNull String userName) {
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
         //Not require because the LocalDataSource has handled it
         return null;
     }

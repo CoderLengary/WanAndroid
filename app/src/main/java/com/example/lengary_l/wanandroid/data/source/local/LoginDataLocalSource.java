@@ -38,7 +38,7 @@ public class LoginDataLocalSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLoginDetailData(@NonNull String userName) {
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
         Realm realm = RealmHelper.newRealmInstance();
         LoginDetailData loginDetailData = realm.copyFromRealm(
                 realm.where(LoginDetailData.class)

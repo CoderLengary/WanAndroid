@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     public void saveUsername2Preference(LoginDetailData loginDetailData) {
         String username = loginDetailData.getUsername();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(SettingsUtil.ISLOGIN, false).apply();
+        sp.edit().putBoolean(SettingsUtil.KEY_ISLOGIN, false).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         navigateToMain();
     }

@@ -43,5 +43,10 @@
     <string name="nav_articles">Articles</string>
     <string name="nav_article_categories">Article Categories</string>
     <string name="nav_project_categories">Project Categories</string>
+    <string name="empty_text">There is nothing</string>
     <!--main end-->
+
+    <!--Time Line start-->
+
+    <!--Time Line end-->
 </resources>

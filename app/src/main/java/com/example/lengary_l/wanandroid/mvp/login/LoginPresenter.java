@@ -41,14 +41,14 @@ public class LoginPresenter implements LoginContract.Presenter{
     @Override
     public void login(String username, String password, @NonNull LoginType loginType) {
         if (repository.isAccountExist(username)&&loginType!=LoginType.TYPE_REGISTER){
-            getLoginDetailData(username,password,loginType);
+            getLocalLoginData(username,password,loginType);
         }else {
             getLoginData(username, password,loginType);
         }
     }
 
-    private void getLoginDetailData(String username, final String password, final LoginType loginType){
-        Disposable disposable=repository.getLoginDetailData(username)
+    private void getLocalLoginData(String username, final String password, final LoginType loginType){
+        Disposable disposable=repository.getLocalLoginData(username)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<LoginDetailData>() {

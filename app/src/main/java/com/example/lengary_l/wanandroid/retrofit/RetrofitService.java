@@ -1,11 +1,14 @@
 package com.example.lengary_l.wanandroid.retrofit;
 
+import com.example.lengary_l.wanandroid.data.ArticlesData;
 import com.example.lengary_l.wanandroid.data.LoginData;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RetrofitService {
 
@@ -15,4 +18,8 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST(Api.REGISTER)
     Observable<LoginData> register(@Field("username") String username, @Field("password") String password,@Field("repassword") String repassword);
+
+    @GET(Api.ARTICLE_LIST + "{page}/json")
+    Observable<ArticlesData> getArticles(@Path("page") int page);
+
 }

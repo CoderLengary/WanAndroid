@@ -12,7 +12,7 @@ public interface LoginDataSource {
 
     Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType);
 
-    Observable<LoginDetailData> getLoginDetailData(@NonNull String userName);
+    Observable<LoginDetailData> getLocalLoginData(@NonNull String userName);
 
     boolean isAccountExist(String userName);
 
