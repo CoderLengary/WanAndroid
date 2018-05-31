@@ -39,6 +39,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support.constraint:constraint-layout:$constraintLayoutVersion"
     implementation 'com.android.support:design:27.1.1'
+    implementation "com.android.support:cardview-v7:$supportLibVersion"
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"

@@ -38,11 +38,11 @@ public class LoginActivity extends AppCompatActivity {
                         .add(R.id.view_pager, signUpFragment, "SignUpFragment")
                         .commit();
             }
-            new LoginPresenter(loginFragment, LoginDataRepository.getInstace(
+            new LoginPresenter(loginFragment, LoginDataRepository.getInstance(
                     LoginDataLocalSource.getInstance(),
                     LoginDataRemoteSource.getInstance()
             ));
-            new LoginPresenter(signUpFragment, LoginDataRepository.getInstace(
+            new LoginPresenter(signUpFragment, LoginDataRepository.getInstance(
                     LoginDataLocalSource.getInstance(),
                     LoginDataRemoteSource.getInstance()
             ));

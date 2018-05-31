@@ -45,7 +45,6 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
         initViews(view);
-
         return view;
     }
 

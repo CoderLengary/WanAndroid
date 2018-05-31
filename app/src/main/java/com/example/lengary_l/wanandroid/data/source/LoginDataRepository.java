@@ -23,7 +23,7 @@ public class LoginDataRepository implements LoginDataSource{
     @NonNull
     private static LoginDataRepository INSTANCE;
 
-    public static LoginDataRepository getInstace(@NonNull LoginDataSource localDataSource,@NonNull LoginDataSource remoteDataSource){
+    public static LoginDataRepository getInstance(@NonNull LoginDataSource localDataSource,@NonNull LoginDataSource remoteDataSource){
         if (INSTANCE == null) {
             INSTANCE = new LoginDataRepository(localDataSource, remoteDataSource);
         }
