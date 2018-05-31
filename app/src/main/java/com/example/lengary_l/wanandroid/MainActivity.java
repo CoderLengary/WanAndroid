@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,18 +16,23 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.lengary_l.wanandroid.mvp.timeline.TimelineFragment;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
+
+    private TimelineFragment timelineFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        initFragments(savedInstanceState);
 
     }
 
@@ -42,7 +48,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_timeline:
+                        showTimelineFragment();
+                        break;
+                        default:break;
+                }
+                return true;
+            }
+        });
     }
+
+    private void initFragments(Bundle savedInstanceState){
+        if (savedInstanceState!=null){
+
+        }else {
+            timelineFragment = TimelineFragment.newInstance();
+        }
+        if (!timelineFragment.isAdded()){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame_layout, timelineFragment, "TimelineFragment")
+                    .commit();
+        }
+    }
+
+    private void showTimelineFragment(){
+        getSupportFragmentManager().beginTransaction()
+                .show(timelineFragment)
+                .commit();
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

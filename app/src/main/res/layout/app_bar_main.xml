@@ -15,13 +15,14 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/layout_background"/>
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/nav_bottom"
+        android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/nav_bottom_menu"

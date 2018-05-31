@@ -46,7 +46,9 @@
     <string name="empty_text">There is nothing</string>
     <!--main end-->
 
-    <!--Time Line start-->
-
-    <!--Time Line end-->
+    <!--Timeline start-->
+    <string name="timeline_articles">Articles</string>
+    <string name="timeline_favorites">Favorites</string>
+    <string name="timeline_see_later">See Later</string>
+    <!--Timeline end-->
 </resources>
