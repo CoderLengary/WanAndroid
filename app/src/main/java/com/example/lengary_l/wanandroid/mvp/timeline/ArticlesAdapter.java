@@ -11,15 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+
+import java.util.List;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
+    private List<ArticleDetailData> list;
 
-
-    public ArticlesAdapter(Context context){
+    public ArticlesAdapter(Context context, List<ArticleDetailData> list){
         this.context = context;
         inflater = LayoutInflater.from(this.context);
+        this.list = list;
     }
 
 
@@ -33,14 +37,17 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
-        normalViewHolder.textAuthor.setText("Author");
-        normalViewHolder.textTitle.setText("我所理解的模块化，对模块化的理解与发掘");
-        normalViewHolder.btnCategory.setText("模块化");
+        ArticleDetailData data = list.get(position);
+        normalViewHolder.textAuthor.setText(data.getAuthor());
+        normalViewHolder.textTitle.setText(data.getTitle());
+        //if the text is too long, the button can not show it correctly.The solution is adding " ".
+        normalViewHolder.btnCategory.setText("  "+data.getSuperChapterName()+"  ");
+        normalViewHolder.textTime.setText(data.getNiceDate());
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return list.size();
     }
 
 
@@ -64,7 +71,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                 }
             });
         }

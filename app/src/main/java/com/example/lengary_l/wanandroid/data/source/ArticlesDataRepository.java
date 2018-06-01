@@ -19,7 +19,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     }
 
 
-    public static ArticlesDataRepository getInstance(@NonNull ArticlesDataRepository remoteDataSource){
+    public static ArticlesDataRepository getInstance(@NonNull ArticlesDataSource remoteDataSource){
         if (INSTANCE == null) {
             INSTANCE = new ArticlesDataRepository(remoteDataSource);
         }
@@ -27,7 +27,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<ArticlesData> getArticles(@NonNull int page) {
-        return remoteDataSource.getArticles(page);
+    public Observable<ArticlesData> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache) {
+        return remoteDataSource.getArticles(page,forceUpdate,clearCache);
     }
 }

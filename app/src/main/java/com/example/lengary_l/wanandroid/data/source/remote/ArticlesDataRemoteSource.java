@@ -2,17 +2,13 @@ package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
 
-import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataSource;
-import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class ArticlesDataRemoteSource implements ArticlesDataSource {
     @NonNull
@@ -30,7 +26,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<ArticlesData> getArticles(@NonNull int page) {
+    public Observable<ArticlesData> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticles(page)
@@ -38,7 +34,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                     @Override
                     public void accept(ArticlesData articlesData) throws Exception {
                         //Make sure that we save the valid data
-                        if (articlesData.getErrorCode()!=-1&&!articlesData.getData().isOver()){
+                       /* if (articlesData.getErrorCode()!=-1&&!articlesData.getData().isOver()){
                             Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                                     .name(RealmHelper.DATABASE_NAME)
                                     .deleteRealmIfMigrationNeeded()
@@ -49,7 +45,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             }
                             realm.commitTransaction();
                             realm.close();
-                        }
+                        }*/
                     }
                 });
     }

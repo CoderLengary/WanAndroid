@@ -8,5 +8,5 @@ import io.reactivex.Observable;
 
 public interface ArticlesDataSource {
 
-    Observable<ArticlesData> getArticles(@NonNull int page);
+    Observable<ArticlesData> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache);
 }

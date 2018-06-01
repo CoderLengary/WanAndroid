@@ -5,12 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 
 public class TimelineFragment extends Fragment {
     private TabLayout tabLayout;
@@ -32,12 +35,17 @@ public class TimelineFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null){
-
+            FragmentManager fragmentManager = getChildFragmentManager();
+            articlesFragment = (ArticlesFragment) fragmentManager.getFragment(savedInstanceState, "ArticlesFragment");
+            favoritesFragment = (FavoritesFragment) fragmentManager.getFragment(savedInstanceState, "FavoritesFragment");
+            seeLaterFragment = (SeeLaterFragment) fragmentManager.getFragment(savedInstanceState, "SeeLaterFragment");
         }else {
             articlesFragment = ArticlesFragment.newInstance();
             favoritesFragment = FavoritesFragment.newInstance();
             seeLaterFragment = SeeLaterFragment.newInstance();
         }
+
+        new ArticlesPresenter(articlesFragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance()));
     }
 
     @Nullable
@@ -57,5 +65,18 @@ public class TimelineFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        if (articlesFragment.isAdded()){
+            fragmentManager.putFragment(outState,"ArticlesFragment",articlesFragment);
+        }
+        if (favoritesFragment.isAdded()){
+            fragmentManager.putFragment(outState, "FavoritesFragment", favoritesFragment);
+        }
+        if (seeLaterFragment.isAdded()){
+            fragmentManager.putFragment(outState, "SeeLaterFragment", seeLaterFragment);
+        }
+    }
 }

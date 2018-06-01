@@ -10,7 +10,7 @@ public interface ArticlesContract {
 
     interface Presenter extends BasePresenter{
 
-        void getArticles(int page);
+        void getArticles(int page, boolean forceUpdate, boolean clearCache);
     }
 
     interface View extends BaseView<Presenter>{
