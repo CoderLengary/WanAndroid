@@ -18,13 +18,21 @@ import java.util.List;
 public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    private List<ArticleDetailData> list;
+    private List<ArticleDetailData> mList;
 
     public ArticlesAdapter(Context context, List<ArticleDetailData> list){
         this.context = context;
         inflater = LayoutInflater.from(this.context);
-        this.list = list;
+        mList = list;
     }
+
+    public void updateData(List<ArticleDetailData> list){
+        mList.clear();
+        mList.addAll(list);
+        notifyDataSetChanged();
+        notifyItemRemoved(list.size());
+    }
+
 
 
     @NonNull
@@ -37,7 +45,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
-        ArticleDetailData data = list.get(position);
+        ArticleDetailData data = mList.get(position);
         normalViewHolder.textAuthor.setText(data.getAuthor());
         normalViewHolder.textTitle.setText(data.getTitle());
         //if the text is too long, the button can not show it correctly.The solution is adding " ".
@@ -47,7 +55,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return mList.size();
     }
 
 

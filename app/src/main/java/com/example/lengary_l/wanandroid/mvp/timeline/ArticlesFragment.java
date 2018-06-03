@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private LinearLayoutManager layoutManager;
     private int currentPage;
     private ArticlesAdapter adapter;
+    private static final String TAG = "ArticlesFragment";
+    private boolean isFirstLoad=true;
+    private int mListSize = 0;
 
 
     public ArticlesFragment(){
@@ -47,7 +51,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               // presenter.getArticles(INDEX,true,true);
+                currentPage = INDEX;
+                presenter.getArticles(INDEX,true,true);
+
             }
         });
 
@@ -57,8 +63,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy>0){
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() == layoutManager.getItemCount()-1) {
-                       // loadMore();
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == mListSize-1) {
+                        Log.e(TAG, "onScrolled: load more" );
+                       loadMore();
                     }
                 }
             }
@@ -68,8 +75,16 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     @Override
     public void onResume() {
+        Log.e(TAG, "onResume: " );
         super.onResume();
-        presenter.getArticles(0, true, true);
+        if (isFirstLoad){
+            presenter.getArticles(INDEX, true, true);
+            currentPage = INDEX;
+            isFirstLoad = false;
+        }else {
+            presenter.getArticles(INDEX,false,false);
+        }
+
     }
 
     @Override
@@ -104,11 +119,13 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void showArticles(List<ArticleDetailData> list) {
         if (adapter!=null){
-
+            adapter.updateData(list);
         }else {
             adapter = new ArticlesAdapter(getContext(), list);
             recyclerView.setAdapter(adapter);
         }
+        mListSize = list.size();
+        Log.e(TAG, "showArticles: list size "+list.size() );
     }
 
     @Override
@@ -122,6 +139,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     private void loadMore(){
         currentPage+=1;
+        Log.e(TAG, "loadMore: update page is "+currentPage );
         presenter.getArticles(currentPage,true,false);
     }
 

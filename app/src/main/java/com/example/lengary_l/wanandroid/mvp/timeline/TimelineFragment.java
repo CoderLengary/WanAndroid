@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 
 public class TimelineFragment extends Fragment {
@@ -45,7 +46,7 @@ public class TimelineFragment extends Fragment {
             seeLaterFragment = SeeLaterFragment.newInstance();
         }
 
-        new ArticlesPresenter(articlesFragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance()));
+        new ArticlesPresenter(articlesFragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()));
     }
 
     @Nullable

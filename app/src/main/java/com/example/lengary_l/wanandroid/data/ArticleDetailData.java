@@ -81,6 +81,17 @@ public class ArticleDetailData extends RealmObject {
     @SerializedName("zan")
     private int zan;
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    @Expose
+    private int currentPage;
+
     public String getApkLink() {
         return apkLink;
     }
