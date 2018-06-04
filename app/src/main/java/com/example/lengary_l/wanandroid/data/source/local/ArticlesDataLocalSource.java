@@ -4,13 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataSource;
-import com.example.lengary_l.wanandroid.realm.RealmHelper;
 
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.realm.Realm;
-import io.realm.Sort;
 
 public class ArticlesDataLocalSource implements ArticlesDataSource {
 
@@ -30,9 +27,12 @@ public class ArticlesDataLocalSource implements ArticlesDataSource {
 
     @Override
     public Observable<List<ArticleDetailData>> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache) {
-        Realm realm = RealmHelper.newRealmInstance();
+       /* Realm realm = RealmHelper.newRealmInstance();
         return Observable.just(
-                realm.copyFromRealm(realm.where(ArticleDetailData.class).findAll().sort("id", Sort.DESCENDING))
-        );
+                realm.copyFromRealm(realm.where(ArticleDetailData.class).findAll().sort("publishTime", Sort.DESCENDING))
+        );*/
+       //The remote has handle it
+        return null;
+
     }
 }

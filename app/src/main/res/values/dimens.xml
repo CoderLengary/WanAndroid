@@ -10,4 +10,6 @@
     <dimen name="nav_header_item_height">160dp</dimen>
     
     <dimen name="flat_design_button_height">30dp</dimen>
+
+    <dimen name="sheet_horizontal_margin">32dp</dimen>
 </resources>

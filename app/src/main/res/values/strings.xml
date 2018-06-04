@@ -49,6 +49,19 @@
     <!--Timeline start-->
     <string name="timeline_articles">Articles</string>
     <string name="timeline_favorites">Favorites</string>
-    <string name="timeline_see_later">See Later</string>
+    <string name="timeline_read_later">Read Later</string>
     <!--Timeline end-->
+
+    <!--error-->
+    <string name="network_error">Network is not available</string>
+    <!--error-->
+    
+    <!--Detail start-->
+    <string name="detail_label">Detail</string>
+    <string name="detail_favorite">Favorite</string>
+    <string name="detail_add_to_read_later">Add to read later</string>
+    <string name="detail_copy_the_link">Copy the link</string>
+    <string name="detail_share">Share</string>
+    <string name="detail_open_in_system_browser">Open in system browser</string>
+    <!--Detail end-->
 </resources>

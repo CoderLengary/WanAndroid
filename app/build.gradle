@@ -30,6 +30,8 @@ ext {
     espressoVersion = '3.0.2'
     rxjavaVersion = '2.0.1'
     circleimageviewVersion = '2.1.0'
+    agentWeb = '4.0.2'
+    VerticalTabLayout = '1.2.5'
 }
 
 
@@ -49,6 +51,12 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
     //CircleImage
     implementation "de.hdodenhof:circleimageview:$circleimageviewVersion"
+
+    //AgentWeb
+    implementation "com.just.agentweb:agentweb:$agentWeb"
+
+    //VerticalTabLayout
+    implementation "q.rorbin:VerticalTabLayout:$VerticalTabLayout"
 
 
 

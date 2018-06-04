@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    style="?attr/bottomSheetStyle"
+    android:background="@color/layout_background">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text_view_favorite"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/ic_star_border_black_24dp"
+        android:drawablePadding="@dimen/sheet_horizontal_margin"
+        android:text="@string/detail_favorite"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text_view_read_later"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/ic_read_later_black_24dp"
+        android:drawablePadding="@dimen/sheet_horizontal_margin"
+        android:text="@string/detail_add_to_read_later"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text_view_copy_the_link"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/ic_copy_the_link_black_24dp"
+        android:drawablePadding="@dimen/sheet_horizontal_margin"
+        android:text="@string/detail_copy_the_link"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text_view_share"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/ic_share_black_24dp"
+        android:drawablePadding="@dimen/sheet_horizontal_margin"
+        android:text="@string/detail_share"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/text_view_system_browser"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:drawableStart="@drawable/ic_open_in_browser_black_24dp"
+        android:drawablePadding="@dimen/sheet_horizontal_margin"
+        android:text="@string/detail_open_in_system_browser"/>
+</LinearLayout>

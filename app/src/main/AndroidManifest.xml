@@ -3,6 +3,7 @@
     package="com.example.lengary_l.wanandroid">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -29,6 +30,12 @@
         <activity android:name=".mvp.login.LoginActivity"
             android:label="title_activity_login_acitivity"
             android:theme="@style/MyEditTextStyle">
+
+        </activity>
+
+        <activity android:name=".mvp.detail.DetailActivity"
+            android:label="@string/detail_label"
+            android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
     </application>

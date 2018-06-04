@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
 
-public class SeeLaterFragment extends Fragment {
+public class ReadLaterFragment extends Fragment {
 
-    public SeeLaterFragment(){
+    public ReadLaterFragment(){
 
     }
 
-    public static SeeLaterFragment newInstance(){
-        return new SeeLaterFragment();
+    public static ReadLaterFragment newInstance(){
+        return new ReadLaterFragment();
     }
 
     @Nullable

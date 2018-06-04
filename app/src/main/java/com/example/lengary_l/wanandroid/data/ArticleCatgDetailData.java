@@ -3,13 +3,12 @@ package com.example.lengary_l.wanandroid.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.List;
 
-public class ArticleCatgDetailData extends RealmObject{
+public class ArticleCatgDetailData {
     @Expose
     @SerializedName("children")
-    private RealmList<ArticleCatgDetailData> children;
+    private List<ArticleCatgDetailData> children;
     @Expose
     @SerializedName("courseId")
     private int courseId;

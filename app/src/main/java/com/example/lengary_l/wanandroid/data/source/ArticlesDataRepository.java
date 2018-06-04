@@ -6,14 +6,15 @@ import android.util.Log;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class ArticlesDataRepository implements ArticlesDataSource {
 
@@ -58,7 +59,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             return Observable.fromIterable(cacheItems).toSortedList(new Comparator<ArticleDetailData>() {
                 @Override
                 public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                    if (articleDetailData.getId() > t1.getId()){
+                    if (articleDetailData.getPublishTime() > t1.getPublishTime()){
                         return -1;
                     }else {
                         return 1;
@@ -75,7 +76,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             Log.e(TAG, "getArticles: update not clearcache, page is "+page);
 
             List<ArticleDetailData> cacheItems = new ArrayList<>(cache.values());
-            Observable<List<ArticleDetailData>> ob1 = Observable.just(sortCacheItems(cacheItems));
+            Observable<List<ArticleDetailData>> ob1 = Observable.just(cacheItems);
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticles(page, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
@@ -84,21 +85,12 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                         }
                     });
 
-            return Observable.merge(ob1, ob2);
-            /*
-
-            List<ArticleDetailData> cacheItems = new ArrayList<>(cache.values());
-            return remoteDataSource.getArticles(page,forceUpdate,clearCache)
-                    .startWith(cacheItems)
-                    .doOnNext(new Consumer<List<ArticleDetailData>>() {
-                        @Override
-                        public void accept(List<ArticleDetailData> list) throws Exception {
-
-                            Log.e(TAG, "accept: do on Next" );
-                            refreshCache(clearCache,list);
-                        }
-                    });
-*/
+            return Observable.merge(ob1, ob2).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends List<ArticleDetailData>>>() {
+                @Override
+                public ObservableSource<? extends List<ArticleDetailData>> apply(Throwable throwable) throws Exception {
+                    return localDataSource.getArticles(INDEX, forceUpdate, clearCache);
+                }
+            });
         }
 
         //when we refresh the layout,the page is zero,and we force update and clear all the caches.
@@ -112,16 +104,8 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                     }
                 });
 
-        /*return observable.onErrorResumeNext(new Function<Throwable, ObservableSource<? extends List<ArticleDetailData>>>() {
-            @Override
-            public ObservableSource<? extends List<ArticleDetailData>> apply(Throwable throwable) throws Exception {
-                return localDataSource.getArticles(INDEX, forceUpdate, clearCache);
-            }
-        });*/
-
     }
 
-    int i = 0;
     private void refreshCache(boolean clearCache,List<ArticleDetailData> list){
         if (cache == null) {
             cache = new LinkedHashMap<>();
@@ -132,10 +116,11 @@ public class ArticlesDataRepository implements ArticlesDataSource {
         for (ArticleDetailData item : list) {
             cache.put(item.getId(), item);
         }
-        Log.e(TAG, "refreshCache: cache size "+cache.size() +" refresh time "+i++);
+
+        Log.e(TAG, "refreshCache: cacheSize "+cache.size() );
     }
 
-    private List<ArticleDetailData> sortCacheItems(List<ArticleDetailData> list){
+    /*private List<ArticleDetailData> sortCacheItems(List<ArticleDetailData> list){
         if (list==null||list.isEmpty()){
             return null;
         }
@@ -150,5 +135,5 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             }
         });
         return list;
-    }
+    }*/
 }

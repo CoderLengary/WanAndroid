@@ -58,7 +58,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                if (articleDetailData.getId() > t1.getId()){
+                                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
                                     return -1;
                                 }else {
                                     return 1;
@@ -68,11 +68,10 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             @Override
                             public void accept(List<ArticleDetailData> list) throws Exception {
 
-
-
-                                /*for (ArticleDetailData item :list){
+                                Log.e(TAG, "accept: is running " );
+                                for (ArticleDetailData item :list){
                                     saveToRealm(item, page);
-                                }*/
+                                }
                             }
                         });
                     }
@@ -80,28 +79,14 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
     }
 
     private void saveToRealm(ArticleDetailData article,int page){
-        if (article==null){
-            Log.e(TAG, "saveToRealm: article is null" );
-        }
-        int id = article.getId();
+        article.setCurrentPage(page);
         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                 .name(RealmHelper.DATABASE_NAME)
                 .deleteRealmIfMigrationNeeded()
                 .build());
-        ArticleDetailData a=realm.copyFromRealm(realm.where(ArticleDetailData.class)
-                .equalTo("id", id).findFirst());
-        if (a==null){
-            article.setCurrentPage(page);
             realm.beginTransaction();
             realm.copyToRealmOrUpdate(article);
             realm.commitTransaction();
-        }else {
-            a.setCurrentPage(page);
-            a.setNiceDate(article.getNiceDate());
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(a);
-            realm.commitTransaction();
-        }
         realm.close();
     }
 

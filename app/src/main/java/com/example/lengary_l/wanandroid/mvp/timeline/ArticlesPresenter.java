@@ -44,9 +44,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                     public void onNext(List<ArticleDetailData> value) {
                         if (forceUpdate&&!clearCache){
                             addToHashMap(value);
-                            Log.e(TAG, "onNext: NO DONT " );
                         }else {
-                            Log.e(TAG, "onNext: " );
                             view.showArticles(value);
                             view.setLoadingIndicator(false);
                         }
@@ -54,7 +52,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e(TAG, "onError: "+e.getMessage() );
                         view.showEmptyView();
                     }
 
@@ -78,7 +76,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
         Collections.sort(list, new Comparator<ArticleDetailData>() {
             @Override
             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                if (articleDetailData.getId() > t1.getId()){
+                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
                     return -1;
                 }else {
                     return 1;
@@ -95,6 +93,6 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
     @Override
     public void unSubscribe() {
-
+        compositeDisposable.clear();
     }
 }

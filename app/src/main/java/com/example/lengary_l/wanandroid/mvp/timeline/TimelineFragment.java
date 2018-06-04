@@ -21,7 +21,7 @@ public class TimelineFragment extends Fragment {
     private ViewPager viewPager;
     private ArticlesFragment articlesFragment;
     private FavoritesFragment favoritesFragment;
-    private SeeLaterFragment seeLaterFragment;
+    private ReadLaterFragment readLaterFragment;
 
     public TimelineFragment() {
 
@@ -39,11 +39,11 @@ public class TimelineFragment extends Fragment {
             FragmentManager fragmentManager = getChildFragmentManager();
             articlesFragment = (ArticlesFragment) fragmentManager.getFragment(savedInstanceState, "ArticlesFragment");
             favoritesFragment = (FavoritesFragment) fragmentManager.getFragment(savedInstanceState, "FavoritesFragment");
-            seeLaterFragment = (SeeLaterFragment) fragmentManager.getFragment(savedInstanceState, "SeeLaterFragment");
+            readLaterFragment = (ReadLaterFragment) fragmentManager.getFragment(savedInstanceState, "ReadLaterFragment");
         }else {
             articlesFragment = ArticlesFragment.newInstance();
             favoritesFragment = FavoritesFragment.newInstance();
-            seeLaterFragment = SeeLaterFragment.newInstance();
+            readLaterFragment = ReadLaterFragment.newInstance();
         }
 
         new ArticlesPresenter(articlesFragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()));
@@ -61,7 +61,7 @@ public class TimelineFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
         viewPager.setAdapter(new TimelinePagerAdapter(getChildFragmentManager()
-                , getContext(), articlesFragment, favoritesFragment, seeLaterFragment));
+                , getContext(), articlesFragment, favoritesFragment, readLaterFragment));
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -76,8 +76,8 @@ public class TimelineFragment extends Fragment {
         if (favoritesFragment.isAdded()){
             fragmentManager.putFragment(outState, "FavoritesFragment", favoritesFragment);
         }
-        if (seeLaterFragment.isAdded()){
-            fragmentManager.putFragment(outState, "SeeLaterFragment", seeLaterFragment);
+        if (readLaterFragment.isAdded()){
+            fragmentManager.putFragment(outState, "ReadLaterFragment", readLaterFragment);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
+import com.example.lengary_l.wanandroid.util.NetworkUtil;
 
 import java.util.List;
 
@@ -82,7 +87,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             currentPage = INDEX;
             isFirstLoad = false;
         }else {
-            presenter.getArticles(INDEX,false,false);
+            presenter.getArticles(currentPage,false,false);
         }
 
     }
@@ -117,30 +122,44 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     }
 
     @Override
-    public void showArticles(List<ArticleDetailData> list) {
+    public void showArticles(final List<ArticleDetailData> list) {
         if (adapter!=null){
             adapter.updateData(list);
         }else {
             adapter = new ArticlesAdapter(getContext(), list);
+            adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), DetailActivity.class);
+                    intent.putExtra(DetailActivity.URL, list.get(position).getLink());
+                    startActivity(intent);
+                }
+            });
             recyclerView.setAdapter(adapter);
         }
         mListSize = list.size();
+
         Log.e(TAG, "showArticles: list size "+list.size() );
     }
 
     @Override
     public void showEmptyView() {
-        if (emptyView.getVisibility()!=View.VISIBLE){
-            emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        }
+        emptyView.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.INVISIBLE);
+
     }
 
 
     private void loadMore(){
-        currentPage+=1;
-        Log.e(TAG, "loadMore: update page is "+currentPage );
-        presenter.getArticles(currentPage,true,false);
+        boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
+        if (isNetworkAvailable){
+            currentPage+=1;
+            Log.e(TAG, "loadMore: update page is "+currentPage );
+            presenter.getArticles(currentPage,true,false);
+        }else {
+            Toast.makeText(getContext(),R.string.network_error,Toast.LENGTH_LONG).show();
+        }
+
     }
 
 }

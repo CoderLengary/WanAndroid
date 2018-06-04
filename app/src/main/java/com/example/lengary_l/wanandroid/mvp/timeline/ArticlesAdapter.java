@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private LayoutInflater inflater;
     private List<ArticleDetailData> mList;
+    private OnRecyclerViewItemOnClickListener listener;
 
     public ArticlesAdapter(Context context, List<ArticleDetailData> list){
         this.context = context;
@@ -33,13 +35,15 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemRemoved(list.size());
     }
 
-
+    public void setItemClickListener(OnRecyclerViewItemOnClickListener listener){
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_card_view, parent, false);
-        return new NormalViewHolder(view);
+        return new NormalViewHolder(view,listener);
     }
 
     @Override
@@ -52,6 +56,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         normalViewHolder.btnCategory.setText("  "+data.getSuperChapterName()+"  ");
         normalViewHolder.textTime.setText(data.getNiceDate());
     }
+
 
     @Override
     public int getItemCount() {
@@ -69,7 +74,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-        public NormalViewHolder(View itemView) {
+        public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener) {
             super(itemView);
             btnCategory = itemView.findViewById(R.id.btn_category);
             textTitle = itemView.findViewById(R.id.text_view_title);
@@ -79,6 +84,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    listener.onClick(view,getLayoutPosition());
                 }
             });
         }

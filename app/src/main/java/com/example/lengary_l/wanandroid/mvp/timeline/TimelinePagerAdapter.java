@@ -11,7 +11,7 @@ import com.example.lengary_l.wanandroid.R;
 public class TimelinePagerAdapter extends FragmentPagerAdapter {
     private ArticlesFragment articlesFragment;
     private FavoritesFragment favoritesFragment;
-    private SeeLaterFragment seeLaterFragment;
+    private ReadLaterFragment readLaterFragment;
     private String[] titles;
 
 
@@ -21,15 +21,15 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
                                 Context context,
                                 ArticlesFragment articlesFragment,
                                 FavoritesFragment favoritesFragment,
-                                SeeLaterFragment seeLaterFragment) {
+                                ReadLaterFragment readLaterFragment) {
         super(fm);
         this.articlesFragment = articlesFragment;
         this.favoritesFragment = favoritesFragment;
-        this.seeLaterFragment = seeLaterFragment;
+        this.readLaterFragment = readLaterFragment;
         titles = new String[]{
                 context.getString(R.string.timeline_articles),
                 context.getString(R.string.timeline_favorites),
-                context.getString(R.string.timeline_see_later)
+                context.getString(R.string.timeline_read_later)
         };
     }
 
@@ -46,7 +46,7 @@ public class TimelinePagerAdapter extends FragmentPagerAdapter {
                 break;
 
             case 2:
-                fragment = seeLaterFragment;
+                fragment = readLaterFragment;
                 break;
 
             default:
