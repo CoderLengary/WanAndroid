@@ -112,6 +112,11 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
 
     @Override
+    public boolean isActive() {
+        return isAdded()&&isResumed();
+    }
+
+    @Override
     public void setLoadingIndicator(final boolean isActive) {
         refreshLayout.post(new Runnable() {
             @Override

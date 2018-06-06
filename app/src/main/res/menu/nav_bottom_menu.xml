@@ -7,9 +7,9 @@
            android:icon="@drawable/ic_articles_black_24dp"
            android:title="@string/nav_articles"/>
 
-       <item android:id="@+id/nav_article_categories"
+       <item android:id="@+id/nav_categories"
            android:icon="@drawable/ic_art_categories_black_24dp"
-           android:title="@string/nav_article_categories"/>
+           android:title="@string/nav_categories"/>
 
        <item android:id="@+id/nav_project_categories"
            android:icon="@drawable/ic_project_categories_24dp"

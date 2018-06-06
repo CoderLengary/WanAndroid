@@ -12,4 +12,8 @@
     <dimen name="flat_design_button_height">30dp</dimen>
 
     <dimen name="sheet_horizontal_margin">32dp</dimen>
+
+    <dimen name="flow_layout_item_height">32dp</dimen>
+
+    <dimen name="flow_layout_item_content_padding">12dp</dimen>
 </resources>

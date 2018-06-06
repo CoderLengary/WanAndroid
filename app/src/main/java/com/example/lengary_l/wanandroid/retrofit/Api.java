@@ -6,7 +6,7 @@ public class Api {
     public static final String API_BASE = "http://www.wanandroid.com/";
 
     //Get the article categories
-    public static final String ARTICLE_CATEGORIES = API_BASE + "tree/json";
+    public static final String CATEGORIES = API_BASE + "tree/json";
 
 
     //Get the article list from article categories

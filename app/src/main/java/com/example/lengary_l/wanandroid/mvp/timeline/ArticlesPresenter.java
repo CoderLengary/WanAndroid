@@ -42,6 +42,9 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
                     public void onNext(List<ArticleDetailData> value) {
+                        if (!view.isActive()){
+                            return;
+                        }
                         if (forceUpdate&&!clearCache){
                             addToHashMap(value);
                         }else {
@@ -58,6 +61,9 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
                     @Override
                     public void onComplete() {
+                        if (!view.isActive()){
+                            return;
+                        }
                         if (forceUpdate&&!clearCache){
                             view.showArticles(sortHashMap(new ArrayList<>(hashMap.values())));
                         }

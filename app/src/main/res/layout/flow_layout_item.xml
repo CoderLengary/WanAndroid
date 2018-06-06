@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_secd_categories"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/flow_layout_item_height"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:layout_margin="@dimen/activity_margin_half"
+    android:paddingLeft="@dimen/flow_layout_item_content_padding"
+    android:paddingRight="@dimen/flow_layout_item_content_padding"
+    android:background="@drawable/item_text_view_bg"
+    />

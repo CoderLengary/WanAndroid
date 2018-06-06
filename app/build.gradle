@@ -31,7 +31,7 @@ ext {
     rxjavaVersion = '2.0.1'
     circleimageviewVersion = '2.1.0'
     agentWeb = '4.0.2'
-    VerticalTabLayout = '1.2.5'
+    flowLayout = '1.1.2'
 }
 
 
@@ -51,12 +51,12 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
     //CircleImage
     implementation "de.hdodenhof:circleimageview:$circleimageviewVersion"
-
     //AgentWeb
     implementation "com.just.agentweb:agentweb:$agentWeb"
+    //FlowLayout
+    implementation "com.hyman:flowlayout-lib:$flowLayout"
 
-    //VerticalTabLayout
-    implementation "q.rorbin:VerticalTabLayout:$VerticalTabLayout"
+
 
 
 

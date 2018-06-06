@@ -15,7 +15,7 @@ public interface ArticlesContract {
 
     interface View extends BaseView<Presenter>{
 
-
+        boolean isActive();
 
         void setLoadingIndicator(boolean isActive);
 

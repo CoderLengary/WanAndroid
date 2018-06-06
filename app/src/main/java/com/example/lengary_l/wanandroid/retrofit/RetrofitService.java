@@ -1,6 +1,6 @@
 package com.example.lengary_l.wanandroid.retrofit;
 
-import com.example.lengary_l.wanandroid.data.ArticleCatgData;
+import com.example.lengary_l.wanandroid.data.CategoryData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
 import com.example.lengary_l.wanandroid.data.LoginData;
 
@@ -23,7 +23,7 @@ public interface RetrofitService {
     @GET(Api.ARTICLE_LIST + "{page}/json")
     Observable<ArticlesData> getArticles(@Path("page") int page);
 
-    @GET(Api.ARTICLE_CATEGORIES)
-    Observable<ArticleCatgData> getArticleCatg();
+    @GET(Api.CATEGORIES)
+    Observable<CategoryData> getCategories();
 
 }
