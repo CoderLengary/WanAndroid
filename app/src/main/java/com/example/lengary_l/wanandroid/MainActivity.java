@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         initViews();
         initFragments(savedInstanceState);
-        new CategoriesPresenter(CategoriesDataRepository.getInstance(CategoriesDataRemoteSource.getInstance())
-                , categoriesFragment);
+        new CategoriesPresenter(CategoriesDataRepository.getInstance(CategoriesDataRemoteSource.getInstance()), categoriesFragment);
         if (savedInstanceState!=null){
             int selectId = savedInstanceState.getInt(KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID);
             switch (selectId){
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             timelineFragment = (TimelineFragment) fragmentManager.getFragment(savedInstanceState, "TimelineFragment");
-            categoriesFragment = fragmentManager.getFragment(savedInstanceState, )
+            categoriesFragment = (CategoriesFragment) fragmentManager.getFragment(savedInstanceState, "ategoriesFragment");
         } else {
             timelineFragment = TimelineFragment.newInstance();
             categoriesFragment = CategoriesFragment.newInstance();
