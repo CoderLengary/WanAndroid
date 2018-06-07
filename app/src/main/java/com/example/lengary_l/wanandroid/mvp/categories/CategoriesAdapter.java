@@ -33,6 +33,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return new MyViewHolder(inflater.inflate(R.layout.item_linear_layout, parent, false));
     }
 
+    public void updateData(List<CategoryDetailData> list){
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
+        notifyItemRemoved(list.size());
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         CategoryDetailData data = list.get(position);

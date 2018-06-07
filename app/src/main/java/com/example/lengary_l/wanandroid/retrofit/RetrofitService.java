@@ -10,6 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitService {
 
@@ -22,6 +23,9 @@ public interface RetrofitService {
 
     @GET(Api.ARTICLE_LIST + "{page}/json")
     Observable<ArticlesData> getArticles(@Path("page") int page);
+
+    @GET(Api.ARTICLE_LIST + "{page}/json")
+    Observable<ArticlesData> getArticlesFromCatg(@Path("page") int page, @Query("cid") String cid);
 
     @GET(Api.CATEGORIES)
     Observable<CategoryData> getCategories();

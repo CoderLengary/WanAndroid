@@ -93,10 +93,16 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
+    }
+
+    @Override
     public void initViews(View view){
         emptyView = view.findViewById(R.id.empty_view);
         layoutManager = new LinearLayoutManager(getContext());
-        recyclerView = view.findViewById(R.id.recycle_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setVisibility(View.VISIBLE);
         emptyView.setVisibility(View.INVISIBLE);

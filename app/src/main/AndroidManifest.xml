@@ -38,6 +38,12 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
+        <activity android:name=".mvp.category.CategoryActivity"
+            android:label="@string/category_label"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

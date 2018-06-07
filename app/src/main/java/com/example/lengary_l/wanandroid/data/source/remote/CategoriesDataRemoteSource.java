@@ -33,7 +33,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
 
     @Override
-    public Observable<List<CategoryDetailData>> getCategories() {
+    public Observable<List<CategoryDetailData>> getCategories( boolean forceUpdate) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getCategories()

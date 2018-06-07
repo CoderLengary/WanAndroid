@@ -5,12 +5,11 @@ public class Api {
     //This is the base API.
     public static final String API_BASE = "http://www.wanandroid.com/";
 
-    //Get the article categories
-    public static final String CATEGORIES = API_BASE + "tree/json";
-
-
-    //Get the article list from article categories
+    //Get the article list
     public static final String ARTICLE_LIST = API_BASE + "article/list/";
+
+    //Get the categories
+    public static final String CATEGORIES = API_BASE + "tree/json";
 
     //Get the banner
     public static final String GET_BANNER = API_BASE + "banner/json";

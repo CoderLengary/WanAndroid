@@ -25,6 +25,7 @@ public class CategoriesFragment extends Fragment implements CategoriesContract.V
     private CategoriesAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private LinearLayout emptyView;
+    private boolean isFirstLoad = true;
 
     public CategoriesFragment(){
 
@@ -50,7 +51,7 @@ public class CategoriesFragment extends Fragment implements CategoriesContract.V
 
     @Override
     public void initViews(View view) {
-        recyclerView = view.findViewById(R.id.recycle_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         emptyView = view.findViewById(R.id.empty_view);
         refreshLayout = view.findViewById(R.id.refresh_layout);
@@ -67,7 +68,26 @@ public class CategoriesFragment extends Fragment implements CategoriesContract.V
         if (adapter==null){
             adapter = new CategoriesAdapter(getContext(), list);
             recyclerView.setAdapter(adapter);
+        }else {
+            adapter.updateData(list);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isFirstLoad){
+            presenter.subscribe();
+            isFirstLoad = false;
+        }else {
+            presenter.getCategories(false);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
     }
 
     @Override

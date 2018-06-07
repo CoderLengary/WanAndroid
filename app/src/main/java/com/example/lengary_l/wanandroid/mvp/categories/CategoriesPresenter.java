@@ -25,7 +25,20 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
 
     @Override
     public void subscribe() {
-        Disposable disposable = repository.getCategories()
+        getCategories(true);
+    }
+
+
+
+
+    @Override
+    public void unSubscribe() {
+        compositeDisposable.clear();
+    }
+
+    @Override
+    public void getCategories(boolean forceUpdate) {
+        Disposable disposable = repository.getCategories(forceUpdate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<CategoryDetailData>>() {
@@ -51,10 +64,5 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
                     }
                 });
         compositeDisposable.add(disposable);
-    }
-
-    @Override
-    public void unSubscribe() {
-
     }
 }

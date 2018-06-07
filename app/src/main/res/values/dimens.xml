@@ -3,17 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="activity_margin_half">8dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="activity_double_vertical_margin">32dp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="nav_header_item_height">160dp</dimen>
-    
     <dimen name="flat_design_button_height">30dp</dimen>
-
     <dimen name="sheet_horizontal_margin">32dp</dimen>
-
     <dimen name="flow_layout_item_height">32dp</dimen>
-
     <dimen name="flow_layout_item_content_padding">12dp</dimen>
+
+    <dimen name="item_category_img_height">64dp</dimen>
 </resources>

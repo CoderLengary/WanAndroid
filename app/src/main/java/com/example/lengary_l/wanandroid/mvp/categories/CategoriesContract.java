@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoriesContract {
     interface Presenter extends BasePresenter{
-
+        void getCategories(boolean forceUpdate);
     }
 
     interface View extends BaseView<Presenter>{

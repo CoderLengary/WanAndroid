@@ -64,4 +64,8 @@
     <string name="detail_share">Share</string>
     <string name="detail_open_in_system_browser">Open in system browser</string>
     <!--Detail end-->
+
+    <!--Category start-->
+    <string name="category_label">Category</string>
+    <!--Category end-->
 </resources>
