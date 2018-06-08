@@ -34,6 +34,7 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
     @Override
     public void unSubscribe() {
         compositeDisposable.clear();
+
     }
 
     @Override

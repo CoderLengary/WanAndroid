@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
@@ -20,6 +21,7 @@ public class CategoryRemoteDataSource  implements CategoryDataSource{
 
     @NonNull
     private static CategoryRemoteDataSource INSTANCE;
+    private static final String TAG = "CategoryRemoteDataSourc";
 
     private CategoryRemoteDataSource() {
 
@@ -33,14 +35,16 @@ public class CategoryRemoteDataSource  implements CategoryDataSource{
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, String categoryId, boolean forceUpdate) {
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate,boolean clearCache) {
+        Log.e(TAG, "getArticlesFromCatg: " );
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticlesFromCatg(page,categoryId)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) throws Exception {
-                        return articlesData.getErrorCode() != -1&&!articlesData.getData().isOver();
+                        Log.e(TAG, "test: data's error code is "+articlesData.getErrorCode()+" data is over "+articlesData.getData().isOver() );
+                        return articlesData.getErrorCode() != -1;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {

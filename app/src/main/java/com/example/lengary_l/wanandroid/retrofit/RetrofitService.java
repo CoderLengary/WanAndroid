@@ -25,7 +25,7 @@ public interface RetrofitService {
     Observable<ArticlesData> getArticles(@Path("page") int page);
 
     @GET(Api.ARTICLE_LIST + "{page}/json")
-    Observable<ArticlesData> getArticlesFromCatg(@Path("page") int page, @Query("cid") String cid);
+    Observable<ArticlesData> getArticlesFromCatg(@Path("page") int page, @Query("cid") int cid);
 
     @GET(Api.CATEGORIES)
     Observable<CategoryData> getCategories();

@@ -7,5 +7,5 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface CategoryDataSource {
-    Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, String categoryId , boolean forceUpdate);
+    Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId , boolean forceUpdate,boolean clearCache);
 }

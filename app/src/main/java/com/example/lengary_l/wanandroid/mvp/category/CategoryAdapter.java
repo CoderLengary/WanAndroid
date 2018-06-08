@@ -9,41 +9,70 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+
+import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
+    private List<ArticleDetailData> list;
+    private OnRecyclerViewItemOnClickListener listener;
 
-    public CategoryAdapter(Context context) {
+    public CategoryAdapter(Context context,List<ArticleDetailData> list) {
         this.context = context;
+        this.list = list;
         inflater = LayoutInflater.from(this.context);
+    }
+
+    public void setItemClickListener(OnRecyclerViewItemOnClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_category, parent, false);
-        return new CategoryViewHolder(view);
+        return new CategoryViewHolder(view,listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
+        ArticleDetailData data = list.get(position);
+        categoryViewHolder.textAuthor.setText(data.getAuthor());
+        categoryViewHolder.textTitle.setText(data.getTitle());
+    }
 
+    public void updateData(List<ArticleDetailData> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        notifyDataSetChanged();
+        notifyItemRemoved(list.size());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder{
-
+    class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private OnRecyclerViewItemOnClickListener listener;
         AppCompatTextView textAuthor;
         AppCompatTextView textTitle;
-        public CategoryViewHolder(View itemView) {
+        public CategoryViewHolder(View itemView,OnRecyclerViewItemOnClickListener listener) {
             super(itemView);
             textAuthor = itemView.findViewById(R.id.text_view_author);
             textTitle = itemView.findViewById(R.id.text_view_title);
+            this.listener = listener;
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            listener.onClick(view, getLayoutPosition());
         }
     }
 }

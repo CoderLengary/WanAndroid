@@ -49,7 +49,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) throws Exception {
-                        return articlesData.getErrorCode() != -1&&!articlesData.getData().isOver();
+                        return articlesData.getErrorCode() != -1;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {

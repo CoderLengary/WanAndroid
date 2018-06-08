@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.categories;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,9 @@ import android.widget.LinearLayout;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.CategoryDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnFlowLayoutItemOnClickListener;
+import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
+import com.zhy.view.flowlayout.FlowLayout;
 
 import java.util.List;
 
@@ -67,6 +71,15 @@ public class CategoriesFragment extends Fragment implements CategoriesContract.V
     public void showCategories(List<CategoryDetailData> list) {
         if (adapter==null){
             adapter = new CategoriesAdapter(getContext(), list);
+            adapter.setOnFlowLayoutItemOnClickListener(new OnFlowLayoutItemOnClickListener() {
+                @Override
+                public void onClick(View view, int position, FlowLayout parent, List<CategoryDetailData> children) {
+                    Intent intent = new Intent(getContext(), CategoryActivity.class);
+                    intent.putExtra(CategoryActivity.CATEGORY_ID, children.get(position).getId());
+                    intent.putExtra(CategoryActivity.CATEGORY_NAME, children.get(position).getName());
+                    startActivity(intent);
+                }
+            });
             recyclerView.setAdapter(adapter);
         }else {
             adapter.updateData(list);

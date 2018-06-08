@@ -8,11 +8,13 @@ import com.example.lengary_l.wanandroid.data.source.CategoriesDataSource;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
 
+import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
@@ -37,10 +39,25 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getCategories()
+                .filter(new Predicate<CategoryData>() {
+                    @Override
+                    public boolean test(CategoryData categoryData) throws Exception {
+                        return categoryData.getErrorCode() != -1;
+                    }
+                })
                 .flatMap(new Function<CategoryData, ObservableSource<List<CategoryDetailData>>>() {
                     @Override
                     public ObservableSource<List<CategoryDetailData>> apply(CategoryData categoryData) throws Exception {
-                        return Observable.just(categoryData.getData());
+                        return Observable.fromIterable(categoryData.getData()).toSortedList(new Comparator<CategoryDetailData>() {
+                            @Override
+                            public int compare(CategoryDetailData categoryDetailData, CategoryDetailData t1) {
+                                if (categoryDetailData.getOrder()>t1.getOrder()){
+                                    return 1;
+                                }else {
+                                    return -1;
+                                }
+                            }
+                        }).toObservable();
                     }
                 });
 

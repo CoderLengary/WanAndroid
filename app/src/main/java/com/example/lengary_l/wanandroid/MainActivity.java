@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             timelineFragment = (TimelineFragment) fragmentManager.getFragment(savedInstanceState, "TimelineFragment");
-            categoriesFragment = (CategoriesFragment) fragmentManager.getFragment(savedInstanceState, "ategoriesFragment");
+            categoriesFragment = (CategoriesFragment) fragmentManager.getFragment(savedInstanceState, "CategoriesFragment");
         } else {
             timelineFragment = TimelineFragment.newInstance();
             categoriesFragment = CategoriesFragment.newInstance();

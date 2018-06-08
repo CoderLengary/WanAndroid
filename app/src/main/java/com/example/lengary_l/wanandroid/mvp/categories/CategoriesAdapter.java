@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.CategoryDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnFlowLayoutItemOnClickListener;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -20,6 +21,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private Context context;
     private List<CategoryDetailData> list;
     private LayoutInflater inflater;
+    private OnFlowLayoutItemOnClickListener listener;
 
     public CategoriesAdapter(Context context, List<CategoryDetailData> list){
         this.context = context;
@@ -40,6 +42,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyItemRemoved(list.size());
     }
 
+    public void setOnFlowLayoutItemOnClickListener(OnFlowLayoutItemOnClickListener listener){
+        this.listener = listener;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         CategoryDetailData data = list.get(position);
@@ -56,6 +62,14 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     return null;
                 }
                 textView.setText(child.getName());
+
+                myViewHolder.flowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+                    @Override
+                    public boolean onTagClick(View view, int position, FlowLayout parent) {
+                        listener.onClick(view, position, parent ,children);
+                        return true;
+                    }
+                });
                 return textView;
             }
         });
