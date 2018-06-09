@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
@@ -67,8 +66,6 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
                             public void accept(List<ArticleDetailData> list) throws Exception {
-
-                                Log.e(TAG, "accept: is running " );
                                 for (ArticleDetailData item :list){
                                     saveToRealm(item, page);
                                 }
@@ -90,5 +87,33 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
         realm.close();
     }
 
+
+    @Override
+    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, boolean forceUpdate, boolean clearCache) {
+        return RetrofitClient.getInstance()
+                .create(RetrofitService.class)
+                .queryArticles(page,keyWords)
+                .filter(new Predicate<ArticlesData>() {
+                    @Override
+                    public boolean test(ArticlesData articlesData) throws Exception {
+                        return articlesData.getErrorCode() != -1;
+                    }
+                })
+                .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
+                    @Override
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                        return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
+                            @Override
+                            public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
+                                    return -1;
+                                }else {
+                                    return 1;
+                                }
+                            }
+                        }).toObservable();
+                    }
+                });
+    }
 
 }

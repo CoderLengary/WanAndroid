@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,13 +25,15 @@ import com.example.lengary_l.wanandroid.data.source.CategoriesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.CategoriesDataRemoteSource;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesFragment;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesPresenter;
+import com.example.lengary_l.wanandroid.mvp.search.SearchActivity;
 import com.example.lengary_l.wanandroid.mvp.timeline.TimelineFragment;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID="KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
+    private static final String TAG = "MainActivity";
 
+    private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID="KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -109,6 +114,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_search:
+                Log.e(TAG, "onOptionsItemSelected: " );
+                Intent intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+                default:break;
+        }
+        return true;
+    }
+
     private void initFragments(Bundle savedInstanceState) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
@@ -138,12 +162,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .show(timelineFragment)
                     .hide(categoriesFragment)
                     .commit();
+            toolbar.setTitle(R.string.timeline_label);
 
         } else if (fragment instanceof CategoriesFragment) {
             fragmentManager.beginTransaction()
                     .show(categoriesFragment)
                     .hide(timelineFragment)
                     .commit();
+            toolbar.setTitle(R.string.categories_label);
         }
     }
 

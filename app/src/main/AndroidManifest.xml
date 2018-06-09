@@ -35,13 +35,19 @@
 
         <activity android:name=".mvp.detail.DetailActivity"
             android:label="@string/detail_label"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBarPlus">
 
         </activity>
 
         <activity android:name=".mvp.category.CategoryActivity"
             android:label="@string/category_label"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".mvp.search.SearchActivity"
+            android:label="@string/search_label"
+            android:theme="@style/AppTheme.NoActionBarPlus">
 
         </activity>
     </application>

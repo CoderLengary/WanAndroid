@@ -15,13 +15,6 @@ public class Api {
     public static final String GET_BANNER = API_BASE + "banner/json";
 
 
-    //Get project categories
-    public static final String PROJECT_CATEGORIES = API_BASE + "project/tree/json";
-
-
-    //Get the projects from projects categories
-    public static final String PROJECT_LIST = API_BASE + "project/list/";
-
     //Login
     public static final String LOGIN = API_BASE + "user/login/";
 
@@ -31,5 +24,8 @@ public class Api {
 
     //Search articles
     public static final String QUERY_ARTICLES = API_BASE + "/article/query/";
+
+    //Hot Key
+    public static final String HOT_KEY = API_BASE + "hotkey/json";
 
 }

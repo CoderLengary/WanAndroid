@@ -80,9 +80,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     @Override
     public void onResume() {
-        Log.e(TAG, "onResume: " );
         super.onResume();
         if (isFirstLoad){
+            Log.e(TAG, "onResume: is first load" );
             presenter.getArticles(INDEX, true, true);
             currentPage = INDEX;
             isFirstLoad = false;
@@ -172,5 +172,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         }
 
     }
+
+
 
 }

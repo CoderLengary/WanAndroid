@@ -27,12 +27,15 @@ public class ArticlesDataLocalSource implements ArticlesDataSource {
 
     @Override
     public Observable<List<ArticleDetailData>> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache) {
-       /* Realm realm = RealmHelper.newRealmInstance();
-        return Observable.just(
-                realm.copyFromRealm(realm.where(ArticleDetailData.class).findAll().sort("publishTime", Sort.DESCENDING))
-        );*/
-       //The remote has handle it
+
+       //The remote has handled it
         return null;
 
+    }
+
+    @Override
+    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, boolean forceUpdate, boolean clearCache) {
+        //The remote has handled it
+        return null;
     }
 }

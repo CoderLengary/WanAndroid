@@ -44,9 +44,11 @@
     <string name="nav_categories">Categories</string>
     <string name="nav_project_categories">Project Categories</string>
     <string name="empty_text">There is nothing</string>
+    <string name="item_menu_search">Search</string>
     <!--main end-->
 
     <!--Timeline start-->
+    <string name="timeline_label">TimeLine</string>
     <string name="timeline_articles">Articles</string>
     <string name="timeline_favorites">Favorites</string>
     <string name="timeline_read_later">Read Later</string>
@@ -65,7 +67,16 @@
     <string name="detail_open_in_system_browser">Open in system browser</string>
     <!--Detail end-->
 
+    <!--Categories start-->
+    <string name="categories_label">Categories</string>
+    <!--Categories end-->
+
     <!--Category start-->
     <string name="category_label">Category</string>
     <!--Category end-->
+
+    <!--Search start-->
+    <string name="search_label">Search</string>
+    <string name="search_tint">Search articles</string>
+    <!--Search end-->
 </resources>
