@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+import com.example.lengary_l.wanandroid.util.StringUtils;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
         ArticleDetailData data = list.get(position);
         categoryViewHolder.textAuthor.setText(data.getAuthor());
-        categoryViewHolder.textTitle.setText(data.getTitle());
+        categoryViewHolder.textTitle.setText(StringUtils.replaceInvalidChar(data.getTitle()));
     }
 
     public void updateData(List<ArticleDetailData> list) {

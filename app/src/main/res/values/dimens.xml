@@ -14,4 +14,6 @@
     <dimen name="flow_layout_item_content_padding">12dp</dimen>
 
     <dimen name="item_category_img_height">64dp</dimen>
+
+    <dimen name="banner_height">200dp</dimen>
 </resources>

@@ -12,7 +12,7 @@ public class Api {
     public static final String CATEGORIES = API_BASE + "tree/json";
 
     //Get the banner
-    public static final String GET_BANNER = API_BASE + "banner/json";
+    public static final String BANNER = API_BASE + "banner/json";
 
 
     //Login

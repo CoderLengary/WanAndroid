@@ -24,8 +24,8 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.HotKeyDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+import com.example.lengary_l.wanandroid.mvp.category.CategoryAdapter;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
-import com.example.lengary_l.wanandroid.mvp.timeline.ArticlesAdapter;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -44,7 +44,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private int currentPage;
     private String keyWords;
     private boolean isFirstLoad = true;
-    private ArticlesAdapter adapter;
+    private CategoryAdapter adapter;
     private EditText editText;
     private int articlesListSize;
     private LinearLayoutManager layoutManager;
@@ -156,7 +156,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void showArticles(final List<ArticleDetailData> articlesList) {
         if (adapter == null) {
-            adapter = new ArticlesAdapter(getContext(),articlesList);
+            adapter = new CategoryAdapter(getContext(),articlesList);
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
                 public void onClick(View view, int position) {

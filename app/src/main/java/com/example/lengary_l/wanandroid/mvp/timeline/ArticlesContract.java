@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.data.BannerDetailData;
 import com.example.lengary_l.wanandroid.mvp.BasePresenter;
 import com.example.lengary_l.wanandroid.mvp.BaseView;
 
@@ -11,6 +12,8 @@ public interface ArticlesContract {
     interface Presenter extends BasePresenter{
 
         void getArticles(int page, boolean forceUpdate, boolean clearCache);
+
+        void getBanner();
     }
 
     interface View extends BaseView<Presenter>{
@@ -22,5 +25,9 @@ public interface ArticlesContract {
         void showArticles(List<ArticleDetailData> list);
 
         void showEmptyView();
+
+        void showBanner(List<BannerDetailData> list);
+
+        void hideBanner();
     }
 }

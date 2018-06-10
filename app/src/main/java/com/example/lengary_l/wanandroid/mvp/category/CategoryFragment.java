@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     private LinearLayout emptyView;
     private Toolbar toolbar;
     private CategoryContract.Presenter presenter;
+
     private boolean isFirstLoad=true;
     private int categoryId;
     private String categoryName;
@@ -57,6 +59,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     @Override
     public void onResume() {
         super.onResume();
+        toolbar.setTitle(categoryName);
         if (isFirstLoad){
             Log.e(TAG, "onResume: " );
             presenter.getArticlesFromCatg(INDEX,categoryId,true,true);
@@ -85,9 +88,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         initViews(view);
-        CategoryActivity activity = (CategoryActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        toolbar.setTitle(categoryName);
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -99,12 +100,16 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
                 }
             }
         });
+        setHasOptionsMenu(true);
         return view;
     }
 
     @Override
     public void initViews(View view) {
+        CategoryActivity activity = (CategoryActivity) getActivity();
         toolbar = view.findViewById(R.id.toolBar);
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         recyclerView = view.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -126,6 +131,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     intent.putExtra(DetailActivity.URL, list.get(position).getLink());
+                    intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
                     startActivity(intent);
                 }
             });
@@ -150,5 +156,16 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     private void loadMore() {
         currentPage += 1;
         presenter.getArticlesFromCatg(currentPage, categoryId, true,false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                break;
+                default:break;
+        }
+        return true;
     }
 }

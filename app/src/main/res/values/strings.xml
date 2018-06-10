@@ -65,6 +65,8 @@
     <string name="detail_copy_the_link">Copy the link</string>
     <string name="detail_share">Share</string>
     <string name="detail_open_in_system_browser">Open in system browser</string>
+    <string name="detail_copied_to_clipboard">Copied to clipboard</string>
+    <string name="detail_no_browser_found">No browser found</string>
     <!--Detail end-->
 
     <!--Categories start-->

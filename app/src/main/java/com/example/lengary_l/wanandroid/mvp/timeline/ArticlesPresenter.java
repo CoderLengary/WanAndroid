@@ -3,7 +3,9 @@ package com.example.lengary_l.wanandroid.mvp.timeline;
 import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.data.BannerDetailData;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,14 +22,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ArticlesPresenter implements ArticlesContract.Presenter {
 
-    private ArticlesDataRepository repository;
+    private ArticlesDataRepository articleRepository;
     private CompositeDisposable compositeDisposable;
+    private BannerDataRepository bannerRepository;
     private ArticlesContract.View view;
     private Map<Integer, ArticleDetailData> hashMap;
     private static final String TAG = "ArticlesPresenter";
 
-    public ArticlesPresenter(ArticlesContract.View view,ArticlesDataRepository repository){
-        this.repository = repository;
+    public ArticlesPresenter(ArticlesContract.View view,
+                             ArticlesDataRepository articleRepository,
+                             BannerDataRepository bannerRepository){
+        this.articleRepository = articleRepository;
+        this.bannerRepository = bannerRepository;
         this.view = view;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
@@ -36,7 +42,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
     @Override
     public void getArticles(int page, final boolean forceUpdate, final boolean clearCache) {
-        Disposable disposable = repository.getArticles(page, forceUpdate, clearCache)
+        Disposable disposable = articleRepository.getArticles(page, forceUpdate, clearCache)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
@@ -67,6 +73,34 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                         if (forceUpdate&&!clearCache){
                             view.showArticles(sortHashMap(new ArrayList<>(hashMap.values())));
                         }
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getBanner() {
+        Disposable disposable = bannerRepository.getBanner()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<BannerDetailData>>() {
+                    @Override
+                    public void onNext(List<BannerDetailData> value) {
+                        if (view.isActive()) {
+                            view.showBanner(value);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view.isActive()) {
+                            view.hideBanner();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
         compositeDisposable.add(disposable);

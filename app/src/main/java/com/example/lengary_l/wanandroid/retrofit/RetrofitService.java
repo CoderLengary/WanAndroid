@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid.retrofit;
 
+import com.example.lengary_l.wanandroid.data.BannerData;
 import com.example.lengary_l.wanandroid.data.CategoryData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
 import com.example.lengary_l.wanandroid.data.HotKeysData;
@@ -36,5 +37,8 @@ public interface RetrofitService {
 
     @GET(Api.HOT_KEY)
     Observable<HotKeysData> getHotKeys();
+
+    @GET(Api.BANNER)
+    Observable<BannerData> getBanner();
 
 }

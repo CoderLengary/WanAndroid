@@ -1,5 +1,11 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +13,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.just.agentweb.AgentWeb;
@@ -23,7 +31,9 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private Toolbar toolbar;
     private DetailContract.Presenter presenter;
     private String url;
+    private String title;
     private AgentWeb agentWeb;
+    private boolean isFirstLoad = true;
 
 
     public DetailFragment(){
@@ -39,6 +49,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         url = getActivity().getIntent().getStringExtra(DetailActivity.URL);
+        title = getActivity().getIntent().getStringExtra(DetailActivity.TITLE);
+
     }
 
     @Nullable
@@ -46,6 +58,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         initViews(view);
+
         setHasOptionsMenu(true);
         return view;
     }
@@ -54,11 +67,18 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     @Override
     public void onResume() {
-        if (agentWeb!=null){
+        super.onResume();
+        if (isFirstLoad){
+            loadUrl(url);
+            toolbar.setTitle(title);
+            isFirstLoad = false;
+        }
+       /* if (agentWeb!=null){
             agentWeb.getWebLifeCycle().onResume();
         }
-        super.onResume();
-        loadUrl(url);
+        super.onResume();*/
+
+
     }
 
     @Override
@@ -74,13 +94,28 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 break;
 
             case R.id.action_more:
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
                 View view = getActivity().getLayoutInflater().inflate(R.layout.actions_details_sheet, null);
                 AppCompatTextView textFavorite = view.findViewById(R.id.text_view_favorite);
                 AppCompatTextView textAddToReadLater = view.findViewById(R.id.text_view_read_later);
                 AppCompatTextView textCopyLink = view.findViewById(R.id.text_view_copy_the_link);
+                textCopyLink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        copyLink(url);
+                        bottomSheetDialog.dismiss();
+                        showMessage(R.string.detail_copied_to_clipboard);
+                    }
+                });
                 AppCompatTextView textShare = view.findViewById(R.id.text_view_share);
                 AppCompatTextView textBrowser = view.findViewById(R.id.text_view_system_browser);
+                textBrowser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openInBrowser(url);
+                        bottomSheetDialog.dismiss();
+                    }
+                });
                 bottomSheetDialog.setContentView(view);
                 bottomSheetDialog.show();
                 break;
@@ -117,7 +152,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     @Override
     public void onPause() {
-        agentWeb.getWebLifeCycle().onPause();
+       // agentWeb.getWebLifeCycle().onPause();
         super.onPause();
     }
 
@@ -127,5 +162,23 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         super.onStop();
     }
 
+    private void copyLink(String url) {
+        ClipboardManager manager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("text", Html.fromHtml(url).toString());
+        manager.setPrimaryClip(data);
 
+    }
+
+
+
+    private void openInBrowser(String url) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
+        }catch (ActivityNotFoundException e){
+            showMessage(R.string.detail_no_browser_found);
+        }
+    }
+    private void showMessage(int stringRes) {
+        Toast.makeText(getContext(),stringRes,Toast.LENGTH_SHORT).show();
+    }
 }

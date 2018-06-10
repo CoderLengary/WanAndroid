@@ -41,7 +41,7 @@
 
         <activity android:name=".mvp.category.CategoryActivity"
             android:label="@string/category_label"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBarPlus">
 
         </activity>
 

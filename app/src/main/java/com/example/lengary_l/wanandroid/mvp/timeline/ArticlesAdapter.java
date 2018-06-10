@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+import com.example.lengary_l.wanandroid.util.StringUtils;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
         ArticleDetailData data = mList.get(position);
         normalViewHolder.textAuthor.setText(data.getAuthor());
-        normalViewHolder.textTitle.setText(replaceInvalidText(data.getTitle()));
+        normalViewHolder.textTitle.setText(StringUtils.replaceInvalidChar(data.getTitle()));
         //if the text is too long, the button can not show it correctly.The solution is adding " ".
         normalViewHolder.btnCategory.setText("  "+data.getChapterName()+"  ");
         normalViewHolder.textTime.setText(data.getNiceDate());
@@ -64,14 +65,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mList.size();
     }
 
-    private String replaceInvalidText(String text) {
-        return text.replace("<em class='highlight'>", "")
-                .replace("</em>", "")
-                .replace("&mdash;", "-")
-                .replace("&ndash;", "-")
-                .replace("&ldquo;", "'")
-                .replace("&rdquo;", "'");
-    }
+
 
     class NormalViewHolder extends RecyclerView.ViewHolder{
 
