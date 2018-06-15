@@ -3,15 +3,12 @@ package com.example.lengary_l.wanandroid.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class CategoryData {
-
-    public List<CategoryDetailData> getData() {
+public class Status {
+    public Data getData() {
         return data;
     }
 
-    public void setData(List<CategoryDetailData> data) {
+    public void setData(Data data) {
         this.data = data;
     }
 
@@ -33,7 +30,7 @@ public class CategoryData {
 
     @Expose
     @SerializedName("data")
-    private List<CategoryDetailData> data;
+    private Data data;
     @Expose
     @SerializedName("errorCode")
     private int errorCode;
@@ -41,4 +38,7 @@ public class CategoryData {
     @SerializedName("errorMsg")
     private String errorMsg;
 
+    class Data{
+
+    }
 }

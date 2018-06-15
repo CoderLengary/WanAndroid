@@ -2,7 +2,7 @@ package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
 
-import com.example.lengary_l.wanandroid.data.CategoryData;
+import com.example.lengary_l.wanandroid.data.CategoriesData;
 import com.example.lengary_l.wanandroid.data.CategoryDetailData;
 import com.example.lengary_l.wanandroid.data.source.CategoriesDataSource;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
@@ -39,16 +39,16 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getCategories()
-                .filter(new Predicate<CategoryData>() {
+                .filter(new Predicate<CategoriesData>() {
                     @Override
-                    public boolean test(CategoryData categoryData) throws Exception {
-                        return categoryData.getErrorCode() != -1;
+                    public boolean test(CategoriesData categoriesData) throws Exception {
+                        return categoriesData.getErrorCode() != -1;
                     }
                 })
-                .flatMap(new Function<CategoryData, ObservableSource<List<CategoryDetailData>>>() {
+                .flatMap(new Function<CategoriesData, ObservableSource<List<CategoryDetailData>>>() {
                     @Override
-                    public ObservableSource<List<CategoryDetailData>> apply(CategoryData categoryData) throws Exception {
-                        return Observable.fromIterable(categoryData.getData()).toSortedList(new Comparator<CategoryDetailData>() {
+                    public ObservableSource<List<CategoryDetailData>> apply(CategoriesData categoriesData) throws Exception {
+                        return Observable.fromIterable(categoriesData.getData()).toSortedList(new Comparator<CategoryDetailData>() {
                             @Override
                             public int compare(CategoryDetailData categoryDetailData, CategoryDetailData t1) {
                                 if (categoryDetailData.getOrder()>t1.getOrder()){

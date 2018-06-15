@@ -28,4 +28,14 @@ public class Api {
     //Hot Key
     public static final String HOT_KEY = API_BASE + "hotkey/json";
 
+    //Collect article
+    public static final String COLLECT_ARTICLE = API_BASE + "lg/collect/";
+
+    //Cancel collecting article
+    public static final String CANCEL_COLLECTING_ARTICLE = API_BASE + "lg/uncollect_originId/";
+
+    //Get the favorite articles
+    public static final String GET_FAVORITE_ARTICLES = API_BASE + "lg/collect/list/";
+
+
 }

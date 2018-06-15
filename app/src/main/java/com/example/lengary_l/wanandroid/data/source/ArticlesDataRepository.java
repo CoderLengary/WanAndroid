@@ -163,6 +163,21 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                 });
     }
 
+    @Override
+    public Observable<ArticleDetailData> getArticleFromId(@NonNull int id) {
+        return null;
+    }
+
+    @Override
+    public void addToReadLater(int userId, int articleId, boolean readerLater) {
+
+    }
+
+    @Override
+    public Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId) {
+        return null;
+    }
+
     private void refreshQueryCache(boolean clearCache,List<ArticleDetailData> list) {
         if (queryCache == null) {
             queryCache = new LinkedHashMap<>();

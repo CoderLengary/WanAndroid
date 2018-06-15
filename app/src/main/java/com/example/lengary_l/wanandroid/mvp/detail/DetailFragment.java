@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -67,16 +68,16 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     @Override
     public void onResume() {
+        if (agentWeb!=null){
+            agentWeb.getWebLifeCycle().onResume();
+        }
         super.onResume();
         if (isFirstLoad){
             loadUrl(url);
             toolbar.setTitle(title);
             isFirstLoad = false;
         }
-       /* if (agentWeb!=null){
-            agentWeb.getWebLifeCycle().onResume();
-        }
-        super.onResume();*/
+
 
 
     }
@@ -102,17 +103,23 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 textCopyLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        copyLink(url);
+                        copyLink();
                         bottomSheetDialog.dismiss();
                         showMessage(R.string.detail_copied_to_clipboard);
                     }
                 });
                 AppCompatTextView textShare = view.findViewById(R.id.text_view_share);
+                textShare.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        share();
+                    }
+                });
                 AppCompatTextView textBrowser = view.findViewById(R.id.text_view_system_browser);
                 textBrowser.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        openInBrowser(url);
+                        openInBrowser();
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -152,17 +159,22 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     @Override
     public void onPause() {
-       // agentWeb.getWebLifeCycle().onPause();
+        if (agentWeb != null) {
+            agentWeb.getWebLifeCycle().onPause();
+        }
         super.onPause();
     }
 
+
     @Override
-    public void onStop() {
-        agentWeb.getWebLifeCycle().onDestroy();
-        super.onStop();
+    public void onDestroy() {
+        if (agentWeb != null) {
+            agentWeb.getWebLifeCycle().onDestroy();
+        }
+        super.onDestroy();
     }
 
-    private void copyLink(String url) {
+    private void copyLink() {
         ClipboardManager manager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData data = ClipData.newPlainText("text", Html.fromHtml(url).toString());
         manager.setPrimaryClip(data);
@@ -170,8 +182,18 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     }
 
 
+    private void share() {
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND).setType("text/plain");
+            String shareText = title + " " + url;
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.detail_share_to)));
+        }catch (ActivityNotFoundException e){
+            showMessage(R.string.detail_no_activity_found);
+        }
+    }
 
-    private void openInBrowser(String url) {
+    private void openInBrowser() {
         try {
             startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
         }catch (ActivityNotFoundException e){
@@ -180,5 +202,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     }
     private void showMessage(int stringRes) {
         Toast.makeText(getContext(),stringRes,Toast.LENGTH_SHORT).show();
+    }
+
+
+    public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
+        return agentWeb.handleKeyEvent(keyCode, event);
     }
 }

@@ -3,6 +3,7 @@ package com.example.lengary_l.wanandroid.mvp.detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 
 import com.example.lengary_l.wanandroid.R;
 
@@ -36,5 +37,11 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (detailFragment.onFragmentKeyDown(keyCode, event)){
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

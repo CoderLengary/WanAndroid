@@ -1,4 +1,4 @@
-package com.example.lengary_l.wanandroid.Glide;
+package com.example.lengary_l.wanandroid.glide;
 
 import android.content.Context;
 import android.widget.ImageView;

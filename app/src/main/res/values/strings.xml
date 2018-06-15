@@ -42,7 +42,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_articles">Articles</string>
     <string name="nav_categories">Categories</string>
-    <string name="nav_project_categories">Project Categories</string>
     <string name="empty_text">There is nothing</string>
     <string name="item_menu_search">Search</string>
     <!--main end-->
@@ -64,9 +63,11 @@
     <string name="detail_add_to_read_later">Add to read later</string>
     <string name="detail_copy_the_link">Copy the link</string>
     <string name="detail_share">Share</string>
+    <string name="detail_share_to">Share to</string>
     <string name="detail_open_in_system_browser">Open in system browser</string>
     <string name="detail_copied_to_clipboard">Copied to clipboard</string>
     <string name="detail_no_browser_found">No browser found</string>
+    <string name="detail_no_activity_found">No activity found</string>
     <!--Detail end-->
 
     <!--Categories start-->

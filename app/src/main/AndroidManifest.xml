@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.OnboardingAcitivity"
+            android:name=".ui.onboarding.OnboardingAcitivity"
             android:label="@string/title_activity_onboarding_acitivity"
             android:theme="@style/AppTheme.Onboarding">
 

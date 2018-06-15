@@ -10,6 +10,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class ArticleDetailData extends RealmObject {
 
+
     @Expose
     @SerializedName("apkLink")
     private String apkLink;

@@ -6,12 +6,11 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
 public interface DetailContract {
     interface Presenter extends BasePresenter{
 
+        void collectArticle(int id);
 
+        void uncollectArticle(int originId);
 
-
-        void favorite();
-
-        void addToReadLater();
+        void addToReadLater(int id, int userId);
 
         
     }

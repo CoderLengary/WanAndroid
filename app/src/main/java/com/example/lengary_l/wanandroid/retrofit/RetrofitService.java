@@ -1,10 +1,12 @@
 package com.example.lengary_l.wanandroid.retrofit;
 
 import com.example.lengary_l.wanandroid.data.BannerData;
-import com.example.lengary_l.wanandroid.data.CategoryData;
+import com.example.lengary_l.wanandroid.data.CategoriesData;
 import com.example.lengary_l.wanandroid.data.ArticlesData;
+import com.example.lengary_l.wanandroid.data.FavoriteArticlesData;
 import com.example.lengary_l.wanandroid.data.HotKeysData;
 import com.example.lengary_l.wanandroid.data.LoginData;
+import com.example.lengary_l.wanandroid.data.Status;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -30,7 +32,7 @@ public interface RetrofitService {
     Observable<ArticlesData> getArticlesFromCatg(@Path("page") int page, @Query("cid") int cid);
 
     @GET(Api.CATEGORIES)
-    Observable<CategoryData> getCategories();
+    Observable<CategoriesData> getCategories();
 
     @POST(Api.QUERY_ARTICLES + "{page}/json")
     Observable<ArticlesData> queryArticles(@Path("page") int page, @Query("k") String k);
@@ -40,5 +42,16 @@ public interface RetrofitService {
 
     @GET(Api.BANNER)
     Observable<BannerData> getBanner();
+
+    @POST(Api.COLLECT_ARTICLE+"{id}/json")
+    Observable<Status> collectArticle(@Path("id") int id);
+
+    @POST(Api.CANCEL_COLLECTING_ARTICLE + "{originId}/json")
+    Observable<Status> uncollectArticle(@Path("originId") int originId);
+
+    @GET(Api.GET_FAVORITE_ARTICLES + "{page}/json")
+    Observable<FavoriteArticlesData> getFavoriteArticles(@Path("page") int page);
+
+
 
 }

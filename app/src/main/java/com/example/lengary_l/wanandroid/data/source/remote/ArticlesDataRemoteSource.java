@@ -116,4 +116,21 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 });
     }
 
+    @Override
+    public Observable<ArticleDetailData> getArticleFromId(@NonNull int id) {
+        //The local has handled it
+        return null;
+    }
+
+    @Override
+    public void addToReadLater(int currentUserId, int articleId, boolean readerLater) {
+        //The local has handled it
+    }
+
+    @Override
+    public Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId) {
+        //The local has handled it
+        return null;
+    }
+
 }

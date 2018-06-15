@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.lengary_l.wanandroid.Glide.GlideLoader;
+import com.example.lengary_l.wanandroid.glide.GlideLoader;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;

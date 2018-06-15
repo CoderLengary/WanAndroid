@@ -1,4 +1,4 @@
-package com.example.lengary_l.wanandroid.ui;
+package com.example.lengary_l.wanandroid.ui.onboarding;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
