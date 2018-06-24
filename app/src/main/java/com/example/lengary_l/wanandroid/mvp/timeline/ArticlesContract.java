@@ -11,6 +11,8 @@ public interface ArticlesContract {
 
     interface Presenter extends BasePresenter{
 
+        void autoLogin(String userName, String userPassword);
+
         void getArticles(int page, boolean forceUpdate, boolean clearCache);
 
         void getBanner();
@@ -29,5 +31,7 @@ public interface ArticlesContract {
         void showBanner(List<BannerDetailData> list);
 
         void hideBanner();
+
+        void navigateToLogin();
     }
 }

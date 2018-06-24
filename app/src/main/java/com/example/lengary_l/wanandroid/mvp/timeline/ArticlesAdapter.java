@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.util.StringUtils;
 
@@ -22,6 +23,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private LayoutInflater inflater;
     private List<ArticleDetailData> mList;
     private OnRecyclerViewItemOnClickListener listener;
+    private OnCategoryOnClickListener categoryListener;
 
     public ArticlesAdapter(Context context, List<ArticleDetailData> list){
         this.context = context;
@@ -40,11 +42,14 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.listener = listener;
     }
 
+    public void setCategoryListener(OnCategoryOnClickListener listener) {
+        categoryListener = listener;
+    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_card_view, parent, false);
-        return new NormalViewHolder(view,listener);
+        return new NormalViewHolder(view,listener,categoryListener);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-    class NormalViewHolder extends RecyclerView.ViewHolder{
+    class NormalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CardView cardView;
         AppCompatButton btnCategory;
@@ -77,19 +82,30 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-        public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener) {
+        public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
             super(itemView);
             btnCategory = itemView.findViewById(R.id.btn_category);
+            btnCategory.setOnClickListener(this);
             textTitle = itemView.findViewById(R.id.text_view_title);
             textAuthor = itemView.findViewById(R.id.text_view_author);
             textTime = itemView.findViewById(R.id.text_view_time);
             cardView = itemView.findViewById(R.id.card_view_layout);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onClick(view,getLayoutPosition());
-                }
-            });
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.card_view_layout:
+                    listener.onClick(view,getAdapterPosition());
+                    break;
+
+                case R.id.btn_category:
+                    categoryListener.onClick(view,getAdapterPosition());
+                    break;
+                    default:break;
+
+            }
         }
     }
 }

@@ -46,8 +46,6 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         initViews(view);
 
-
-
         linkSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,10 +97,8 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     }
 
     @Override
-    public void showLoginError( @NonNull LoginType loginType) {
-        if (loginType==LoginType.TYPE_LOGIN){
-            Snackbar.make(linkSignUp,getString(R.string.login_error),Snackbar.LENGTH_SHORT).show();
-        }
+    public void showLoginError( String errorMsg) {
+        Snackbar.make(linkSignUp, errorMsg, Snackbar.LENGTH_SHORT).show();
 
     }
 
@@ -127,16 +123,25 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     }
 
     @Override
-    public void saveUsername2Preference(LoginDetailData loginDetailData) {
+    public void saveUser2Preference(LoginDetailData loginDetailData) {
+        int userId = loginDetailData.getId();
         String username = loginDetailData.getUsername();
+        String password = loginDetailData.getPassword();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(SettingsUtil.KEY_ISLOGIN, false).apply();
+        sp.edit().putBoolean(SettingsUtil.KEY_ISLOGIN, true).apply();
+        sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
+        sp.edit().putString(SettingsUtil.PASSEORD, password).apply();
         navigateToMain();
     }
     private void navigateToMain() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded() && isResumed();
     }
 }

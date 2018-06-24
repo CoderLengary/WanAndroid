@@ -63,8 +63,6 @@ public class LoginDataRemoteSource implements LoginDataSource{
                     realm.copyToRealmOrUpdate(loginData.getData());
                     realm.commitTransaction();
                     realm.close();
-                    Log.e(TAG, "save to realm to thread "+Thread.currentThread().getName() );
-                    Log.e(TAG, "save to realm "+loginData.getData().getUsername() );
                 }
             }
         });

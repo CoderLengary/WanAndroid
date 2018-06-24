@@ -1,11 +1,14 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +23,13 @@ import com.example.lengary_l.wanandroid.glide.GlideLoader;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
+import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
+import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
+import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
+import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -32,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesFragment extends Fragment implements ArticlesContract.View{
+    private NestedScrollView nestedScrollView;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private ArticlesContract.Presenter presenter;
@@ -46,6 +54,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private int mListSize = 0;
 
 
+
     public ArticlesFragment(){
 
     }
@@ -55,13 +64,25 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int userId = sp.getInt(SettingsUtil.USERID, -1);
+        if (userId != -1) {
+            presenter.autoLogin(sp.getString(SettingsUtil.USERNAME,""),
+                    sp.getString(SettingsUtil.PASSEORD,""));
+        }else {
+            navigateToLogin();
+        }
+        Log.e(TAG, "onCreate: " );
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline_page, container, false);
         initViews(view);
-
-
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -70,8 +91,15 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
             }
         });
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    loadMore();
+                }
+            }
+        });
+       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -86,7 +114,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     }
                 }
             }
-        });
+        });*/
+
         return view;
     }
 
@@ -120,10 +149,17 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestroy: " );
+    }
+
+    @Override
     public void initViews(View view){
         banner = view.findViewById(R.id.banner);
         emptyView = view.findViewById(R.id.empty_view);
         layoutManager = new LinearLayoutManager(getContext());
+        nestedScrollView = view.findViewById(R.id.nested_scroll_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setVisibility(View.VISIBLE);
@@ -160,9 +196,19 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             adapter.updateData(list);
         }else {
             adapter = new ArticlesAdapter(getContext(), list);
+            adapter.setCategoryListener(new OnCategoryOnClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(getContext(), CategoryActivity.class);
+                    intent.putExtra(CategoryActivity.CATEGORY_ID, list.get(position).getChapterId());
+                    intent.putExtra(CategoryActivity.CATEGORY_NAME, list.get(position).getChapterName());
+                    startActivity(intent);
+                }
+            });
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
                 public void onClick(View view, int position) {
+                    Log.e(TAG, "onClick: position is "+position );
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     intent.putExtra(DetailActivity.URL, list.get(position).getLink());
                     intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
@@ -213,6 +259,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     }
 
 
+
+
     private void loadMore(){
         boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
         if (isNetworkAvailable){
@@ -225,6 +273,12 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     }
 
-
+    @Override
+    public void navigateToLogin() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
+    }
 
 }

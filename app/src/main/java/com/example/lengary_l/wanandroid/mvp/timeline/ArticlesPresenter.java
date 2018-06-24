@@ -4,8 +4,11 @@ import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
+import com.example.lengary_l.wanandroid.data.LoginData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
+import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,19 +28,51 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     private ArticlesDataRepository articleRepository;
     private CompositeDisposable compositeDisposable;
     private BannerDataRepository bannerRepository;
+    private LoginDataRepository loginDataRepository;
     private ArticlesContract.View view;
     private Map<Integer, ArticleDetailData> hashMap;
     private static final String TAG = "ArticlesPresenter";
 
     public ArticlesPresenter(ArticlesContract.View view,
                              ArticlesDataRepository articleRepository,
-                             BannerDataRepository bannerRepository){
+                             BannerDataRepository bannerRepository,
+                             LoginDataRepository loginDataRepository){
         this.articleRepository = articleRepository;
         this.bannerRepository = bannerRepository;
+        this.loginDataRepository = loginDataRepository;
         this.view = view;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
         hashMap = new HashMap<>();
+    }
+
+    @Override
+    public void autoLogin(String userName, String userPassword) {
+        Disposable disposable = loginDataRepository.getRemoteLoginData(userName, userPassword, LoginType.TYPE_LOGIN)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<LoginData>() {
+
+                    @Override
+                    public void onNext(LoginData value) {
+                        if (value.getErrorCode() == -1&&view.isActive()) {
+                            view.navigateToLogin();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (view.isActive()) {
+                            view.navigateToLogin();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
     @Override

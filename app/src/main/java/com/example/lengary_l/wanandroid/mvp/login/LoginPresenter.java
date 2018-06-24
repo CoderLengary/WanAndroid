@@ -1,10 +1,8 @@
 package com.example.lengary_l.wanandroid.mvp.login;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
-import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 
@@ -14,7 +12,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginPresenter implements LoginContract.Presenter{
+public class  LoginPresenter implements LoginContract.Presenter{
 
     @NonNull
     private LoginContract.View view;
@@ -40,14 +38,14 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     @Override
     public void login(String username, String password, @NonNull LoginType loginType) {
-        if (repository.isAccountExist(username)&&loginType!=LoginType.TYPE_REGISTER){
-            getLocalLoginData(username,password,loginType);
-        }else {
+    //    if (repository.isAccountExist(username)&&loginType!=LoginType.TYPE_REGISTER){
+            //getLocalLoginData(username,password,loginType);
+      //  }else {
             getLoginData(username, password,loginType);
-        }
+      //  }
     }
 
-    private void getLocalLoginData(String username, final String password, final LoginType loginType){
+   /* private void getLocalLoginData(String username, final String password, final LoginType loginType){
         Disposable disposable=repository.getLocalLoginData(username)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -73,8 +71,7 @@ public class LoginPresenter implements LoginContract.Presenter{
                     }
                 });
         compositeDisposable.add(disposable);
-    }
-
+    }*/
 
     private void getLoginData(String username,String password, @NonNull final LoginType loginType){
 
@@ -85,16 +82,11 @@ public class LoginPresenter implements LoginContract.Presenter{
 
                     @Override
                     public void onNext(LoginData value) {
-                        Log.e(TAG, "onNext: is run" );
-                        if (value.getErrorCode()==-1||value.getErrorMsg().isEmpty()){
-                            view.showLoginError(loginType);
+                        if (value.getErrorCode()==-1){
+                            view.showLoginError(value.getErrorMsg());
                         }else {
-                            Log.e(TAG, "logindata code: "+value.getErrorCode() );
-                            //view.saveUsername2Preference(value.getData());
+                           view.saveUser2Preference(value.getData());
                         }
-
-
-                     // Log.e(TAG, "onNext: "+value.getData().getUsername()+" "+value.getData().getPassword()+" "+loginType.name() );
                     }
 
                     @Override

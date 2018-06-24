@@ -2,7 +2,9 @@ package com.example.lengary_l.wanandroid.ui.onboarding;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
+import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 public class OnboardingAcitivity extends AppCompatActivity {
 
@@ -31,54 +34,60 @@ public class OnboardingAcitivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
-        initViews();
-        initDatas();
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int color = (int) new ArgbEvaluator().evaluate(positionOffset, bgColors[position], bgColors[position == 2 ? position  : position+1]);
-                viewPager.setBackgroundColor(color);
-            }
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getBoolean(SettingsUtil.KEY_SKIP_GUIDE_PAGE,false)){
+            navigateToMain();
+        }else {
+            initViews();
+            initDatas();
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    int color = (int) new ArgbEvaluator().evaluate(positionOffset, bgColors[position], bgColors[position == 2 ? position  : position+1]);
+                    viewPager.setBackgroundColor(color);
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                currentPosition = position;
-                viewPager.setBackgroundColor(bgColors[position]);
-                updateIndicators(position);
-                imgBtnPre.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                imgBtnNext.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
-                btnFinish.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    currentPosition = position;
+                    viewPager.setBackgroundColor(bgColors[position]);
+                    updateIndicators(position);
+                    imgBtnPre.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                    imgBtnNext.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
+                    btnFinish.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            }
-        });
+                }
+            });
 
-        btnFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigateToMain();
-            }
-        });
+            btnFinish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(OnboardingAcitivity.this);
+                    sp.edit().putBoolean(SettingsUtil.KEY_SKIP_GUIDE_PAGE, true).apply();
+                    navigateToMain();
+                }
+            });
 
-        imgBtnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentPosition += 1;
-                viewPager.setCurrentItem(currentPosition);
-            }
-        });
+            imgBtnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    currentPosition += 1;
+                    viewPager.setCurrentItem(currentPosition);
+                }
+            });
 
-        imgBtnPre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                currentPosition -= 1;
-                viewPager.setCurrentItem(currentPosition);
-            }
-        });
-
+            imgBtnPre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    currentPosition -= 1;
+                    viewPager.setCurrentItem(currentPosition);
+                }
+            });
+        }
     }
 
 

@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.lengary_l.wanandroid.data.source.CategoriesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.CategoriesDataRemoteSource;
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private TimelineFragment timelineFragment;
     private CategoriesFragment categoriesFragment;
+
+    private TextView textUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String userName = sp.getString(SettingsUtil.USERNAME, "");
+        if (!userName.equals("")) {
+            textUserName.setText(userName.substring(0,1));
+        }
     }
 
     @Override
@@ -111,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        textUserName = navigationView.getHeaderView(0).
+                findViewById(R.id.text_user_name);
 
     }
 

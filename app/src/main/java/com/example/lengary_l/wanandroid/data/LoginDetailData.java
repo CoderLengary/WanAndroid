@@ -28,7 +28,7 @@ public class LoginDetailData extends RealmObject {
     private String icon;
     @Expose
     @SerializedName("id")
-    private String id;
+    private int id;
     @Expose
     @SerializedName("password")
     private String password;
@@ -57,11 +57,11 @@ public class LoginDetailData extends RealmObject {
         this.icon = icon;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -14,9 +14,12 @@ import android.view.ViewGroup;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
+import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.BannerDataRemoteSource;
+import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
 
 public class TimelineFragment extends Fragment {
     private TabLayout tabLayout;
@@ -50,7 +53,8 @@ public class TimelineFragment extends Fragment {
 
         new ArticlesPresenter(articlesFragment,
                 ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()),
-                BannerDataRepository.getInstance(BannerDataRemoteSource.getInstance()));
+                BannerDataRepository.getInstance(BannerDataRemoteSource.getInstance()),
+                LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
     }
 
     @Nullable

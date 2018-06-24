@@ -14,22 +14,24 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".ui.onboarding.OnboardingAcitivity"
+            android:label="@string/title_activity_onboarding_acitivity"
+            android:theme="@style/AppTheme.Onboarding"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.onboarding.OnboardingAcitivity"
-            android:label="@string/title_activity_onboarding_acitivity"
-            android:theme="@style/AppTheme.Onboarding">
-
-        </activity>
 
         <activity android:name=".mvp.login.LoginActivity"
             android:label="title_activity_login_acitivity"
-            android:theme="@style/MyEditTextStyle">
+            android:theme="@style/MyEditTextStyle"
+            android:noHistory="true">
 
         </activity>
 

@@ -14,11 +14,11 @@ public interface LoginContract {
     }
 
     interface View extends BaseView<Presenter>{
-        void showLoginError( @NonNull LoginType loginType);
+        void showLoginError( String errorMsg);
 
+        boolean isActive();
 
-
-        void saveUsername2Preference(LoginDetailData loginDetailData);
+        void saveUser2Preference(LoginDetailData loginDetailData);
 
         void showNetworkError();
     }
