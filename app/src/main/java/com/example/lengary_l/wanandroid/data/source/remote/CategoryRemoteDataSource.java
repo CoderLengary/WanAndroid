@@ -44,7 +44,7 @@ public class CategoryRemoteDataSource  implements CategoryDataSource{
                     @Override
                     public boolean test(ArticlesData articlesData) throws Exception {
                         Log.e(TAG, "test: data's error code is "+articlesData.getErrorCode()+" data is over "+articlesData.getData().isOver() );
-                        return articlesData.getErrorCode() != -1;
+                        return articlesData.getErrorCode() != -1 && !articlesData.getData().getDatas().isEmpty();
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {

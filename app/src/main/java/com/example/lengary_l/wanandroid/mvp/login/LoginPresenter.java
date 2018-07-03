@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.login;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginType;
@@ -38,40 +39,11 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
     @Override
     public void login(String username, String password, @NonNull LoginType loginType) {
-    //    if (repository.isAccountExist(username)&&loginType!=LoginType.TYPE_REGISTER){
-            //getLocalLoginData(username,password,loginType);
-      //  }else {
-            getLoginData(username, password,loginType);
-      //  }
+        getLoginData(username, password,loginType);
     }
 
-   /* private void getLocalLoginData(String username, final String password, final LoginType loginType){
-        Disposable disposable=repository.getLocalLoginData(username)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<LoginDetailData>() {
-                    @Override
-                    public void onNext(LoginDetailData value) {
-                        if (!value.getPassword().equals(password)){
-                            view.showLoginError(loginType);
-                        }else {
-                            //view.saveUsername2Preference(value);
-                        }
-                        Log.e(TAG, "onNext local: username "+value.getUsername() );
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
 
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        compositeDisposable.add(disposable);
-    }*/
 
     private void getLoginData(String username,String password, @NonNull final LoginType loginType){
 
@@ -85,6 +57,7 @@ public class  LoginPresenter implements LoginContract.Presenter{
                         if (value.getErrorCode()==-1){
                             view.showLoginError(value.getErrorMsg());
                         }else {
+                            Log.e(TAG, "onNext: login success "+value.getData().getId() );
                            view.saveUser2Preference(value.getData());
                         }
                     }

@@ -40,7 +40,7 @@ public class FavoriteArticlesData {
         this.data = data;
     }
 
-    class Data{
+    public class Data{
         @Expose
         @SerializedName("curPage")
         private int curPage;

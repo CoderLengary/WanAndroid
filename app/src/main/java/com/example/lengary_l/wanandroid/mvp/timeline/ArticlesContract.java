@@ -2,6 +2,7 @@ package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
+import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.mvp.BasePresenter;
 import com.example.lengary_l.wanandroid.mvp.BaseView;
 
@@ -26,12 +27,14 @@ public interface ArticlesContract {
 
         void showArticles(List<ArticleDetailData> list);
 
-        void showEmptyView();
+        void showEmptyView(boolean toShow);
 
         void showBanner(List<BannerDetailData> list);
 
         void hideBanner();
 
         void navigateToLogin();
+
+        void saveFavoriteArticlesId(LoginDetailData data);
     }
 }

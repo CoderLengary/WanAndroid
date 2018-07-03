@@ -20,7 +20,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:drawableStart="@drawable/ic_star_border_black_24dp"
         android:drawablePadding="@dimen/sheet_horizontal_margin"
-        android:text="@string/detail_favorite"/>
+        android:text="@string/detail_collect_article"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/text_view_read_later"

@@ -57,6 +57,9 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                     public void onNext(LoginData value) {
                         if (value.getErrorCode() == -1&&view.isActive()) {
                             view.navigateToLogin();
+                        }else {
+                            Log.e(TAG, "autoLogin: success" +value.getData().getId());
+                            view.saveFavoriteArticlesId(value.getData());
                         }
                     }
 
@@ -90,14 +93,14 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                             addToHashMap(value);
                         }else {
                             view.showArticles(value);
-                            view.setLoadingIndicator(false);
+                            view.showEmptyView(false);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError: "+e.getMessage() );
-                        view.showEmptyView();
+                        view.showEmptyView(true);
                     }
 
                     @Override
@@ -107,7 +110,9 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                         }
                         if (forceUpdate&&!clearCache){
                             view.showArticles(sortHashMap(new ArrayList<>(hashMap.values())));
+                            view.showEmptyView(false);
                         }
+                        view.setLoadingIndicator(false);
                     }
                 });
         compositeDisposable.add(disposable);

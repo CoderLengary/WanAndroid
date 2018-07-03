@@ -39,7 +39,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
        Observable<LoginData> loginDataObservable = null;
         if (loginType==LoginType.TYPE_REGISTER){
             Log.e(TAG, "getRemoteLoginData: is registering" );
-            loginDataObservable=RetrofitClient.getInstance()
+            loginDataObservable = RetrofitClient.getInstance()
                     .create(RetrofitService.class)
                     .register(userName, password, password);
         }else if (loginType==LoginType.TYPE_LOGIN){

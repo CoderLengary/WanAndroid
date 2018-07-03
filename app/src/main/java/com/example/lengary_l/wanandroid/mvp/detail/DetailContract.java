@@ -12,10 +12,17 @@ public interface DetailContract {
 
         void addToReadLater(int id, int userId);
 
+
         
     }
 
     interface View extends BaseView<Presenter>{
+        void showCollectStatus(boolean isSuccess);
 
+        void showUnCollectStatus(boolean isSuccess);
+
+        boolean isActive();
+
+        void changeFavoriteState();
     }
 }

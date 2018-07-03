@@ -1,9 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,17 +17,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.lengary_l.wanandroid.glide.GlideLoader;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
+import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.glide.GlideLoader;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
-import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -45,13 +43,13 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private ArticlesContract.Presenter presenter;
     private SwipeRefreshLayout refreshLayout;
     private Banner banner;
-    private static final int INDEX = 0;
+    private  final int INDEX = 0;
     private LinearLayoutManager layoutManager;
     private int currentPage;
     private ArticlesAdapter adapter;
     private static final String TAG = "ArticlesFragment";
     private boolean isFirstLoad=true;
-    private int mListSize = 0;
+    private List<Integer> collectIds;
 
 
 
@@ -67,15 +65,15 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+      /*  SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         int userId = sp.getInt(SettingsUtil.USERID, -1);
         if (userId != -1) {
+            Log.e(TAG, "onCreate: auto login" );
             presenter.autoLogin(sp.getString(SettingsUtil.USERNAME,""),
                     sp.getString(SettingsUtil.PASSEORD,""));
         }else {
             navigateToLogin();
-        }
-        Log.e(TAG, "onCreate: " );
+        }*/
     }
 
     @Nullable
@@ -99,22 +97,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                 }
             }
         });
-       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.e(TAG, "onScrolled: is true" );
-                if (dy>0){
-                    Log.e(TAG, "onScrolled: layout manager last position is " +layoutManager.findLastVisibleItemPosition()
-                    + " and the list-1 value is "+(mListSize-1));
-                    if (layoutManager.findLastCompletelyVisibleItemPosition() == mListSize-1) {
-                        Log.e(TAG, "onScrolled: load more" );
-                       loadMore();
-                    }
-                }
-            }
-        });*/
 
         return view;
     }
@@ -212,20 +195,22 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     intent.putExtra(DetailActivity.URL, list.get(position).getLink());
                     intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
+                    int id = list.get(position).getId();
+                    intent.putExtra(DetailActivity.ID, id);
+                    //intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
                     startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
         }
-        mListSize = list.size();
 
         Log.e(TAG, "showArticles: list size "+list.size() );
     }
 
     @Override
-    public void showEmptyView() {
-        emptyView.setVisibility(View.VISIBLE);
-        refreshLayout.setVisibility(View.INVISIBLE);
+    public void showEmptyView(boolean toShow) {
+        emptyView.setVisibility(toShow?View.VISIBLE:View.INVISIBLE);
+        nestedScrollView.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
 
     }
 
@@ -279,6 +264,22 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void saveFavoriteArticlesId(LoginDetailData data) {
+        collectIds = data.getCollectIds();
+    }
+
+    private boolean checkIsFavorite(int id) {
+        boolean isFavorite = false;
+        for (Integer i : collectIds) {
+            if (i.equals(id)) {
+                isFavorite = true;
+                break;
+            }
+        }
+        return isFavorite;
     }
 
 }

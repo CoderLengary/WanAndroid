@@ -33,9 +33,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private DetailContract.Presenter presenter;
     private String url;
     private String title;
+    private int id;
     private AgentWeb agentWeb;
-    private boolean isFirstLoad = true;
 
+    //private boolean isFavorite;
 
     public DetailFragment(){
 
@@ -51,7 +52,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         super.onCreate(savedInstanceState);
         url = getActivity().getIntent().getStringExtra(DetailActivity.URL);
         title = getActivity().getIntent().getStringExtra(DetailActivity.TITLE);
-
+        id = getActivity().getIntent().getIntExtra(DetailActivity.ID, -1);
+        //isFavorite = getActivity().getIntent().getBooleanExtra(DetailActivity.FAVORITE_STATE, false);
     }
 
     @Nullable
@@ -59,7 +61,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         initViews(view);
-
+        loadUrl(url);
+        toolbar.setTitle(title);
         setHasOptionsMenu(true);
         return view;
     }
@@ -72,13 +75,6 @@ public class DetailFragment extends Fragment implements DetailContract.View{
             agentWeb.getWebLifeCycle().onResume();
         }
         super.onResume();
-        if (isFirstLoad){
-            loadUrl(url);
-            toolbar.setTitle(title);
-            isFirstLoad = false;
-        }
-
-
 
     }
 
@@ -98,6 +94,22 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
                 View view = getActivity().getLayoutInflater().inflate(R.layout.actions_details_sheet, null);
                 AppCompatTextView textFavorite = view.findViewById(R.id.text_view_favorite);
+               /* if (isFavorite) {
+                    textFavorite.setText(R.string.detail_uncollect_article);
+                }else {
+                    textFavorite.setText(R.string.detail_collect_article);
+                }
+                textFavorite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (isFavorite){
+                            presenter.uncollectArticle(id);
+                        }else {
+                            presenter.collectArticle(id);
+                        }
+                        bottomSheetDialog.dismiss();
+                    }
+                });*/
                 AppCompatTextView textAddToReadLater = view.findViewById(R.id.text_view_read_later);
                 AppCompatTextView textCopyLink = view.findViewById(R.id.text_view_copy_the_link);
                 textCopyLink.setOnClickListener(new View.OnClickListener() {
@@ -207,5 +219,30 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     public boolean onFragmentKeyDown(int keyCode, KeyEvent event) {
         return agentWeb.handleKeyEvent(keyCode, event);
+    }
+
+    @Override
+    public void showCollectStatus(boolean isSuccess) {
+        Toast.makeText(getContext(),
+                isSuccess?getString(R.string.detail_collect_article_success):getString(R.string.detail_collect_article_error),
+                Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void showUnCollectStatus(boolean isSuccess) {
+        Toast.makeText(getContext(),
+                isSuccess?getString(R.string.detail_uncollect_article_success):getString(R.string.detail_uncollect_article_error),
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded() && isResumed();
+    }
+
+    @Override
+    public void changeFavoriteState() {
+        //isFavorite = !isFavorite;
     }
 }

@@ -23,7 +23,7 @@ public class Api {
 
 
     //Search articles
-    public static final String QUERY_ARTICLES = API_BASE + "/article/query/";
+    public static final String QUERY_ARTICLES = API_BASE + "article/query/";
 
     //Hot Key
     public static final String HOT_KEY = API_BASE + "hotkey/json";

@@ -59,7 +59,8 @@
     
     <!--Detail start-->
     <string name="detail_label">Detail</string>
-    <string name="detail_favorite">Favorite</string>
+    <string name="detail_collect_article">Collect article</string>
+    <string name="detail_uncollect_article">Uncollect article</string>
     <string name="detail_add_to_read_later">Add to read later</string>
     <string name="detail_copy_the_link">Copy the link</string>
     <string name="detail_share">Share</string>
@@ -68,6 +69,11 @@
     <string name="detail_copied_to_clipboard">Copied to clipboard</string>
     <string name="detail_no_browser_found">No browser found</string>
     <string name="detail_no_activity_found">No activity found</string>
+    <string name="detail_collect_article_error">Fail to collect article</string>
+    <string name="detail_collect_article_success">Success</string>
+    <string name="detail_uncollect_article_error">Fail to uncollect article</string>
+    <string name="detail_uncollect_article_success">Success</string>
+
     <!--Detail end-->
 
     <!--Categories start-->

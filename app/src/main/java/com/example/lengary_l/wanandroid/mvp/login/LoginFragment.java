@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.example.lengary_l.wanandroid.util.StringUtils;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class LoginFragment extends Fragment implements LoginContract.View{
 
@@ -72,11 +75,19 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int userId = sp.getInt(SettingsUtil.USERID, -1);
+        if (userId != -1) {
+            Log.e(TAG, "onCreate: auto login " );
+            presenter.login(sp.getString(SettingsUtil.USERNAME,""),
+                    sp.getString(SettingsUtil.PASSEORD,""),LoginType.TYPE_LOGIN);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         presenter.subscribe();
     }
 
@@ -128,7 +139,6 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         String username = loginDetailData.getUsername();
         String password = loginDetailData.getPassword();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        sp.edit().putBoolean(SettingsUtil.KEY_ISLOGIN, true).apply();
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         sp.edit().putString(SettingsUtil.PASSEORD, password).apply();

@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TimelineFragment timelineFragment;
     private CategoriesFragment categoriesFragment;
 
-    private TextView textUserName;
+    private TextView textUserIcon;
+    private AppCompatTextView textUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String userName = sp.getString(SettingsUtil.USERNAME, "");
         if (!userName.equals("")) {
-            textUserName.setText(userName.substring(0,1));
+            textUserIcon.setText(userName.substring(0,1));
+            textUserName.setText(userName);
         }
     }
 
@@ -119,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        textUserIcon = navigationView.getHeaderView(0).
+                findViewById(R.id.text_user_icon);
         textUserName = navigationView.getHeaderView(0).
                 findViewById(R.id.text_user_name);
 

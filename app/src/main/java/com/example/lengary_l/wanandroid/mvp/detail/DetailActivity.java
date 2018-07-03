@@ -9,8 +9,10 @@ import com.example.lengary_l.wanandroid.R;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final String ID = "ID";
     public static final String URL = "URL";
     public static final String TITLE = "TITLE";
+    public static final String FAVORITE_STATE = "FAVORITE_STATE";
     private DetailFragment detailFragment;
 
     @Override

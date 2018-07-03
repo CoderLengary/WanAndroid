@@ -11,51 +11,44 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lengary_l.wanandroid.R;
-import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.data.FavoriteArticleDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.util.StringUtils;
 
 import java.util.List;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private List<FavoriteArticleDetailData> mList;
     private Context context;
     private LayoutInflater inflater;
-    private List<ArticleDetailData> mList;
     private OnRecyclerViewItemOnClickListener listener;
     private OnCategoryOnClickListener categoryListener;
 
-    public ArticlesAdapter(Context context, List<ArticleDetailData> list){
+    public FavoritesAdapter(Context context, List<FavoriteArticleDetailData> list) {
         this.context = context;
-        inflater = LayoutInflater.from(this.context);
+        inflater = LayoutInflater.from(context);
         mList = list;
     }
 
-    public void updateData(List<ArticleDetailData> list){
+    public void updateData(List<FavoriteArticleDetailData> list){
         mList.clear();
         mList.addAll(list);
         notifyDataSetChanged();
         notifyItemRemoved(list.size());
     }
 
-    public void setItemClickListener(OnRecyclerViewItemOnClickListener listener){
-        this.listener = listener;
-    }
-
-    public void setCategoryListener(OnCategoryOnClickListener listener) {
-        categoryListener = listener;
-    }
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_card_view, parent, false);
         return new NormalViewHolder(view,listener,categoryListener);
-    }
+}
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
-        ArticleDetailData data = mList.get(position);
+        FavoriteArticleDetailData data = mList.get(position);
         normalViewHolder.textAuthor.setText(data.getAuthor());
         normalViewHolder.textTitle.setText(StringUtils.replaceInvalidChar(data.getTitle()));
         //if the text is too long, the button can not show it correctly.The solution is adding " ".
@@ -63,17 +56,18 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         normalViewHolder.textTime.setText(data.getNiceDate());
     }
 
-
-
     @Override
     public int getItemCount() {
         return mList.size();
     }
+    public void setItemClickListener(OnRecyclerViewItemOnClickListener listener){
+        this.listener = listener;
+    }
 
-
-
+    public void setCategoryListener(OnCategoryOnClickListener listener) {
+        categoryListener = listener;
+    }
     class NormalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         OnRecyclerViewItemOnClickListener listener;
         OnCategoryOnClickListener categoryListener;
         CardView cardView;
@@ -86,8 +80,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
             super(itemView);
-            this.listener = listener;
-            this.categoryListener = categoryListener;
             btnCategory = itemView.findViewById(R.id.btn_category);
             btnCategory.setOnClickListener(this);
             textTitle = itemView.findViewById(R.id.text_view_title);
@@ -95,6 +87,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             textTime = itemView.findViewById(R.id.text_view_time);
             cardView = itemView.findViewById(R.id.card_view_layout);
             cardView.setOnClickListener(this);
+            this.listener = listener;
+            this.categoryListener = categoryListener;
         }
 
         @Override
@@ -107,7 +101,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 case R.id.btn_category:
                     categoryListener.onClick(view,getAdapterPosition());
                     break;
-                    default:break;
+                default:break;
 
             }
         }

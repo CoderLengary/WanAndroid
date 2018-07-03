@@ -11,6 +11,7 @@ public interface LoginContract {
     interface Presenter extends BasePresenter{
         void login(String username, String password, @NonNull LoginType loginType);
 
+
     }
 
     interface View extends BaseView<Presenter>{
