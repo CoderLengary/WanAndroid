@@ -1,7 +1,9 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,16 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.RxBus.RxBus;
 import com.example.lengary_l.wanandroid.data.FavoriteArticleDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
-import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
+import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
 
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 public class FavoritesFragment extends Fragment implements FavoritesContract.View{
     private Banner banner;
@@ -41,6 +46,11 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     private final int INDEX = 0;
     private SwipeRefreshLayout refreshLayout;
     private static final String TAG = "FavoritesFragment";
+    private List<Integer> collectIds;
+    private int userId;
+    private String userName;
+    private String userPassword;
+
 
     public FavoritesFragment(){
 
@@ -53,13 +63,15 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate: " );
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userId = sp.getInt(SettingsUtil.USERID, -1);
+        userName = sp.getString(SettingsUtil.USERNAME, "");
+        userPassword = sp.getString(SettingsUtil.USERNAME, "");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e(TAG, "onCreateView: " );
         View view = inflater.inflate(R.layout.fragment_timeline_page, container, false);
         initViews(view);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -74,44 +86,56 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             @Override
             public void onRefresh() {
                 currentPage = INDEX;
-              //  presenter.getFavoriteArticles(INDEX, true, true);
+                presenter.getFavoriteArticles(INDEX, true, true);
+                presenter.refreshCollectIdList(userName,userPassword);
             }
         });
-       /* SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        int userId = sp.getInt(SettingsUtil.USERID, -1);
-        if (userId != -1) {
-            Log.e(TAG, "onCreate: auto login" );
-            presenter.autoLogin(sp.getString(SettingsUtil.USERNAME,""),
-                    sp.getString(SettingsUtil.PASSEORD,""));
-        }*/
+
         return view;
     }
 
     @Override
     public void onResume() {
-        Log.e(TAG, "onResume: " );
         super.onResume();
         presenter.subscribe();
         if (isFirstLoad){
+
             presenter.getFavoriteArticles(INDEX, true,true);
             currentPage = INDEX;
             isFirstLoad = false;
         }else {
             presenter.getFavoriteArticles(INDEX, false,false);
         }
+
+        RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
+
+            @Override
+            public void accept(String s) throws Exception {
+                if (s.equals(RxBus.REFRESH)) {
+                    Log.e(TAG, "RxBus get the message" );
+                    currentPage = INDEX;
+                    presenter.getFavoriteArticles(INDEX, true, true);
+                    presenter.refreshCollectIdList(userName,userPassword);
+                }
+            }
+        });
     }
 
     @Override
     public void onPause() {
         super.onPause();
         presenter.unSubscribe();
+        RxBus.getInstance().unSubscribe();
     }
 
     @Override
     public void showFavoriteArticles(final List<FavoriteArticleDetailData> list) {
+        Log.e(TAG, "showFavoriteArticles " );
         if (adapter != null) {
+            Log.e(TAG, "showFavoriteArticles: update" );
             adapter.updateData(list);
         }else {
+            Log.e(TAG, "showFavoriteArticles: not update" );
             adapter = new FavoritesAdapter(getContext(), list);
             adapter.setCategoryListener(new OnCategoryOnClickListener() {
                 @Override
@@ -131,6 +155,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                     int originId = list.get(position).getOriginId();
                     intent.putExtra(DetailActivity.ID, originId);
                     intent.putExtra(DetailActivity.FAVORITE_STATE, true);
+                    intent.putExtra(DetailActivity.USER_ID, userId);
                     startActivity(intent);
                 }
             });
@@ -159,13 +184,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         });
     }
 
-    @Override
-    public void navigateToLogin() {
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
     @Override
     public void initViews(View view) {
@@ -181,7 +199,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     @Override
     public void setPresenter(FavoritesContract.Presenter presenter) {
-        Log.e(TAG, "setPresenter: " );
         this.presenter = presenter;
     }
 
@@ -194,4 +211,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

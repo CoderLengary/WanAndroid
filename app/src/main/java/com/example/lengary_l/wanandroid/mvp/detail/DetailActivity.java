@@ -6,6 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
+import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
+import com.example.lengary_l.wanandroid.data.source.remote.StatusDataRemoteSource;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -13,6 +18,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String URL = "URL";
     public static final String TITLE = "TITLE";
     public static final String FAVORITE_STATE = "FAVORITE_STATE";
+    public static final String USER_ID = "USER_ID";
     private DetailFragment detailFragment;
 
     @Override
@@ -24,6 +30,8 @@ public class DetailActivity extends AppCompatActivity {
         }else {
             detailFragment = DetailFragment.newInstance();
         }
+        new DetailPresenter(detailFragment, StatusDataRepository.getInstance(StatusDataRemoteSource.getInstance()),
+                ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.view_pager, detailFragment, "DetailFragment")
                 .commit();

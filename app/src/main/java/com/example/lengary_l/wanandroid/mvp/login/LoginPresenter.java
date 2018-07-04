@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.login;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginType;
@@ -22,7 +21,6 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
     private CompositeDisposable compositeDisposable;
 
-    private static final String TAG = "LoginPresenter";
 
 
     public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository) {
@@ -57,7 +55,6 @@ public class  LoginPresenter implements LoginContract.Presenter{
                         if (value.getErrorCode()==-1){
                             view.showLoginError(value.getErrorMsg());
                         }else {
-                            Log.e(TAG, "onNext: login success "+value.getData().getId() );
                            view.saveUser2Preference(value.getData());
                         }
                     }

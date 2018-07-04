@@ -1,13 +1,15 @@
 package com.example.lengary_l.wanandroid.data.source;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 
+import java.util.List;
+
 import io.reactivex.Observable;
+import io.reactivex.functions.Predicate;
 
 public class LoginDataRepository implements LoginDataSource{
     private static final String TAG = "LoginDataRepository";
@@ -32,20 +34,28 @@ public class LoginDataRepository implements LoginDataSource{
 
     @Override
     public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
-        Log.e(TAG, "getRemoteLoginData: " );
         return remoteDataSource.getRemoteLoginData(userName, password,loginType);
     }
 
     @Override
     public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
-        Log.e(TAG, "getLoginDetailData: " );
         return localDataSource.getLocalLoginData(userName);
     }
 
     @Override
     public boolean isAccountExist(String userName) {
-        Log.e(TAG, "isAccountExist: " );
         return localDataSource.isAccountExist(userName);
+    }
+
+    @Override
+    public Observable<List<Integer>> getFavoriteArticleIdList(int userId) {
+        return localDataSource.getFavoriteArticleIdList(userId)
+                .filter(new Predicate<List<Integer>>() {
+                    @Override
+                    public boolean test(List<Integer> list) throws Exception {
+                        return !list.isEmpty();
+                    }
+                });
     }
 
 

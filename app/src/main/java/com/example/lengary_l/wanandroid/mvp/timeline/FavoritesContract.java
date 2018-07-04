@@ -9,9 +9,11 @@ import java.util.List;
 public interface FavoritesContract {
     interface Presenter extends BasePresenter {
 
-        void autoLogin(String userName, String userPassword);
+
 
         void getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache);
+
+        void refreshCollectIdList(String userName, String password);
     }
 
     interface View extends BaseView<Presenter> {
@@ -23,7 +25,7 @@ public interface FavoritesContract {
 
         void setLoadingIndicator(boolean isActive);
 
-        void navigateToLogin();
+
     }
 
 }

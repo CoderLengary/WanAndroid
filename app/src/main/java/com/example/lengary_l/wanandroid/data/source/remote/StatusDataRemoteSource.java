@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.Status;
 import com.example.lengary_l.wanandroid.data.source.StatusDataSource;
@@ -13,7 +14,7 @@ import io.reactivex.functions.Predicate;
 public class StatusDataRemoteSource implements StatusDataSource {
     @NonNull
     private static StatusDataRemoteSource INSTANCE;
-
+    private static final String TAG = "StatusDataRemoteSource";
     private StatusDataRemoteSource() {
 
     }
@@ -27,7 +28,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
 
 
     @Override
-    public Observable<Status> collectArticle(final int id) {
+    public Observable<Status> collectArticle(final int userId, final int id) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .collectArticle(id)
@@ -40,7 +41,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
     }
 
     @Override
-    public Observable<Status> uncollectArticle(int originId) {
+    public Observable<Status> uncollectArticle(final int userId, final int originId) {
+        Log.e(TAG, "uncollectArticle: id is "+originId );
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .uncollectArticle(originId)
@@ -51,4 +53,6 @@ public class StatusDataRemoteSource implements StatusDataSource {
                     }
                 });
     }
+
+
 }

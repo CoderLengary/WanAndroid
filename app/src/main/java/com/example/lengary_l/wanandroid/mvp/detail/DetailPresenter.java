@@ -1,5 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
+import android.util.Log;
+
 import com.example.lengary_l.wanandroid.data.Status;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
@@ -15,6 +17,7 @@ public class DetailPresenter implements DetailContract.Presenter{
     private StatusDataRepository statusDataRepository;
     private ArticlesDataRepository articlesDataRepository;
     private CompositeDisposable compositeDisposable;
+    private static final String TAG = "DetailPresenter";
 
 
     public DetailPresenter(DetailContract.View view,
@@ -24,6 +27,7 @@ public class DetailPresenter implements DetailContract.Presenter{
         this.statusDataRepository = statusDataRepository;
         this.articlesDataRepository = articlesDataRepository;
         this.view.setPresenter(this);
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -37,15 +41,15 @@ public class DetailPresenter implements DetailContract.Presenter{
     }
 
     @Override
-    public void collectArticle(int id) {
-        Disposable disposable=statusDataRepository.collectArticle(id)
+    public void collectArticle(int userId,int originId) {
+        Disposable disposable=statusDataRepository.collectArticle(userId, originId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<Status>(){
 
                     @Override
                     public void onNext(Status value) {
-                        if (view.isActive() && value.getErrorCode() != -1) {
+                        if (view.isActive()) {
                             view.showCollectStatus(true);
                             view.changeFavoriteState();
                         }
@@ -67,8 +71,8 @@ public class DetailPresenter implements DetailContract.Presenter{
     }
 
     @Override
-    public void uncollectArticle(int originId) {
-        Disposable disposable = statusDataRepository.uncollectArticle(originId)
+    public void uncollectArticle(int userId, int originId) {
+        Disposable disposable = statusDataRepository.uncollectArticle(userId, originId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<Status>() {
@@ -77,6 +81,8 @@ public class DetailPresenter implements DetailContract.Presenter{
                     public void onNext(Status value) {
                         if (view.isActive() && value.getErrorCode() != -1) {
                             view.showUnCollectStatus(true);
+                            Log.e(TAG, "onNext: " );
+                            view.changeFavoriteState();
                         }
                     }
 
@@ -97,6 +103,9 @@ public class DetailPresenter implements DetailContract.Presenter{
 
     @Override
     public void addToReadLater(int id, int userId) {
-
+        compositeDisposable.clear();
     }
+
+
+
 }

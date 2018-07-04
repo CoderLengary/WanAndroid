@@ -1,7 +1,9 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,14 +22,13 @@ import android.widget.Toast;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
-import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.glide.GlideLoader;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
-import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
+import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -50,6 +51,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private static final String TAG = "ArticlesFragment";
     private boolean isFirstLoad=true;
     private List<Integer> collectIds;
+    private int userId;
 
 
 
@@ -65,15 +67,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*  SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        int userId = sp.getInt(SettingsUtil.USERID, -1);
-        if (userId != -1) {
-            Log.e(TAG, "onCreate: auto login" );
-            presenter.autoLogin(sp.getString(SettingsUtil.USERNAME,""),
-                    sp.getString(SettingsUtil.PASSEORD,""));
-        }else {
-            navigateToLogin();
-        }*/
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userId = sp.getInt(SettingsUtil.USERID, -1);
     }
 
     @Nullable
@@ -114,6 +109,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         }else {
             presenter.getArticles(currentPage,false,false);
         }
+        presenter.getFavoriteArticleIdList(userId);
         if (banner != null) {
             banner.startAutoPlay();
         }
@@ -197,7 +193,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
                     int id = list.get(position).getId();
                     intent.putExtra(DetailActivity.ID, id);
-                    //intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
+                    intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
+                    intent.putExtra(DetailActivity.USER_ID, userId);
                     startActivity(intent);
                 }
             });
@@ -232,6 +229,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                 Intent intent = new Intent(getContext(),DetailActivity.class);
                 intent.putExtra(DetailActivity.URL, list.get(position).getUrl());
                 intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
+                int id = list.get(position).getId();
+                intent.putExtra(DetailActivity.ID, id);
                 startActivity(intent);
             }
         });
@@ -243,7 +242,13 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         banner.setVisibility(View.GONE);
     }
 
-
+    @Override
+    public void saveFavoriteArticleIdList(List<Integer> list) {
+        collectIds = list;
+        for (Integer id : collectIds) {
+            Log.e(TAG, "collectId is : "+id );
+        }
+    }
 
 
     private void loadMore(){
@@ -258,23 +263,10 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     }
 
-    @Override
-    public void navigateToLogin() {
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    @Override
-    public void saveFavoriteArticlesId(LoginDetailData data) {
-        collectIds = data.getCollectIds();
-    }
-
-    private boolean checkIsFavorite(int id) {
+    private boolean checkIsFavorite(int articleId) {
         boolean isFavorite = false;
-        for (Integer i : collectIds) {
-            if (i.equals(id)) {
+        for (Integer collectId : collectIds) {
+            if (articleId == collectId) {
                 isFavorite = true;
                 break;
             }

@@ -191,20 +191,4 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
     }
 
-    /*private List<ArticleDetailData> sortCacheItems(List<ArticleDetailData> list){
-        if (list==null||list.isEmpty()){
-            return null;
-        }
-        Collections.sort(list, new Comparator<ArticleDetailData>() {
-            @Override
-            public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                if (articleDetailData.getId() > t1.getId()){
-                    return -1;
-                }else {
-                    return 1;
-                }
-            }
-        });
-        return list;
-    }*/
 }

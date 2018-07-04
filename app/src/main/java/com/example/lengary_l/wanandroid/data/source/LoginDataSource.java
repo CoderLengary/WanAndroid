@@ -6,6 +6,8 @@ import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 public interface LoginDataSource {
@@ -15,5 +17,7 @@ public interface LoginDataSource {
     Observable<LoginDetailData> getLocalLoginData(@NonNull String userName);
 
     boolean isAccountExist(String userName);
+
+    Observable<List<Integer>> getFavoriteArticleIdList(int userId);
 
 }

@@ -9,6 +9,8 @@ import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -57,6 +59,18 @@ public class LoginDataLocalSource implements LoginDataSource{
                         .findAll();
         return (list != null) && (!list.isEmpty());
 
+    }
+
+    @Override
+    public Observable<List<Integer>> getFavoriteArticleIdList(int userId) {
+        Realm realm = RealmHelper.newRealmInstance();
+        LoginDetailData data = realm.copyFromRealm(
+                realm.where(LoginDetailData.class)
+                        .equalTo("id", userId)
+                        .findFirst()
+        );
+        List<Integer> list = data.getCollectIds();
+        return Observable.just(list);
     }
 
 

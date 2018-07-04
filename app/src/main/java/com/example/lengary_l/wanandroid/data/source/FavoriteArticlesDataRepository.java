@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.data.source;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.FavoriteArticleDetailData;
 
@@ -61,12 +60,10 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
             return Observable.merge(ob1, ob2);
         }
 
-        Log.e(TAG, "getFavoriteArticles: is running" );
         return remote.getFavoriteArticles(page, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<FavoriteArticleDetailData>>() {
                     @Override
                     public void accept(List<FavoriteArticleDetailData> list) throws Exception {
-                        Log.e(TAG, "accept: is empty"+list.isEmpty() );
                         refreshArticlesCache(clearCache,list);
                     }
                 });

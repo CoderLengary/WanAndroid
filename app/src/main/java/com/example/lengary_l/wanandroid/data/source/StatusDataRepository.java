@@ -1,12 +1,14 @@
 package com.example.lengary_l.wanandroid.data.source;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.Status;
 
 import io.reactivex.Observable;
 
 public class StatusDataRepository implements StatusDataSource {
+    private static final String TAG = "StatusDataRepository";
     private StatusDataSource remote;
 
     @NonNull
@@ -24,12 +26,13 @@ public class StatusDataRepository implements StatusDataSource {
     }
 
     @Override
-    public Observable<Status> collectArticle(int id) {
-        return remote.collectArticle(id);
+    public Observable<Status> collectArticle(int userId, int id) {
+        return remote.collectArticle(userId,id);
     }
 
     @Override
-    public Observable<Status> uncollectArticle(int originId) {
-        return remote.collectArticle(originId);
+    public Observable<Status> uncollectArticle(int userId, int originId) {
+        Log.e(TAG, "uncollectArticle: origin id is "+originId );
+        return remote.uncollectArticle(userId, originId);
     }
 }

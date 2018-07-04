@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
-import com.example.lengary_l.wanandroid.data.LoginData;
-import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
@@ -46,37 +44,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
         hashMap = new HashMap<>();
     }
 
-    @Override
-    public void autoLogin(String userName, String userPassword) {
-        Disposable disposable = loginDataRepository.getRemoteLoginData(userName, userPassword, LoginType.TYPE_LOGIN)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<LoginData>() {
 
-                    @Override
-                    public void onNext(LoginData value) {
-                        if (value.getErrorCode() == -1&&view.isActive()) {
-                            view.navigateToLogin();
-                        }else {
-                            Log.e(TAG, "autoLogin: success" +value.getData().getId());
-                            view.saveFavoriteArticlesId(value.getData());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (view.isActive()) {
-                            view.navigateToLogin();
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        compositeDisposable.add(disposable);
-    }
 
     @Override
     public void getArticles(int page, final boolean forceUpdate, final boolean clearCache) {
@@ -136,6 +104,33 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                         if (view.isActive()) {
                             view.hideBanner();
                         }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void getFavoriteArticleIdList(int userId) {
+        Disposable disposable = loginDataRepository.getFavoriteArticleIdList(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<Integer>>() {
+
+                    @Override
+                    public void onNext(List<Integer> value) {
+                        if (view.isActive()) {
+                            view.saveFavoriteArticleIdList(value);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
                     }
 
                     @Override

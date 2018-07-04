@@ -23,7 +23,6 @@ import io.realm.RealmConfiguration;
 public class ArticlesDataRemoteSource implements ArticlesDataSource {
     @NonNull
     private static ArticlesDataRemoteSource INSTANCE;
-    private static final String TAG = "ArticlesDataRemoteSourc";
 
 
 

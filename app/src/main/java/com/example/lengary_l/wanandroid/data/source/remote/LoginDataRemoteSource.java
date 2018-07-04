@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.data.source.remote;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
@@ -10,6 +9,8 @@ import com.example.lengary_l.wanandroid.data.source.LoginDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -35,15 +36,12 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     @Override
     public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
-        Log.e(TAG, "getRemoteLoginData: username"+userName+"password"+password );
        Observable<LoginData> loginDataObservable = null;
         if (loginType==LoginType.TYPE_REGISTER){
-            Log.e(TAG, "getRemoteLoginData: is registering" );
             loginDataObservable = RetrofitClient.getInstance()
                     .create(RetrofitService.class)
                     .register(userName, password, password);
         }else if (loginType==LoginType.TYPE_LOGIN){
-            Log.e(TAG, "getRemoteLoginData: is logining" );
             loginDataObservable=RetrofitClient.getInstance()
                     .create(RetrofitService.class)
                     .login(userName, password);
@@ -79,6 +77,12 @@ public class LoginDataRemoteSource implements LoginDataSource{
     public boolean isAccountExist(String userName) {
         //Not require because the LocalDataSource has handled it
         return false;
+    }
+
+    @Override
+    public Observable<List<Integer>> getFavoriteArticleIdList(int userId) {
+        //Not require because the LocalDataSource has handled it
+        return null;
     }
 
 
