@@ -15,7 +15,7 @@ public interface ArticlesContract {
 
         void getBanner();
 
-        void getFavoriteArticleIdList(int userId);
+        void refreshCollectIdList(int userId);
     }
 
     interface View extends BaseView<Presenter>{

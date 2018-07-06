@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.data.source.local;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
@@ -40,29 +39,28 @@ public class LoginDataLocalSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
         Realm realm = RealmHelper.newRealmInstance();
         LoginDetailData loginDetailData = realm.copyFromRealm(
                 realm.where(LoginDetailData.class)
-                        .equalTo("username", userName)
+                        .equalTo("id", userId)
                         .findFirst());
-        Log.e(TAG, "getLoginDetailData: get data from realm "+loginDetailData.getUsername() );
         return Observable.just(loginDetailData);
     }
 
     @Override
-    public boolean isAccountExist(String userName) {
+    public boolean isAccountExist(@NonNull int userId) {
         Realm realm = RealmHelper.newRealmInstance();
         RealmResults<LoginDetailData> list =
                 realm.where(LoginDetailData.class)
-                        .equalTo("username", userName)
+                        .equalTo("id", userId)
                         .findAll();
         return (list != null) && (!list.isEmpty());
 
     }
 
     @Override
-    public Observable<List<Integer>> getFavoriteArticleIdList(int userId) {
+    public Observable<List<Integer>> getFavoriteArticleIdList(@NonNull int userId) {
         Realm realm = RealmHelper.newRealmInstance();
         LoginDetailData data = realm.copyFromRealm(
                 realm.where(LoginDetailData.class)

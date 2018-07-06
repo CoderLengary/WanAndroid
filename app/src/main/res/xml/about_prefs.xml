@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/nav_about">
+
+        <Preference
+            android:title="@string/about_version"
+            app:key="version"
+            android:summary="%s"/>
+        <Preference
+            android:title="@string/about_rate"
+            app:key="rate"
+            android:summary="@string/about_rate_desc"/>
+        <Preference
+            android:title="@string/about_licenses"
+            app:key="licenses"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about_thanks">
+        <Preference
+            android:title="@string/about_lizhaotailang"
+            app:key="lizhaotailang"
+            android:summary="@string/about_lizhaotailang_desc"/>
+        <Preference
+            android:title="@string/about_hongyang"
+            app:key="hongyang"
+            android:summary="@string/about_hongyang_desc"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about_support">
+        <Preference
+            android:title="@string/about_source_code"
+            app:key="source_code"
+            android:summary="@string/about_source_code_link"/>
+        <Preference
+            android:title="@string/about_send_advices"
+            app:key="send_advice"
+            android:summary="@string/about_send_advices_desc"/>
+    </PreferenceCategory>
+</PreferenceScreen>

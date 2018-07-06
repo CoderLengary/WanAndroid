@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
+import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
@@ -115,16 +116,16 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     }
 
     @Override
-    public void getFavoriteArticleIdList(int userId) {
-        Disposable disposable = loginDataRepository.getFavoriteArticleIdList(userId)
+    public void refreshCollectIdList(int userId) {
+        Disposable disposable = loginDataRepository.getLocalLoginData(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<Integer>>() {
+                .subscribeWith(new DisposableObserver<LoginDetailData>() {
 
                     @Override
-                    public void onNext(List<Integer> value) {
+                    public void onNext(LoginDetailData value) {
                         if (view.isActive()) {
-                            view.saveFavoriteArticleIdList(value);
+                            view.saveFavoriteArticleIdList(value.getCollectIds());
                         }
                     }
 

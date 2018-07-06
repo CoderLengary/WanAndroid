@@ -14,9 +14,9 @@ public interface LoginDataSource {
 
     Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType);
 
-    Observable<LoginDetailData> getLocalLoginData(@NonNull String userName);
+    Observable<LoginDetailData> getLocalLoginData(@NonNull int userId);
 
-    boolean isAccountExist(String userName);
+    boolean isAccountExist(@NonNull int userId);
 
     Observable<List<Integer>> getFavoriteArticleIdList(int userId);
 

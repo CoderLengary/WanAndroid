@@ -8,8 +8,6 @@ public class SettingsUtil {
 
     public static final String PASSEORD = "password";
 
-    public static final String COOKIES = "cookies";
-
     public static final String KEY_NIGHT_MODE = "night_mode";
 
     public static final String KEY_SKIP_GUIDE_PAGE = "skip_guide_page";

@@ -3,7 +3,7 @@ package com.example.lengary_l.wanandroid.mvp.detail;
 import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.Status;
-import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,17 +15,18 @@ import io.reactivex.schedulers.Schedulers;
 public class DetailPresenter implements DetailContract.Presenter{
     private DetailContract.View view;
     private StatusDataRepository statusDataRepository;
-    private ArticlesDataRepository articlesDataRepository;
+
     private CompositeDisposable compositeDisposable;
+    private ReadLaterArticlesRepository readLaterArticlesRepository;
     private static final String TAG = "DetailPresenter";
 
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,
-                           ArticlesDataRepository articlesDataRepository) {
+                           ReadLaterArticlesRepository readLaterArticlesRepository) {
         this.view = view;
         this.statusDataRepository = statusDataRepository;
-        this.articlesDataRepository = articlesDataRepository;
+        this.readLaterArticlesRepository = readLaterArticlesRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
     }
@@ -102,10 +103,19 @@ public class DetailPresenter implements DetailContract.Presenter{
     }
 
     @Override
-    public void addToReadLater(int id, int userId) {
-        compositeDisposable.clear();
+    public void insertReadLaterArticle(int userId, int id, long timeStamp) {
+        readLaterArticlesRepository.insertReadLaterArticle(userId, id, timeStamp);
     }
 
+    @Override
+    public void removeReadLaterArticle(int userId, int id) {
+        readLaterArticlesRepository.removeReadLaterArticle(userId, id);
+    }
+
+    @Override
+    public void checkIsReadLater(int userId, int id) {
+        view.saveReadLaterState(readLaterArticlesRepository.isExist(userId, id));
+    }
 
 
 }

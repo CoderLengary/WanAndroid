@@ -68,19 +68,19 @@ public class LoginDataRemoteSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
         //Not require because the LocalDataSource has handled it
         return null;
     }
 
     @Override
-    public boolean isAccountExist(String userName) {
+    public boolean isAccountExist(@NonNull int userId) {
         //Not require because the LocalDataSource has handled it
         return false;
     }
 
     @Override
-    public Observable<List<Integer>> getFavoriteArticleIdList(int userId) {
+    public Observable<List<Integer>> getFavoriteArticleIdList(@NonNull int userId) {
         //Not require because the LocalDataSource has handled it
         return null;
     }

@@ -16,8 +16,10 @@ import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.BannerDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.FavoriteArticlesDataRemoteSource;
@@ -59,7 +61,10 @@ public class TimelineFragment extends Fragment {
                 LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
 
         new FavoritesPresenter(favoritesFragment,
-                FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance()),
+                FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance()));
+
+        new ReadLaterPresenter(readLaterFragment,
+                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
                 LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
     }
 

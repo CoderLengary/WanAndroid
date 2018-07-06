@@ -38,6 +38,9 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private AgentWeb agentWeb;
     private int userId;
     private boolean isFavorite;
+    private boolean isReadLater;
+    private boolean isFromFavoriteFragment;
+
 
     public DetailFragment(){
 
@@ -51,11 +54,14 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = getActivity().getIntent().getStringExtra(DetailActivity.URL);
-        title = getActivity().getIntent().getStringExtra(DetailActivity.TITLE);
-        id = getActivity().getIntent().getIntExtra(DetailActivity.ID, -1);
-        isFavorite = getActivity().getIntent().getBooleanExtra(DetailActivity.FAVORITE_STATE, false);
-        userId = getActivity().getIntent().getIntExtra(DetailActivity.USER_ID, -1);
+        Intent intent = getActivity().getIntent();
+        url = intent.getStringExtra(DetailActivity.URL);
+        title = intent.getStringExtra(DetailActivity.TITLE);
+        id = intent.getIntExtra(DetailActivity.ID, -1);
+        isFavorite = intent.getBooleanExtra(DetailActivity.FAVORITE_STATE, false);
+        userId = intent.getIntExtra(DetailActivity.USER_ID, -1);
+        isFromFavoriteFragment = intent.getBooleanExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+        presenter.checkIsReadLater(userId, id);
     }
 
     @Nullable
@@ -77,8 +83,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
             agentWeb.getWebLifeCycle().onResume();
         }
         super.onResume();
+        presenter.subscribe();
 
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -96,11 +104,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
                 View view = getActivity().getLayoutInflater().inflate(R.layout.actions_details_sheet, null);
                 AppCompatTextView textFavorite = view.findViewById(R.id.text_view_favorite);
-                if (isFavorite) {
-                    textFavorite.setText(R.string.detail_uncollect_article);
-                }else {
-                    textFavorite.setText(R.string.detail_collect_article);
-                }
+                textFavorite.setText(isFavorite?R.string.detail_uncollect_article:R.string.detail_collect_article);
                 textFavorite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -113,6 +117,22 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                     }
                 });
                 AppCompatTextView textAddToReadLater = view.findViewById(R.id.text_view_read_later);
+                textAddToReadLater.setText(isReadLater?R.string.detail_remove_from_read_later:R.string.detail_add_to_read_later);
+                textAddToReadLater.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (isReadLater) {
+                            presenter.removeReadLaterArticle(userId, id);
+                        }else {
+                            presenter.insertReadLaterArticle(userId, id, System.currentTimeMillis());
+                        }
+                        isReadLater = !isReadLater;
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+                if (isFromFavoriteFragment) {
+                    textAddToReadLater.setVisibility(View.GONE);
+                }
                 AppCompatTextView textCopyLink = view.findViewById(R.id.text_view_copy_the_link);
                 textCopyLink.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -127,6 +147,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                     @Override
                     public void onClick(View view) {
                         share();
+                        bottomSheetDialog.dismiss();
                     }
                 });
                 AppCompatTextView textBrowser = view.findViewById(R.id.text_view_system_browser);
@@ -177,6 +198,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
             agentWeb.getWebLifeCycle().onPause();
         }
         super.onPause();
+        presenter.unSubscribe();
     }
 
 
@@ -248,4 +270,11 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         isFavorite = !isFavorite;
         RxBus.getInstance().send(RxBus.REFRESH);
     }
+
+    @Override
+    public void saveReadLaterState(boolean isReadLater) {
+        this.isReadLater = isReadLater;
+    }
+
+
 }

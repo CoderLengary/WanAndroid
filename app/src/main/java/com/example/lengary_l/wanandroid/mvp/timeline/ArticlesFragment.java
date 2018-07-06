@@ -109,7 +109,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         }else {
             presenter.getArticles(currentPage,false,false);
         }
-        presenter.getFavoriteArticleIdList(userId);
+        presenter.refreshCollectIdList(userId);
         if (banner != null) {
             banner.startAutoPlay();
         }
@@ -195,6 +195,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     intent.putExtra(DetailActivity.ID, id);
                     intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
                     intent.putExtra(DetailActivity.USER_ID, userId);
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
                     startActivity(intent);
                 }
             });
@@ -264,6 +265,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     }
 
     private boolean checkIsFavorite(int articleId) {
+        if (collectIds==null) {
+            return false;
+        }
         boolean isFavorite = false;
         for (Integer collectId : collectIds) {
             if (articleId == collectId) {

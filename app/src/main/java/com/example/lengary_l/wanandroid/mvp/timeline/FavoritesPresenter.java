@@ -3,10 +3,7 @@ package com.example.lengary_l.wanandroid.mvp.timeline;
 import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.FavoriteArticleDetailData;
-import com.example.lengary_l.wanandroid.data.LoginData;
-import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
-import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,15 +21,15 @@ import io.reactivex.schedulers.Schedulers;
 public class FavoritesPresenter implements FavoritesContract.Presenter {
 
     private FavoriteArticlesDataRepository repository;
-    private LoginDataRepository loginDataRepository;
+
     private FavoritesContract.View view;
     private CompositeDisposable compositeDisposable;
     private Map<Integer, FavoriteArticleDetailData> hashMap;
     private static final String TAG = "FavoritesPresenter";
 
-    public FavoritesPresenter(FavoritesContract.View view,FavoriteArticlesDataRepository repository, LoginDataRepository loginDataRepository) {
+    public FavoritesPresenter(FavoritesContract.View view,FavoriteArticlesDataRepository repository) {
         this.repository = repository;
-        this.loginDataRepository = loginDataRepository;
+
         this.view = view;
         compositeDisposable = new CompositeDisposable();
         this.view.setPresenter(this);
@@ -50,13 +47,14 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
 
                     @Override
                     public void onNext(List<FavoriteArticleDetailData> value) {
-                        /*if (!view.isActive()) {
+                        if (!view.isActive()) {
                             Log.e(TAG, "onNext: is not actice" );
                             return;
-                        }*/
+                        }
                         if (forceUpdate && !clearCache) {
                             addToHashMap(value, false);
                         }else {
+                            Log.e(TAG, "onNext: force update clear cache" );
                             view.showFavoriteArticles(value);
                             view.showEmptyView(false);
                             if (clearCache&&hashMap!=null) {
@@ -74,9 +72,9 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
                     @Override
                     public void onComplete() {
                         //检测view是不是active是必须的吗？？
-                        /*if (!view.isActive()) {
+                        if (!view.isActive()) {
                             return;
-                        }*/
+                        }
                         if (forceUpdate && !clearCache) {
                             view.showFavoriteArticles(sortHashMap(new ArrayList<>(hashMap.values())));
                             view.showEmptyView(false);
@@ -87,30 +85,7 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
         compositeDisposable.add(disposable);
     }
 
-    @Override
-    public void refreshCollectIdList(String userName, String password) {
-        Disposable disposable = loginDataRepository.getRemoteLoginData(userName, password, LoginType.TYPE_LOGIN)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<LoginData>() {
 
-                    @Override
-                    public void onNext(LoginData value) {
-                        Log.e(TAG, "refresh login onNext: is run" );
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        compositeDisposable.add(disposable);
-    }
 
     @Override
     public void subscribe() {

@@ -38,13 +38,13 @@ public class LoginDataRepository implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull String userName) {
-        return localDataSource.getLocalLoginData(userName);
+    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
+        return localDataSource.getLocalLoginData(userId);
     }
 
     @Override
-    public boolean isAccountExist(String userName) {
-        return localDataSource.isAccountExist(userName);
+    public boolean isAccountExist(@NonNull int userId) {
+        return localDataSource.isAccountExist(userId);
     }
 
     @Override

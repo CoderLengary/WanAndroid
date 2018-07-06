@@ -67,6 +67,15 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         userId = sp.getInt(SettingsUtil.USERID, -1);
         userName = sp.getString(SettingsUtil.USERNAME, "");
         userPassword = sp.getString(SettingsUtil.USERNAME, "");
+        RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
+
+            @Override
+            public void accept(String s) throws Exception {
+                if (s.equals(RxBus.REFRESH)) {
+                    isFirstLoad = true;
+                }
+            }
+        });
     }
 
     @Nullable
@@ -87,7 +96,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             public void onRefresh() {
                 currentPage = INDEX;
                 presenter.getFavoriteArticles(INDEX, true, true);
-                presenter.refreshCollectIdList(userName,userPassword);
+
             }
         });
 
@@ -99,7 +108,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         super.onResume();
         presenter.subscribe();
         if (isFirstLoad){
-
             presenter.getFavoriteArticles(INDEX, true,true);
             currentPage = INDEX;
             isFirstLoad = false;
@@ -107,18 +115,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             presenter.getFavoriteArticles(INDEX, false,false);
         }
 
-        RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
 
-            @Override
-            public void accept(String s) throws Exception {
-                if (s.equals(RxBus.REFRESH)) {
-                    Log.e(TAG, "RxBus get the message" );
-                    currentPage = INDEX;
-                    presenter.getFavoriteArticles(INDEX, true, true);
-                    presenter.refreshCollectIdList(userName,userPassword);
-                }
-            }
-        });
     }
 
     @Override
@@ -156,6 +153,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                     intent.putExtra(DetailActivity.ID, originId);
                     intent.putExtra(DetailActivity.FAVORITE_STATE, true);
                     intent.putExtra(DetailActivity.USER_ID, userId);
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, true);
                     startActivity(intent);
                 }
             });
@@ -205,6 +203,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     private void loadMore() {
         boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
         if (isNetworkAvailable){
+            Log.e(TAG, "loadMore: " );
             currentPage += 1;
             presenter.getFavoriteArticles(currentPage, true,false);
         }else {

@@ -13,7 +13,7 @@ public interface FavoritesContract {
 
         void getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache);
 
-        void refreshCollectIdList(String userName, String password);
+
     }
 
     interface View extends BaseView<Presenter> {

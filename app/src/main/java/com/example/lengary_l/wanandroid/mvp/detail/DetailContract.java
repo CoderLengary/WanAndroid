@@ -10,7 +10,12 @@ public interface DetailContract {
 
         void uncollectArticle(int userId, int originId);
 
-        void addToReadLater(int id, int userId);
+        void insertReadLaterArticle(int userId, int id, long timeStamp);
+
+        void removeReadLaterArticle(int userId, int id);
+
+        void checkIsReadLater(int userId, int id);
+
 
 
         
@@ -24,5 +29,7 @@ public interface DetailContract {
         boolean isActive();
 
         void changeFavoriteState();
+
+        void saveReadLaterState(boolean isReadLater);
     }
 }

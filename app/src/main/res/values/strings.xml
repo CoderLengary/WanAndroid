@@ -62,6 +62,7 @@
     <string name="detail_collect_article">Collect article</string>
     <string name="detail_uncollect_article">Uncollect article</string>
     <string name="detail_add_to_read_later">Add to read later</string>
+    <string name="detail_remove_from_read_later">Remove from read later</string>
     <string name="detail_copy_the_link">Copy the link</string>
     <string name="detail_share">Share</string>
     <string name="detail_share_to">Share to</string>
@@ -88,4 +89,29 @@
     <string name="search_label">Search</string>
     <string name="search_tint">Search articles</string>
     <!--Search end-->
+
+    <!--About start-->
+    <string name="about_version">Version</string>
+    <string name="about_rate">Rate</string>
+    <string name="about_rate_desc">If you like this app,please do rate it</string>
+    <string name="about_licenses">Licenses</string>
+    <string name="about_thanks">Thanks</string>
+    <string name="about_lizhaotailang">Li Zhao Tai Lang</string>
+    <string name="about_lizhaotailang_desc">Appreciate his help very much</string>
+    <string name="about_lizhaotailang_link">https://github.com/TonnyL</string>
+    <string name="about_hongyang">Hong Yang</string>
+    <string name="about_hongyang_desc">API provider</string>
+    <string name="about_hongyang_link">https://github.com/hongyangAndroid</string>
+    <string name="about_support">Support</string>
+    <string name="about_source_code">GitHub Source code</string>
+    <string name="about_source_code_link">https://github.com/CoderLengary/WanAndroid</string>
+    <string name="about_send_advices">Send advices</string>
+    <string name="about_send_advices_desc">Help me improve this app</string>
+    <string name="mail_account">mailto:719952215@qq.com</string>
+    <string name="mail_topic">WanAndroid Advices</string>
+    <!--About end-->
+
+    <!--Error-->
+    <string name="error">Something wrong</string>
+    <!--Error-->
 </resources>
