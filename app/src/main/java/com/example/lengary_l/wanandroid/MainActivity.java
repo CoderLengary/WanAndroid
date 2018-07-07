@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +28,7 @@ import com.example.lengary_l.wanandroid.mvp.categories.CategoriesFragment;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesPresenter;
 import com.example.lengary_l.wanandroid.mvp.search.SearchActivity;
 import com.example.lengary_l.wanandroid.mvp.timeline.TimelineFragment;
+import com.example.lengary_l.wanandroid.ui.AboutFragment;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private TimelineFragment timelineFragment;
     private CategoriesFragment categoriesFragment;
+    private AboutFragment aboutFragment;
 
     private TextView textUserIcon;
     private AppCompatTextView textUserName;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showFragment(categoriesFragment);
                     break;
 
+                case R.id.nav_about:
+                    showFragment(aboutFragment);
                 default:
                     break;
             }
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         showFragment(categoriesFragment);
                         break;
 
+                    case R.id.nav_about:
+                        showFragment(aboutFragment);
                     default:
                         break;
                 }
@@ -104,10 +109,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         outState.putInt(KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID,bottomNavigationView.getSelectedItemId());
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (timelineFragment.isAdded()) {
-            fragmentManager.putFragment(outState, "TimelineFragment", timelineFragment);
+            fragmentManager.putFragment(outState, TimelineFragment.class.getSimpleName(), timelineFragment);
         }
         if (categoriesFragment.isAdded()) {
-            fragmentManager.putFragment(outState, "CategoriesFragment", categoriesFragment);
+            fragmentManager.putFragment(outState, CategoriesFragment.class.getSimpleName(), categoriesFragment);
+        }
+        if (aboutFragment.isAdded()) {
+            fragmentManager.putFragment(outState, AboutFragment.class.getSimpleName(), aboutFragment);
         }
     }
 
@@ -139,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_search:
-                Log.e(TAG, "onOptionsItemSelected: " );
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
@@ -151,22 +158,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFragments(Bundle savedInstanceState) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
-            timelineFragment = (TimelineFragment) fragmentManager.getFragment(savedInstanceState, "TimelineFragment");
-            categoriesFragment = (CategoriesFragment) fragmentManager.getFragment(savedInstanceState, "CategoriesFragment");
+            timelineFragment = (TimelineFragment) fragmentManager.getFragment(savedInstanceState, TimelineFragment.class.getSimpleName());
+            categoriesFragment = (CategoriesFragment) fragmentManager.getFragment(savedInstanceState, CategoriesFragment.class.getSimpleName());
+            aboutFragment = (AboutFragment) fragmentManager.getFragment(savedInstanceState, AboutFragment.class.getSimpleName());
         } else {
             timelineFragment = TimelineFragment.newInstance();
             categoriesFragment = CategoriesFragment.newInstance();
+            aboutFragment = AboutFragment.newInstance();
         }
         if (!timelineFragment.isAdded()) {
             fragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, timelineFragment, "TimelineFragment")
+                    .add(R.id.frame_layout, timelineFragment, TimelineFragment.class.getSimpleName())
                     .commit();
         }
         if (!categoriesFragment.isAdded()) {
             fragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, categoriesFragment, "CategoriesFragment")
+                    .add(R.id.frame_layout, categoriesFragment, CategoriesFragment.class.getSimpleName())
                     .commit();
-
+        }
+        if (!aboutFragment.isAdded()) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.frame_layout, aboutFragment, AboutFragment.class.getSimpleName())
+                    .commit();
         }
     }
 
@@ -176,15 +189,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentManager.beginTransaction()
                     .show(timelineFragment)
                     .hide(categoriesFragment)
+                    .hide(aboutFragment)
                     .commit();
-            toolbar.setTitle(R.string.timeline_label);
+            setTitle(R.string.timeline_label);
 
         } else if (fragment instanceof CategoriesFragment) {
             fragmentManager.beginTransaction()
                     .show(categoriesFragment)
                     .hide(timelineFragment)
+                    .hide(aboutFragment)
                     .commit();
-            toolbar.setTitle(R.string.categories_label);
+            setTitle(R.string.categories_label);
+        } else if (fragment instanceof AboutFragment) {
+            fragmentManager.beginTransaction()
+                    .show(aboutFragment)
+                    .hide(timelineFragment)
+                    .hide(categoriesFragment)
+                    .commit();
+            setTitle(R.string.nav_about);
         }
     }
 
@@ -198,7 +220,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_switch_theme:
-
                 drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
                     @Override
                     public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -230,12 +251,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     }
                 });
-                break;
-
-            case R.id.nav_settings:
-                break;
-
-            case R.id.nav_about:
                 break;
             default:
                 break;

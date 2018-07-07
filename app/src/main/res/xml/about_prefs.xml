@@ -4,6 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        android:title="@string/about_settings">
+        <SwitchPreference
+            app:key="navigation_bar_tint"
+            android:title="@string/about_navigation_bar_tint"
+            android:summary="@string/about_navigation_bar_tint_desc"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="@string/nav_about">
 
         <Preference

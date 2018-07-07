@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.appwidget.AppWidgetProvider;
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
@@ -94,6 +95,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
     public void onPause() {
         super.onPause();
         presenter.unSubscribe();
+        getActivity().sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(getContext()));
     }
 
     @Override

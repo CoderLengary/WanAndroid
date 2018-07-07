@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.widget.Toast;
@@ -12,15 +13,28 @@ import com.example.lengary_l.wanandroid.BuildConfig;
 import com.example.lengary_l.wanandroid.R;
 
 public class AboutFragment extends PreferenceFragmentCompat {
-    private Preference prefVersion,prefRate,prefLicenses,
+
+
+    private Preference prefNavigationBar,prefVersion,prefRate,prefLicenses,
             preLiZhaoTaiLang,preHongYang,prefSourceCode,
             prefSendAdvices;
+
+    public static AboutFragment newInstance() {
+        return new AboutFragment();
+    }
 
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.about_prefs);
         initPrefs();
+        prefNavigationBar.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Snackbar.make(getView(),getString(R.string.about_navigation_bar_restart_msg),Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         prefVersion.setSummary(BuildConfig.VERSION_NAME);
         prefRate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -40,8 +54,9 @@ public class AboutFragment extends PreferenceFragmentCompat {
         prefLicenses.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-
-                return false;
+                Intent intent = new Intent(getContext(), LicensesActivity.class);
+                startActivity(intent);
+                return true;
             }
         });
 
@@ -86,6 +101,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
     }
 
     private void initPrefs() {
+        prefNavigationBar = findPreference("navigation_bar_tint");
         prefVersion = findPreference("version");
         prefRate = findPreference("rate");
         prefLicenses = findPreference("licenses");

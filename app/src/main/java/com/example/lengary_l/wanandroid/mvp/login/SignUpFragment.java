@@ -118,7 +118,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
-        sp.edit().putString(SettingsUtil.PASSEORD, password).apply();
+        sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
         navigateToMain();
     }
 

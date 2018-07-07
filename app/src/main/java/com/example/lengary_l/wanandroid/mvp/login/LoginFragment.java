@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         if (userId != -1) {
             Log.e(TAG, "onCreate: auto login " );
             presenter.login(sp.getString(SettingsUtil.USERNAME,""),
-                    sp.getString(SettingsUtil.PASSEORD,""),LoginType.TYPE_LOGIN);
+                    sp.getString(SettingsUtil.PASSWORD,""),LoginType.TYPE_LOGIN);
         }
     }
 
@@ -141,7 +141,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
-        sp.edit().putString(SettingsUtil.PASSEORD, password).apply();
+        sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
         navigateToMain();
     }
     private void navigateToMain() {
