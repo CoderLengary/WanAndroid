@@ -12,7 +12,6 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Predicate;
 
 public class LoginDataRepository implements LoginDataSource{
-    private static final String TAG = "LoginDataRepository";
     @NonNull
     private LoginDataSource localDataSource;
     @NonNull

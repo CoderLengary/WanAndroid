@@ -23,5 +23,7 @@ public interface SearchContract {
         boolean isActive();
 
         void hideImn();
+
+        void showEmptyView(boolean toShow);
     }
 }

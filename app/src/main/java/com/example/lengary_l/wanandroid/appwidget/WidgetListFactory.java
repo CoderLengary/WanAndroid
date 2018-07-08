@@ -28,7 +28,6 @@ public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory 
         this.context = context;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         userId = sp.getInt(SettingsUtil.USERID, -1);
-        userId = -1;
     }
 
     @Override
@@ -61,7 +60,7 @@ public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory 
     @Override
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteViews = new RemoteViews(
-                context.getPackageName(), R.layout.item_category);
+                context.getPackageName(), R.layout.item_list_widget);
         Realm realm=Realm.getInstance(new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .name(RealmHelper.DATABASE_NAME)

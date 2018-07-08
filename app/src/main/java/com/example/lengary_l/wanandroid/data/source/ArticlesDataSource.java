@@ -19,4 +19,6 @@ public interface ArticlesDataSource {
     void addToReadLater(int currentUserId, int articleId, boolean readerLater);
 
     Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId);
+
+    Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId , boolean forceUpdate,boolean clearCache);
 }

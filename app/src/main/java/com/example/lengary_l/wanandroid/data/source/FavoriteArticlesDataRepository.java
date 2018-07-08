@@ -16,7 +16,6 @@ import io.reactivex.functions.Consumer;
 public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSource {
     private FavoriteArticlesDataSource remote;
     private Map<Integer, FavoriteArticleDetailData> favoriteArticlesCache;
-    private static final String TAG = "FavoriteArticlesDataRep";
     @NonNull
     private static FavoriteArticlesDataRepository INSTANCE;
 

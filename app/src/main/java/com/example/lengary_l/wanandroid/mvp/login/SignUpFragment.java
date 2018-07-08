@@ -21,7 +21,7 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
-import com.example.lengary_l.wanandroid.util.StringUtils;
+import com.example.lengary_l.wanandroid.util.StringUtil;
 
 public class SignUpFragment extends Fragment implements LoginContract.View {
 
@@ -89,7 +89,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
 
     private boolean checkValid(String username,String password,String rePassword){
         boolean isValid = false;
-        if (StringUtils.isInvalid(username)||StringUtils.isInvalid(password)||StringUtils.isInvalid(rePassword)){
+        if (StringUtil.isInvalid(username)|| StringUtil.isInvalid(password)|| StringUtil.isInvalid(rePassword)){
             Snackbar.make(linkLogin,getString(R.string.input_error),Snackbar.LENGTH_SHORT).show();
         }else if (!password.equals(rePassword)){
             Snackbar.make(linkLogin,getString(R.string.repassword_not_match),Snackbar.LENGTH_SHORT).show();
@@ -102,9 +102,6 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showLoginError( String errorMsg) {
-       /* if (loginType==LoginType.TYPE_REGISTER){
-            Snackbar.make(linkLogin, getString(R.string.register_error), Snackbar.LENGTH_SHORT).show();
-        }*/
        Snackbar.make(linkLogin,errorMsg,Snackbar.LENGTH_SHORT).show();
     }
 
@@ -124,7 +121,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showNetworkError() {
-        Toast.makeText(getContext(),"No wifi",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getString(R.string.network_error),Toast.LENGTH_LONG).show();
     }
 
     @Override

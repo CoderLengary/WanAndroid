@@ -14,7 +14,7 @@ public interface CategoriesContract {
     interface View extends BaseView<Presenter>{
         void showCategories(List<CategoryDetailData> list);
 
-        void showEmptyView();
+        void showEmptyView(boolean toShow);
 
         void setLoadingIndicator(boolean isActive);
 

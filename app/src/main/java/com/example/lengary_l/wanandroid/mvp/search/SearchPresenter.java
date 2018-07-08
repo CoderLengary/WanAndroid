@@ -6,6 +6,7 @@ import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.HotKeyDetailData;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.HotKeyDataRepository;
+import com.example.lengary_l.wanandroid.util.SortUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,14 +80,13 @@ public class SearchPresenter implements SearchContract.Presenter{
                             addToHashMap(value);
                         }else {
                             view.showArticles(value);
-                            hashMap.clear();
                         }
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        view.showEmptyView(true);
                     }
 
                     @Override
@@ -97,7 +97,6 @@ public class SearchPresenter implements SearchContract.Presenter{
                         if (forceUpdate && !clearCache) {
                             view.showArticles(sortHashMap(new ArrayList<>(hashMap.values())));
                         }
-
                     }
                 });
         compositeDisposable.add(disposable);
@@ -123,11 +122,7 @@ public class SearchPresenter implements SearchContract.Presenter{
         Collections.sort(list, new Comparator<ArticleDetailData>() {
             @Override
             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                    return -1;
-                }else {
-                    return 1;
-                }
+                return SortUtil.sortArticleDetailData(articleDetailData, t1);
             }
         });
         return list;

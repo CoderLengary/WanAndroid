@@ -84,4 +84,10 @@ public class ArticlesDataLocalSource implements ArticlesDataSource {
             }
         }).toObservable();
     }
+
+    @Override
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate, boolean clearCache) {
+        //The remote has handled it
+        return null;
+    }
 }

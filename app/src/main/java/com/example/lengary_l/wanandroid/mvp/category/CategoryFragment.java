@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +36,8 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     private static final int INDEX = 0;
     private int mListSize;
     private int currentPage;
-    private int currentCategoryId;
 
-    private static final String TAG = "CategoryFragment";
+
 
     public CategoryFragment(){
 
@@ -61,7 +59,6 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
         super.onResume();
         toolbar.setTitle(categoryName);
         if (isFirstLoad){
-            Log.e(TAG, "onResume: " );
             presenter.getArticlesFromCatg(INDEX,categoryId,true,true);
             currentPage = INDEX;
             isFirstLoad = false;
@@ -80,7 +77,6 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy: " );
     }
 
     @Nullable
@@ -143,9 +139,9 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     }
 
     @Override
-    public void showEmptyView() {
-        emptyView.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
+    public void showEmptyView(boolean toShow) {
+        emptyView.setVisibility(toShow?View.VISIBLE:View.INVISIBLE);
+        recyclerView.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
     }
 
     @Override

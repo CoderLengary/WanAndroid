@@ -14,7 +14,7 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
 import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
-import com.example.lengary_l.wanandroid.util.StringUtils;
+import com.example.lengary_l.wanandroid.util.StringUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,7 +61,7 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
         ReadLaterArticleData data = mList.get(position);
         normalViewHolder.textAuthor.setText(data.getAuthor());
-        normalViewHolder.textTitle.setText(StringUtils.replaceInvalidChar(data.getTitle()));
+        normalViewHolder.textTitle.setText(StringUtil.replaceInvalidChar(data.getTitle()));
         //if the text is too long, the button can not show it correctly.The solution is adding " ".
         normalViewHolder.btnCategory.setText("  "+data.getChapterName()+"  ");
         normalViewHolder.textTime.setText(simpleDateFormat.format(new Date(data.getTimestamp())));

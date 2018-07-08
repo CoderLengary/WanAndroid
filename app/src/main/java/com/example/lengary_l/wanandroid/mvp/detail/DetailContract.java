@@ -3,6 +3,8 @@ package com.example.lengary_l.wanandroid.mvp.detail;
 import com.example.lengary_l.wanandroid.mvp.BasePresenter;
 import com.example.lengary_l.wanandroid.mvp.BaseView;
 
+import java.util.List;
+
 public interface DetailContract {
     interface Presenter extends BasePresenter{
 
@@ -16,6 +18,7 @@ public interface DetailContract {
 
         void checkIsReadLater(int userId, int id);
 
+        void refreshCollectIdList(int userId);
 
 
         
@@ -31,5 +34,9 @@ public interface DetailContract {
         void changeFavoriteState();
 
         void saveReadLaterState(boolean isReadLater);
+
+        void saveFavoriteArticleIdList(List<Integer> list);
+
+
     }
 }

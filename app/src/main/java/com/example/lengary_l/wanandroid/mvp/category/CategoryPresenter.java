@@ -1,9 +1,8 @@
 package com.example.lengary_l.wanandroid.mvp.category;
 
-import android.util.Log;
-
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
-import com.example.lengary_l.wanandroid.data.source.CategoryDataRepository;
+import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
+import com.example.lengary_l.wanandroid.util.SortUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,11 +20,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CategoryPresenter implements CategoryContract.Presenter {
     private CategoryContract.View view;
-    private CategoryDataRepository repository;
+    private ArticlesDataRepository repository;
     private Map<Integer, ArticleDetailData> hashMap;
     private CompositeDisposable compositeDisposable;
-    private static final String TAG = "CategoryPresenter";
-    public CategoryPresenter(CategoryContract.View view, CategoryDataRepository repository){
+
+    public CategoryPresenter(CategoryContract.View view, ArticlesDataRepository repository) {
         this.view = view;
         this.repository = repository;
         this.view.setPresenter(this);
@@ -45,40 +44,36 @@ public class CategoryPresenter implements CategoryContract.Presenter {
 
     @Override
     public void getArticlesFromCatg(int page, int categoryId, final boolean forceUpdate, final boolean clearCache) {
-        Disposable disposable = repository.getArticlesFromCatg(page, categoryId, forceUpdate,clearCache)
+        Disposable disposable = repository.getArticlesFromCatg(page, categoryId, forceUpdate, clearCache)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
 
                     @Override
                     public void onNext(List<ArticleDetailData> value) {
-                        Log.e(TAG, "onNext: value size "+value.size() );
-                        if(!view.isActive()){
+                        if (!view.isActive()) {
                             return;
                         }
-
-                        if (forceUpdate&&!clearCache){
+                        if (forceUpdate && !clearCache) {
                             addToHashMap(value);
-                        }else {
-                            Log.e(TAG, "onNext: show Articles" );
+                        } else {
                             view.showArticles(value);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (view.isActive()){
-                            view.showEmptyView();
+                        if (view.isActive()) {
+                            view.showEmptyView(true);
                         }
-                        Log.e(TAG, "onError: "+e.getMessage() );
                     }
 
                     @Override
                     public void onComplete() {
-                        if(!view.isActive()){
+                        if (!view.isActive()) {
                             return;
                         }
-                        if (forceUpdate&&!clearCache){
+                        if (forceUpdate && !clearCache) {
                             view.showArticles(sortHashMap(
                                     new ArrayList<>(hashMap.values())
                             ));
@@ -88,21 +83,17 @@ public class CategoryPresenter implements CategoryContract.Presenter {
         compositeDisposable.add(disposable);
     }
 
-    private void addToHashMap(List<ArticleDetailData> value){
-        for (ArticleDetailData d:value){
+    private void addToHashMap(List<ArticleDetailData> value) {
+        for (ArticleDetailData d : value) {
             hashMap.put(d.getId(), d);
         }
     }
 
-    private List<ArticleDetailData> sortHashMap(List<ArticleDetailData> list){
+    private List<ArticleDetailData> sortHashMap(List<ArticleDetailData> list) {
         Collections.sort(list, new Comparator<ArticleDetailData>() {
             @Override
             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                    return -1;
-                }else {
-                    return 1;
-                }
+               return SortUtil.sortArticleDetailData(articleDetailData, t1);
             }
         });
         return list;

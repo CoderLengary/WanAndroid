@@ -10,13 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -45,7 +43,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private String keyWords;
     private boolean isFirstLoad = true;
     private CategoryAdapter adapter;
-    private EditText editText;
     private int articlesListSize;
     private LinearLayoutManager layoutManager;
 
@@ -84,7 +81,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                 currentPage = INDEX;
                 keyWords = newText;
                 return true;*/
-                return false;
+                return true;
             }
         });
 
@@ -109,11 +106,9 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         super.onResume();
         presenter.subscribe();
         if (isFirstLoad){
-            Log.e(TAG, "onResume: is first load" );
             presenter.getHotKeys(true);
             isFirstLoad = false;
         }else {
-            Log.e(TAG, "onResume: not first load" );
             presenter.getHotKeys(false);
             presenter.searchArticles(currentPage, keyWords, false,false);
         }
@@ -143,8 +138,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         recyclerView.setLayoutManager(layoutManager);
         flowLayout = view.findViewById(R.id.flow_layout);
         emptyView = view.findViewById(R.id.empty_view);
-        int id=searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-        editText = searchView.findViewById(id);
+
     }
 
     @Override
@@ -155,6 +149,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     @Override
     public void showArticles(final List<ArticleDetailData> articlesList) {
+        if (articlesList.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
+        showEmptyView(false);
         if (adapter == null) {
             adapter = new CategoryAdapter(getContext(),articlesList);
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
@@ -219,5 +218,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         if (manager.isActive()) {
             manager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void showEmptyView(boolean toShow) {
+        emptyView.setVisibility(toShow?View.VISIBLE:View.INVISIBLE);
+        recyclerView.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
     }
 }

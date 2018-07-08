@@ -104,9 +104,9 @@ public class CategoriesFragment extends Fragment implements CategoriesContract.V
     }
 
     @Override
-    public void showEmptyView() {
-        emptyView.setVisibility(View.VISIBLE);
-        refreshLayout.setVisibility(View.INVISIBLE);
+    public void showEmptyView(boolean toShow) {
+        emptyView.setVisibility(toShow?View.VISIBLE:View.INVISIBLE);
+        refreshLayout.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
     }
 
     @Override

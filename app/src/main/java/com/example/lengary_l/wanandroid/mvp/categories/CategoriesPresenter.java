@@ -49,11 +49,12 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
                             return;
                         }
                         view.showCategories(value);
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showEmptyView();
+                        view.showEmptyView(true);
                     }
 
                     @Override
@@ -62,6 +63,7 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
                             return;
                         }
                         view.setLoadingIndicator(false);
+                        view.showEmptyView(false);
                     }
                 });
         compositeDisposable.add(disposable);

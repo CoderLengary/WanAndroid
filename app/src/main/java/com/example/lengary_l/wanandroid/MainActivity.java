@@ -26,6 +26,7 @@ import com.example.lengary_l.wanandroid.data.source.CategoriesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.CategoriesDataRemoteSource;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesFragment;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesPresenter;
+import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.mvp.search.SearchActivity;
 import com.example.lengary_l.wanandroid.mvp.timeline.TimelineFragment;
 import com.example.lengary_l.wanandroid.ui.AboutFragment;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = "MainActivity";
 
-    private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID="KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
+    private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID = "KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -56,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initViews();
         initFragments(savedInstanceState);
         new CategoriesPresenter(CategoriesDataRepository.getInstance(CategoriesDataRemoteSource.getInstance()), categoriesFragment);
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             int selectId = savedInstanceState.getInt(KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID);
-            switch (selectId){
+            switch (selectId) {
                 case R.id.nav_timeline:
                     showFragment(timelineFragment);
                     break;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 default:
                     break;
             }
-        }else {
+        } else {
             showFragment(timelineFragment);
         }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String userName = sp.getString(SettingsUtil.USERNAME, "");
         if (!userName.equals("")) {
-            textUserIcon.setText(userName.substring(0,1));
+            textUserIcon.setText(userName.substring(0, 1));
             textUserName.setText(userName);
         }
     }
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID,bottomNavigationView.getSelectedItemId());
+        outState.putInt(KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID, bottomNavigationView.getSelectedItemId());
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (timelineFragment.isAdded()) {
             fragmentManager.putFragment(outState, TimelineFragment.class.getSimpleName(), timelineFragment);
@@ -145,12 +146,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_search:
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
-                default:break;
+            default:
+                break;
         }
         return true;
     }
@@ -211,12 +213,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_sign_out:
+
                 break;
 
             case R.id.nav_switch_theme:
@@ -258,6 +259,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawerLayout.closeDrawer(Gravity.START);
         return true;
+    }
+
+    private void navigateToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }

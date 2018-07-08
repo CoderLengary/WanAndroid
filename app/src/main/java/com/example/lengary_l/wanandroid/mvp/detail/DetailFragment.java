@@ -28,6 +28,8 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.RxBus.RxBus;
 import com.just.agentweb.AgentWeb;
 
+import java.util.List;
+
 public class DetailFragment extends Fragment implements DetailContract.View{
     private FrameLayout webViewContainer;
     private Toolbar toolbar;
@@ -37,9 +39,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private int id;
     private AgentWeb agentWeb;
     private int userId;
-    private boolean isFavorite;
+
     private boolean isReadLater;
     private boolean isFromFavoriteFragment;
+    private List<Integer> collectIds;
 
 
     public DetailFragment(){
@@ -58,10 +61,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         url = intent.getStringExtra(DetailActivity.URL);
         title = intent.getStringExtra(DetailActivity.TITLE);
         id = intent.getIntExtra(DetailActivity.ID, -1);
-        isFavorite = intent.getBooleanExtra(DetailActivity.FAVORITE_STATE, false);
         userId = intent.getIntExtra(DetailActivity.USER_ID, -1);
         isFromFavoriteFragment = intent.getBooleanExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
         presenter.checkIsReadLater(userId, id);
+        presenter.refreshCollectIdList(userId);
     }
 
     @Nullable
@@ -103,27 +106,28 @@ public class DetailFragment extends Fragment implements DetailContract.View{
             case R.id.action_more:
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
                 View view = getActivity().getLayoutInflater().inflate(R.layout.actions_details_sheet, null);
+                final boolean isFavorite = checkIsFavorite(id);
                 AppCompatTextView textFavorite = view.findViewById(R.id.text_view_favorite);
-                textFavorite.setText(isFavorite?R.string.detail_uncollect_article:R.string.detail_collect_article);
+                textFavorite.setText(isFavorite ? R.string.detail_uncollect_article : R.string.detail_collect_article);
                 textFavorite.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (isFavorite){
+                        if (isFavorite) {
                             presenter.uncollectArticle(userId, id);
-                        }else {
+                        } else {
                             presenter.collectArticle(userId, id);
                         }
                         bottomSheetDialog.dismiss();
                     }
                 });
                 AppCompatTextView textAddToReadLater = view.findViewById(R.id.text_view_read_later);
-                textAddToReadLater.setText(isReadLater?R.string.detail_remove_from_read_later:R.string.detail_add_to_read_later);
+                textAddToReadLater.setText(isReadLater ? R.string.detail_remove_from_read_later : R.string.detail_add_to_read_later);
                 textAddToReadLater.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (isReadLater) {
                             presenter.removeReadLaterArticle(userId, id);
-                        }else {
+                        } else {
                             presenter.insertReadLaterArticle(userId, id, System.currentTimeMillis());
                         }
                         isReadLater = !isReadLater;
@@ -250,7 +254,9 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         Toast.makeText(getContext(),
                 isSuccess?getString(R.string.detail_collect_article_success):getString(R.string.detail_collect_article_error),
                 Toast.LENGTH_LONG).show();
-
+        if (isSuccess&&!checkIsFavorite(id)) {
+            collectIds.add(id);
+        }
     }
 
     @Override
@@ -258,6 +264,9 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         Toast.makeText(getContext(),
                 isSuccess?getString(R.string.detail_uncollect_article_success):getString(R.string.detail_uncollect_article_error),
                 Toast.LENGTH_LONG).show();
+        if (isSuccess&&checkIsFavorite(id)) {
+            collectIds.remove(id);
+        }
     }
 
     @Override
@@ -267,13 +276,31 @@ public class DetailFragment extends Fragment implements DetailContract.View{
 
     @Override
     public void changeFavoriteState() {
-        isFavorite = !isFavorite;
         RxBus.getInstance().send(RxBus.REFRESH);
     }
 
     @Override
     public void saveReadLaterState(boolean isReadLater) {
         this.isReadLater = isReadLater;
+    }
+
+    @Override
+    public void saveFavoriteArticleIdList(List<Integer> list) {
+        collectIds = list;
+    }
+
+    private boolean checkIsFavorite(int articleId) {
+        if (collectIds == null) {
+            return false;
+        }
+        boolean isFavorite = false;
+        for (Integer collectId : collectIds) {
+            if (articleId == collectId) {
+                isFavorite = true;
+                break;
+            }
+        }
+        return isFavorite;
     }
 
 

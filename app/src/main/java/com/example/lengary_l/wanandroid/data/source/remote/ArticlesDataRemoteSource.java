@@ -8,6 +8,7 @@ import com.example.lengary_l.wanandroid.data.source.ArticlesDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
+import com.example.lengary_l.wanandroid.util.SortUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -56,11 +57,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                                    return -1;
-                                }else {
-                                    return 1;
-                                }
+                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
                             }
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
@@ -104,11 +101,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                                    return -1;
-                                }else {
-                                    return 1;
-                                }
+                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
                             }
                         }).toObservable();
                     }
@@ -130,6 +123,30 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
     public Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId) {
         //The local has handled it
         return null;
+    }
+
+    @Override
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate,boolean clearCache) {
+        return RetrofitClient.getInstance()
+                .create(RetrofitService.class)
+                .getArticlesFromCatg(page,categoryId)
+                .filter(new Predicate<ArticlesData>() {
+                    @Override
+                    public boolean test(ArticlesData articlesData) throws Exception {
+                        return articlesData.getErrorCode() != -1;
+                    }
+                })
+                .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
+                    @Override
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                        return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
+                            @Override
+                            public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                            }
+                        }).toObservable();
+                    }
+                });
     }
 
 }

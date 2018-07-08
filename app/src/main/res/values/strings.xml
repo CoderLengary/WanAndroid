@@ -31,6 +31,7 @@
     <string name="register_error">The username is already taken</string>
     <string name="input_error">What you input is invalid</string>
     <string name="repassword_not_match">The repassword and password you entered does not match</string>
+
     <!--login end-->
 
     <!--main start-->
@@ -52,10 +53,6 @@
     <string name="timeline_favorites">Favorites</string>
     <string name="timeline_read_later">Read Later</string>
     <!--Timeline end-->
-
-    <!--error-->
-    <string name="network_error">Network is not available</string>
-    <!--error-->
     
     <!--Detail start-->
     <string name="detail_label">Detail</string>
@@ -74,7 +71,6 @@
     <string name="detail_collect_article_success">Success</string>
     <string name="detail_uncollect_article_error">Fail to uncollect article</string>
     <string name="detail_uncollect_article_success">Success</string>
-
     <!--Detail end-->
 
     <!--Categories start-->
@@ -118,5 +114,6 @@
 
     <!--Error-->
     <string name="error">Something wrong</string>
+    <string name="network_error">Network is not available</string>
     <!--Error-->
 </resources>

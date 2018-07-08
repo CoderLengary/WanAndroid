@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.lengary_l.wanandroid.R;
@@ -14,6 +15,7 @@ import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
     private static final String REFRESH_ACTION = "com.example.lengary_l.wanandroid";
 
+    private static final String TAG = "AppWidgetProvider";
 
     public static Intent getRefreshBroadcastIntent(Context context) {
         return new Intent(REFRESH_ACTION)
@@ -49,6 +51,7 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        Log.e(TAG, "onReceive: " );
         if (intent.getAction().equals(REFRESH_ACTION)) {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             ComponentName name = new ComponentName(context, AppWidgetProvider.class);

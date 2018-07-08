@@ -41,7 +41,7 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
                 .filter(new Predicate<FavoriteArticlesData>() {
                     @Override
                     public boolean test(FavoriteArticlesData favoriteArticlesData) throws Exception {
-                        return favoriteArticlesData.getErrorCode() != -1&&!favoriteArticlesData.getData().getDatas().isEmpty();
+                        return favoriteArticlesData.getErrorCode() != -1;
                     }
                 }).flatMap(new Function<FavoriteArticlesData, ObservableSource<List<FavoriteArticleDetailData>>>() {
                     @Override

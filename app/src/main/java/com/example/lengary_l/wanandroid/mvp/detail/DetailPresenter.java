@@ -1,32 +1,33 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
-import android.util.Log;
-
+import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.Status;
+import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class DetailPresenter implements DetailContract.Presenter{
+public class DetailPresenter implements DetailContract.Presenter {
     private DetailContract.View view;
     private StatusDataRepository statusDataRepository;
-
     private CompositeDisposable compositeDisposable;
     private ReadLaterArticlesRepository readLaterArticlesRepository;
-    private static final String TAG = "DetailPresenter";
-
+    private LoginDataRepository loginRepository;
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,
-                           ReadLaterArticlesRepository readLaterArticlesRepository) {
+                           ReadLaterArticlesRepository readLaterArticlesRepository,
+                           LoginDataRepository loginRepository) {
         this.view = view;
         this.statusDataRepository = statusDataRepository;
         this.readLaterArticlesRepository = readLaterArticlesRepository;
+        this.loginRepository = loginRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
     }
@@ -42,11 +43,11 @@ public class DetailPresenter implements DetailContract.Presenter{
     }
 
     @Override
-    public void collectArticle(int userId,int originId) {
-        Disposable disposable=statusDataRepository.collectArticle(userId, originId)
+    public void collectArticle(int userId, int originId) {
+        Disposable disposable = statusDataRepository.collectArticle(userId, originId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<Status>(){
+                .subscribeWith(new DisposableObserver<Status>() {
 
                     @Override
                     public void onNext(Status value) {
@@ -82,7 +83,6 @@ public class DetailPresenter implements DetailContract.Presenter{
                     public void onNext(Status value) {
                         if (view.isActive() && value.getErrorCode() != -1) {
                             view.showUnCollectStatus(true);
-                            Log.e(TAG, "onNext: " );
                             view.changeFavoriteState();
                         }
                     }
@@ -115,6 +115,36 @@ public class DetailPresenter implements DetailContract.Presenter{
     @Override
     public void checkIsReadLater(int userId, int id) {
         view.saveReadLaterState(readLaterArticlesRepository.isExist(userId, id));
+    }
+
+    @Override
+    public void refreshCollectIdList(int userId) {
+        Disposable disposable = loginRepository.getLocalLoginData(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter(new Predicate<LoginDetailData>() {
+                    @Override
+                    public boolean test(LoginDetailData loginDetailData) throws Exception {
+                        return !loginDetailData.getCollectIds().isEmpty();
+                    }
+                })
+                .subscribeWith(new DisposableObserver<LoginDetailData>() {
+                    @Override
+                    public void onNext(LoginDetailData value) {
+                        view.saveFavoriteArticleIdList(value.getCollectIds());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposable);
     }
 
 

@@ -46,9 +46,9 @@ public class TimelineFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null){
             FragmentManager fragmentManager = getChildFragmentManager();
-            articlesFragment = (ArticlesFragment) fragmentManager.getFragment(savedInstanceState, "ArticlesFragment");
-            favoritesFragment = (FavoritesFragment) fragmentManager.getFragment(savedInstanceState, "FavoritesFragment");
-            readLaterFragment = (ReadLaterFragment) fragmentManager.getFragment(savedInstanceState, "ReadLaterFragment");
+            articlesFragment = (ArticlesFragment) fragmentManager.getFragment(savedInstanceState, ArticlesFragment.class.getSimpleName());
+            favoritesFragment = (FavoritesFragment) fragmentManager.getFragment(savedInstanceState, FavoritesFragment.class.getSimpleName());
+            readLaterFragment = (ReadLaterFragment) fragmentManager.getFragment(savedInstanceState, ReadLaterFragment.class.getSimpleName());
         }else {
             articlesFragment = ArticlesFragment.newInstance();
             favoritesFragment = FavoritesFragment.newInstance();
@@ -90,13 +90,13 @@ public class TimelineFragment extends Fragment {
         super.onSaveInstanceState(outState);
         FragmentManager fragmentManager = getChildFragmentManager();
         if (articlesFragment.isAdded()){
-            fragmentManager.putFragment(outState,"ArticlesFragment",articlesFragment);
+            fragmentManager.putFragment(outState,ArticlesFragment.class.getSimpleName(),articlesFragment);
         }
         if (favoritesFragment.isAdded()){
-            fragmentManager.putFragment(outState, "FavoritesFragment", favoritesFragment);
+            fragmentManager.putFragment(outState, FavoritesFragment.class.getSimpleName(), favoritesFragment);
         }
         if (readLaterFragment.isAdded()){
-            fragmentManager.putFragment(outState, "ReadLaterFragment", readLaterFragment);
+            fragmentManager.putFragment(outState, ReadLaterFragment.class.getSimpleName(), readLaterFragment);
         }
     }
 }

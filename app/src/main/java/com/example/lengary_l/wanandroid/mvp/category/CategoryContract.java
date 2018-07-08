@@ -14,7 +14,7 @@ public interface CategoryContract {
     interface View extends BaseView<Presenter>{
         void showArticles(List<ArticleDetailData> list);
 
-        void showEmptyView();
+        void showEmptyView(boolean toShow);
 
         boolean isActive();
 

@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
@@ -45,15 +44,7 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
                         if (!view.isActive()) {
                             return;
                         }
-                        if (value.isEmpty()) {
-                            Log.e(TAG, "onNext: is empty" );
-                            view.showEmptyView(true);
-                        }else {
-                            Log.e(TAG, "onNext: is not empty" );
-                            view.showEmptyView(false);
-                            view.showReadLaterArticles(value);
-                            Log.e(TAG, "onNext: readlater article is "+value.get(0).getTitle());
-                        }
+                        view.showReadLaterArticles(value);
                     }
 
                     @Override

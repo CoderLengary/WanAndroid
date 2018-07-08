@@ -12,7 +12,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +44,8 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     private boolean isFirstLoad=true;
     private final int INDEX = 0;
     private SwipeRefreshLayout refreshLayout;
-    private static final String TAG = "FavoritesFragment";
-    private List<Integer> collectIds;
     private int userId;
-    private String userName;
-    private String userPassword;
+
 
 
     public FavoritesFragment(){
@@ -65,8 +61,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         super.onCreate(savedInstanceState);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         userId = sp.getInt(SettingsUtil.USERID, -1);
-        userName = sp.getString(SettingsUtil.USERNAME, "");
-        userPassword = sp.getString(SettingsUtil.USERNAME, "");
         RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
 
             @Override
@@ -127,12 +121,14 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     @Override
     public void showFavoriteArticles(final List<FavoriteArticleDetailData> list) {
-        Log.e(TAG, "showFavoriteArticles " );
+        if (list.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
+        showEmptyView(false);
         if (adapter != null) {
-            Log.e(TAG, "showFavoriteArticles: update" );
             adapter.updateData(list);
         }else {
-            Log.e(TAG, "showFavoriteArticles: not update" );
             adapter = new FavoritesAdapter(getContext(), list);
             adapter.setCategoryListener(new OnCategoryOnClickListener() {
                 @Override
@@ -203,7 +199,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     private void loadMore() {
         boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
         if (isNetworkAvailable){
-            Log.e(TAG, "loadMore: " );
             currentPage += 1;
             presenter.getFavoriteArticles(currentPage, true,false);
         }else {

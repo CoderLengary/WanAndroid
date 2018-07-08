@@ -100,6 +100,11 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
 
     @Override
     public void showReadLaterArticles(final List<ReadLaterArticleData> list) {
+        if (list.isEmpty()) {
+            showEmptyView(true);
+            return;
+        }
+        showEmptyView(false);
         if (adapter != null) {
             adapter.updateData(list);
         }else {

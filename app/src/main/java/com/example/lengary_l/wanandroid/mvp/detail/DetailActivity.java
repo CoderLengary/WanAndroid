@@ -6,9 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.lengary_l.wanandroid.R;
+import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
+import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
+import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.StatusDataRemoteSource;
 
 public class DetailActivity extends AppCompatActivity {
@@ -31,9 +34,10 @@ public class DetailActivity extends AppCompatActivity {
             detailFragment = DetailFragment.newInstance();
         }
         new DetailPresenter(detailFragment, StatusDataRepository.getInstance(StatusDataRemoteSource.getInstance()),
-                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()));
+                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
+                LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.view_pager, detailFragment, "DetailFragment")
+                .replace(R.id.view_pager, detailFragment, DetailFragment.class.getSimpleName())
                 .commit();
 
     }
@@ -43,7 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (detailFragment.isAdded()){
-            getSupportFragmentManager().putFragment(outState, "DetailFragment", detailFragment);
+            getSupportFragmentManager().putFragment(outState, DetailFragment.class.getSimpleName(), detailFragment);
         }
     }
 

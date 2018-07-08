@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,7 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
-import com.example.lengary_l.wanandroid.util.StringUtils;
-
-import static android.support.constraint.Constraints.TAG;
+import com.example.lengary_l.wanandroid.util.StringUtil;
 
 public class LoginFragment extends Fragment implements LoginContract.View{
 
@@ -78,7 +75,6 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         int userId = sp.getInt(SettingsUtil.USERID, -1);
         if (userId != -1) {
-            Log.e(TAG, "onCreate: auto login " );
             presenter.login(sp.getString(SettingsUtil.USERNAME,""),
                     sp.getString(SettingsUtil.PASSWORD,""),LoginType.TYPE_LOGIN);
         }
@@ -99,7 +95,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     private boolean checkValid(String username, String password){
         boolean isValid = false;
-        if (StringUtils.isInvalid(username)||StringUtils.isInvalid(password)){
+        if (StringUtil.isInvalid(username)|| StringUtil.isInvalid(password)){
             Snackbar.make(linkSignUp,getString(R.string.input_error),Snackbar.LENGTH_SHORT).show();
         }else {
             isValid = true;
@@ -115,7 +111,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     @Override
     public void showNetworkError() {
-        Toast.makeText(getContext(),"No wifi",Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getString(R.string.network_error),Toast.LENGTH_LONG).show();
     }
 
 

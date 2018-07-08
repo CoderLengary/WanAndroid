@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
+import com.example.lengary_l.wanandroid.util.SortUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,6 +29,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
     private Map<Integer, ArticleDetailData> queryCache;
 
+    private Map<Integer, ArticleDetailData> categoryCache;
     private final int INDEX = 0;
 
     @NonNull
@@ -51,31 +53,19 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     @Override
     public Observable<List<ArticleDetailData>> getArticles(@NonNull final int page, final boolean forceUpdate, final boolean clearCache) {
 
-
-        //If we do not force update, and the cache is not null, get the cacheItems.
-        //退出，再次进入的逻辑
         if (!forceUpdate && articlesCache != null) {
             Log.e(TAG, "getArticles: No forceUpdate " );
             List<ArticleDetailData> cacheItems = new ArrayList<>(articlesCache.values());
             return Observable.fromIterable(cacheItems).toSortedList(new Comparator<ArticleDetailData>() {
                 @Override
                 public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                    if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                        return -1;
-                    }else {
-                        return 1;
-                    }
+                    return SortUtil.sortArticleDetailData(articleDetailData, t1);
                 }
             }).toObservable();
         }
 
-        //if we slide the recycle view,we force update and do not clear the cache,get the articles from remote and cache.
-        //if we force update and do not clear the cache,get the articles from remote and cache.
-        //滑动向下的处理逻辑
-
         if (!clearCache&&articlesCache!=null){
             Log.e(TAG, "getArticles: update not clearcache, page is "+page);
-
             List<ArticleDetailData> cacheItems = new ArrayList<>(articlesCache.values());
             Observable<List<ArticleDetailData>> ob1 = Observable.just(cacheItems);
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticles(page, forceUpdate, clearCache)
@@ -94,8 +84,6 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             });
         }
 
-        //when we refresh the layout,the page is zero,and we force update and clear all the caches.
-        //forceupdate,clearcache,下拉刷新，第一次打开应用逻辑,page都是等于0
         Log.e(TAG, "getArticles: update clearcache" );
         return remoteDataSource.getArticles(INDEX, forceUpdate, clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
@@ -131,11 +119,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                     .toSortedList(new Comparator<ArticleDetailData>() {
                         @Override
                         public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                            if (articleDetailData.getPublishTime() > t1.getPublishTime()) {
-                                return -1;
-                            } else {
-                                return 1;
-                            }
+                            return SortUtil.sortArticleDetailData(articleDetailData, t1);
                         }
                     }).toObservable();
         }
@@ -189,6 +173,54 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             queryCache.put(item.getId(), item);
         }
 
+    }
+
+
+    @Override
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, final boolean forceUpdate, final boolean clearCache) {
+        if (!forceUpdate&&categoryCache!=null){
+            List<ArticleDetailData> cacheItems = new ArrayList<>(categoryCache.values());
+            return Observable.fromIterable(cacheItems).toSortedList(new Comparator<ArticleDetailData>() {
+                @Override
+                public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                    return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                }
+            }).toObservable();
+        }
+
+        if (!clearCache&&categoryCache!=null){
+            List<ArticleDetailData> cacheItems = new ArrayList<>(categoryCache.values());
+            Observable<List<ArticleDetailData>> ob1 = Observable.just(cacheItems);
+            Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate, clearCache)
+                    .doOnNext(new Consumer<List<ArticleDetailData>>() {
+                        @Override
+                        public void accept(List<ArticleDetailData> list) throws Exception {
+                            refreshCategoryCache(clearCache, list);
+                        }
+                    });
+            return Observable.merge(ob1, ob2);
+
+        }
+
+        return remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate,clearCache)
+                .doOnNext(new Consumer<List<ArticleDetailData>>() {
+                    @Override
+                    public void accept(List<ArticleDetailData> list) throws Exception {
+                        refreshCategoryCache(clearCache, list);
+                    }
+                });
+    }
+
+    private void refreshCategoryCache(boolean clearCache,List<ArticleDetailData> list) {
+        if (categoryCache == null) {
+            categoryCache = new LinkedHashMap<>();
+        }
+        if (clearCache) {
+            categoryCache.clear();
+        }
+        for (ArticleDetailData item : list) {
+            categoryCache.put(item.getId(), item);
+        }
     }
 
 }

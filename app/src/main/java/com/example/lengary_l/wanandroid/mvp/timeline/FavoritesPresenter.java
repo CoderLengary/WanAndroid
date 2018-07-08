@@ -48,18 +48,12 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
                     @Override
                     public void onNext(List<FavoriteArticleDetailData> value) {
                         if (!view.isActive()) {
-                            Log.e(TAG, "onNext: is not actice" );
                             return;
                         }
                         if (forceUpdate && !clearCache) {
                             addToHashMap(value, false);
                         }else {
-                            Log.e(TAG, "onNext: force update clear cache" );
                             view.showFavoriteArticles(value);
-                            view.showEmptyView(false);
-                            if (clearCache&&hashMap!=null) {
-                                hashMap.clear();
-                            }
                         }
 
                     }
@@ -71,13 +65,11 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
 
                     @Override
                     public void onComplete() {
-                        //检测view是不是active是必须的吗？？
                         if (!view.isActive()) {
                             return;
                         }
                         if (forceUpdate && !clearCache) {
                             view.showFavoriteArticles(sortHashMap(new ArrayList<>(hashMap.values())));
-                            view.showEmptyView(false);
                         }
                         view.setLoadingIndicator(false);
                     }
