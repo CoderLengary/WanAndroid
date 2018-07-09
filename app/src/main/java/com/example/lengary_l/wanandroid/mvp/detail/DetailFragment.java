@@ -5,8 +5,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.RxBus.RxBus;
+import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.just.agentweb.AgentWeb;
 
 import java.util.List;
@@ -61,7 +64,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         url = intent.getStringExtra(DetailActivity.URL);
         title = intent.getStringExtra(DetailActivity.TITLE);
         id = intent.getIntExtra(DetailActivity.ID, -1);
-        userId = intent.getIntExtra(DetailActivity.USER_ID, -1);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userId=sp.getInt(SettingsUtil.USERID, -1);
         isFromFavoriteFragment = intent.getBooleanExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
         presenter.checkIsReadLater(userId, id);
         presenter.refreshCollectIdList(userId);

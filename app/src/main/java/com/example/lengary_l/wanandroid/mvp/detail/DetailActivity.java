@@ -1,7 +1,9 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
@@ -19,8 +21,6 @@ public class DetailActivity extends AppCompatActivity {
     public static final String ID = "ID";
     public static final String URL = "URL";
     public static final String TITLE = "TITLE";
-    public static final String FAVORITE_STATE = "FAVORITE_STATE";
-    public static final String USER_ID = "USER_ID";
     public static final String FROM_FAVORITE_FRAGMENT = "FROM_FAVORITE_FRAGMENT";
     private DetailFragment detailFragment;
 
@@ -28,6 +28,9 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container);
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("navigation_bar_tint", true)) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        }
         if (savedInstanceState != null) {
             detailFragment = (DetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, "DetailFragment");
         }else {

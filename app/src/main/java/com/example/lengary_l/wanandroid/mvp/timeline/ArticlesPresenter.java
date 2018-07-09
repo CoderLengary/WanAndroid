@@ -124,9 +124,6 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
                     @Override
                     public void onNext(LoginDetailData value) {
-                        if (view.isActive()) {
-                            view.saveFavoriteArticleIdList(value.getCollectIds());
-                        }
                     }
 
                     @Override

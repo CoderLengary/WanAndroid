@@ -37,7 +37,6 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
     private SwipeRefreshLayout refreshLayout;
     private ReadLaterContract.Presenter presenter;
     private ReadLaterAdapter adapter;
-    private List<Integer> collectIds;
     private int userId;
 
 
@@ -82,8 +81,6 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         super.onResume();
         presenter.subscribe();
         presenter.getReadLaterArticles(userId);
-        presenter.refreshCollectIdList(userId);
-
     }
 
     @Override
@@ -113,8 +110,9 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
-                    intent.putExtra(CategoryActivity.CATEGORY_ID, list.get(position).getChapterId());
-                    intent.putExtra(CategoryActivity.CATEGORY_NAME, list.get(position).getChapterName());
+                    ReadLaterArticleData data = list.get(position);
+                    intent.putExtra(CategoryActivity.CATEGORY_ID, data.getChapterId());
+                    intent.putExtra(CategoryActivity.CATEGORY_NAME, data.getChapterName());
                     startActivity(intent);
                 }
             });
@@ -122,22 +120,15 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra(DetailActivity.URL, list.get(position).getLink());
-                    intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
-                    int id = list.get(position).getId();
-                    intent.putExtra(DetailActivity.ID, id);
-                    intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
-                    intent.putExtra(DetailActivity.USER_ID, userId);
+                    ReadLaterArticleData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getId());
                     startActivity(intent);
                 }
             });
             recyclerView.setAdapter(adapter);
         }
-    }
-
-    @Override
-    public void saveFavoriteArticleIdList(List<Integer> list) {
-        collectIds = list;
     }
 
     @Override
@@ -151,14 +142,5 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         nestedScrollView.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
     }
 
-    private boolean checkIsFavorite(int articleId) {
-        boolean isFavorite = false;
-        for (Integer collectId : collectIds) {
-            if (articleId == collectId) {
-                isFavorite = true;
-                break;
-            }
-        }
-        return isFavorite;
-    }
+
 }

@@ -12,7 +12,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,9 +47,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private LinearLayoutManager layoutManager;
     private int currentPage;
     private ArticlesAdapter adapter;
-    private static final String TAG = "ArticlesFragment";
     private boolean isFirstLoad=true;
-    private List<Integer> collectIds;
     private int userId;
 
 
@@ -101,7 +98,6 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     public void onResume() {
         super.onResume();
         if (isFirstLoad){
-            Log.e(TAG, "onResume: is first load" );
             presenter.getArticles(INDEX, true, true);
             presenter.getBanner();
             currentPage = INDEX;
@@ -130,7 +126,6 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy: " );
     }
 
     @Override
@@ -179,22 +174,20 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
-                    intent.putExtra(CategoryActivity.CATEGORY_ID, list.get(position).getChapterId());
-                    intent.putExtra(CategoryActivity.CATEGORY_NAME, list.get(position).getChapterName());
+                    ArticleDetailData data = list.get(position);
+                    intent.putExtra(CategoryActivity.CATEGORY_ID, data.getChapterId());
+                    intent.putExtra(CategoryActivity.CATEGORY_NAME, data.getChapterName());
                     startActivity(intent);
                 }
             });
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    Log.e(TAG, "onClick: position is "+position );
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra(DetailActivity.URL, list.get(position).getLink());
-                    intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
-                    int id = list.get(position).getId();
-                    intent.putExtra(DetailActivity.ID, id);
-                    intent.putExtra(DetailActivity.FAVORITE_STATE, checkIsFavorite(id));
-                    intent.putExtra(DetailActivity.USER_ID, userId);
+                    ArticleDetailData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getId());
                     intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
                     startActivity(intent);
                 }
@@ -202,7 +195,6 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             recyclerView.setAdapter(adapter);
         }
 
-        Log.e(TAG, "showArticles: list size "+list.size() );
     }
 
     @Override
@@ -228,10 +220,11 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             @Override
             public void OnBannerClick(int position) {
                 Intent intent = new Intent(getContext(),DetailActivity.class);
-                intent.putExtra(DetailActivity.URL, list.get(position).getUrl());
-                intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
-                int id = list.get(position).getId();
-                intent.putExtra(DetailActivity.ID, id);
+                BannerDetailData data = list.get(position);
+                intent.putExtra(DetailActivity.URL, data.getUrl());
+                intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                intent.putExtra(DetailActivity.ID, data.getId());
+                intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
                 startActivity(intent);
             }
         });
@@ -243,20 +236,10 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         banner.setVisibility(View.GONE);
     }
 
-    @Override
-    public void saveFavoriteArticleIdList(List<Integer> list) {
-        collectIds = list;
-        for (Integer id : collectIds) {
-            Log.e(TAG, "collectId is : "+id );
-        }
-    }
-
-
     private void loadMore(){
         boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
         if (isNetworkAvailable){
             currentPage+=1;
-            Log.e(TAG, "loadMore: update page is "+currentPage );
             presenter.getArticles(currentPage,true,false);
         }else {
             Toast.makeText(getContext(),R.string.network_error,Toast.LENGTH_LONG).show();
@@ -264,18 +247,6 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     }
 
-    private boolean checkIsFavorite(int articleId) {
-        if (collectIds==null) {
-            return false;
-        }
-        boolean isFavorite = false;
-        for (Integer collectId : collectIds) {
-            if (articleId == collectId) {
-                isFavorite = true;
-                break;
-            }
-        }
-        return isFavorite;
-    }
+
 
 }

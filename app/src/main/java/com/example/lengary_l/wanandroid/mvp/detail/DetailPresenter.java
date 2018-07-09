@@ -81,7 +81,7 @@ public class DetailPresenter implements DetailContract.Presenter {
 
                     @Override
                     public void onNext(Status value) {
-                        if (view.isActive() && value.getErrorCode() != -1) {
+                        if (view.isActive()) {
                             view.showUnCollectStatus(true);
                             view.changeFavoriteState();
                         }

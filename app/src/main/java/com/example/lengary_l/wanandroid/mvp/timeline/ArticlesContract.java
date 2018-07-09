@@ -32,7 +32,6 @@ public interface ArticlesContract {
 
         void hideBanner();
 
-        void saveFavoriteArticleIdList(List<Integer> list);
 
 
     }

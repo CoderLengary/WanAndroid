@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_item_height"
     android:background="@color/colorPrimary">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_gravity="center"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@color/white"/>
+        android:layout_gravity="center"
+        android:src="@color/white" />
+
     <TextView
         android:id="@+id/text_user_icon"
         style="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="@color/colorPrimary"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="卓"/>
+        android:layout_gravity="center"
+        android:textColor="@color/colorPrimary"
+        tools:text="卓" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:textStyle="bold"
-        android:paddingBottom="@dimen/activity_margin_half"
-        android:drawablePadding="@dimen/activity_margin_half"
-        android:gravity="center_vertical"
-        tools:text="badteacher2"
-        android:textColor="@color/white"
-        android:drawableStart="@drawable/ic_user_white_24dp"
-        android:layout_gravity="bottom|center"
         android:id="@+id/text_user_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:drawablePadding="@dimen/activity_margin_half"
+        android:drawableStart="@drawable/ic_user_white_24dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/activity_margin_half"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        tools:text="badteacher2" />
+
 </FrameLayout>

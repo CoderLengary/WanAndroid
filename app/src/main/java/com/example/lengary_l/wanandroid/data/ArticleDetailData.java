@@ -10,21 +10,6 @@ import io.realm.annotations.PrimaryKey;
 
 public class ArticleDetailData extends RealmObject {
 
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
-
-    @Expose
-    private boolean isFavorite;
-
-
-
-
     @Expose
     @SerializedName("apkLink")
     private String apkLink;

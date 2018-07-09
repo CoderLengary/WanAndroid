@@ -35,6 +35,9 @@ public class OnboardingAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_onboarding);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getBoolean("navigation_bar_tint", true)) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        }
         if (sp.getBoolean(SettingsUtil.KEY_SKIP_GUIDE_PAGE,false)){
             navigateToMain();
         }else {
@@ -121,6 +124,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
 

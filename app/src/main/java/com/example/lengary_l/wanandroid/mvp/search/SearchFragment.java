@@ -72,15 +72,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             @Override
             public boolean onQueryTextChange(String newText) {
                 hideTagFlowLayout(false);
-              /*  if (TextUtils.isEmpty(newText)) {
-                    hideTagFlowLayout(false);
-                }else {
-                    hideTagFlowLayout(true);
-                }
-                presenter.searchArticles(INDEX, newText, true,true);
-                currentPage = INDEX;
-                keyWords = newText;
-                return true;*/
                 return true;
             }
         });
@@ -160,7 +151,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra(DetailActivity.URL, articlesList.get(position).getLink());
+                    ArticleDetailData data = articlesList.get(position);
+                    intent.putExtra(DetailActivity.ID, data.getId());
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
                     startActivity(intent);
                 }
             });

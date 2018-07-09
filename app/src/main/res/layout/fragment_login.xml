@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:paddingTop="56dp"
+    android:orientation="vertical"
     android:paddingLeft="24dp"
-    android:paddingRight="24dp">
+    android:paddingRight="24dp"
+    android:paddingTop="56dp">
 
     <ImageView
 
@@ -15,58 +15,60 @@
         android:layout_height="72dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/wanandroid"/>
+        android:src="@drawable/wanandroid" />
 
     <android.support.design.widget.TextInputLayout
         style="@style/MyEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_margin_half"
-        android:layout_marginBottom="@dimen/activity_margin_half">
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half">
+
         <android.support.design.widget.TextInputEditText
-            android:textColor="@android:color/white"
             android:id="@+id/edit_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_account_hint_text"/>
+            android:hint="@string/login_account_hint_text"
+            android:textColor="@android:color/white" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         style="@style/MyEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_margin_half"
-        android:layout_marginBottom="@dimen/activity_margin_half">
+        android:layout_marginBottom="@dimen/activity_margin_half"
+        android:layout_marginTop="@dimen/activity_margin_half">
+
         <android.support.design.widget.TextInputEditText
-            android:textColor="@android:color/white"
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_account_hint_text"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:textColor="@android:color/white" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="@dimen/activity_margin_half"
         android:padding="12dp"
         android:text="@string/login_btn_login"
-        android:background="@color/colorPrimaryDark"
-        android:textColor="@android:color/white"
-        android:elevation="@dimen/activity_margin_half"/>
+        android:textColor="@android:color/white" />
 
     <TextView
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:id="@+id/text_link_signup"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/link_to_sign_up"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:gravity="center"
-        android:textColor="@android:color/white"
-        style="@style/TextAppearance.AppCompat.Body1"/>
+        android:text="@string/link_to_sign_up"
+        android:textColor="@android:color/white" />
 
 
 </LinearLayout>

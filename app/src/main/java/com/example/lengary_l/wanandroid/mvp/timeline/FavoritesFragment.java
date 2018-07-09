@@ -1,9 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,7 +24,6 @@ import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListe
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
-import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
 
 import java.util.List;
@@ -44,8 +41,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     private boolean isFirstLoad=true;
     private final int INDEX = 0;
     private SwipeRefreshLayout refreshLayout;
-    private int userId;
-
 
 
     public FavoritesFragment(){
@@ -59,8 +54,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userId = sp.getInt(SettingsUtil.USERID, -1);
         RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
 
             @Override
@@ -147,8 +140,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                     intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
                     int originId = list.get(position).getOriginId();
                     intent.putExtra(DetailActivity.ID, originId);
-                    intent.putExtra(DetailActivity.FAVORITE_STATE, true);
-                    intent.putExtra(DetailActivity.USER_ID, userId);
                     intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, true);
                     startActivity(intent);
                 }

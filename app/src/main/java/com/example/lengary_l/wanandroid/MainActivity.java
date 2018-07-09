@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,8 +11,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatTextView;
@@ -22,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.lengary_l.wanandroid.appwidget.AppWidgetProvider;
 import com.example.lengary_l.wanandroid.data.source.CategoriesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.CategoriesDataRemoteSource;
 import com.example.lengary_l.wanandroid.mvp.categories.CategoriesFragment;
@@ -55,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+        sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(MainActivity.this));
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("navigation_bar_tint", true)) {
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        }
         initFragments(savedInstanceState);
         new CategoriesPresenter(CategoriesDataRepository.getInstance(CategoriesDataRemoteSource.getInstance()), categoriesFragment);
         if (savedInstanceState != null) {
@@ -123,18 +131,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initViews() {
         toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar
                 , R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        textUserIcon = navigationView.getHeaderView(0).
-                findViewById(R.id.text_user_icon);
-        textUserName = navigationView.getHeaderView(0).
-                findViewById(R.id.text_user_name);
+        textUserIcon = navigationView.getHeaderView(0).findViewById(R.id.text_user_icon);
+        textUserName = navigationView.getHeaderView(0).findViewById(R.id.text_user_name);
 
     }
 
@@ -215,9 +221,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        item.setCheckable(false);
         switch (item.getItemId()) {
             case R.id.nav_sign_out:
-
+                showAlertDialog();
                 break;
 
             case R.id.nav_switch_theme:
@@ -265,6 +272,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+
+    private void showAlertDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.warning_title);
+        alertDialog.setMessage(getString(R.string.warning_desc));
+        alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.sure), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                sp.edit().putInt(SettingsUtil.USERID,-1).apply();
+                sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(MainActivity.this));
+                navigateToLogin();
+            }
+        });
     }
 
 }

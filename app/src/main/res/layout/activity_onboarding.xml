@@ -9,13 +9,12 @@
     tools:context=".ui.onboarding.OnboardingAcitivity">
 
 
-
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="?attr/actionBarSize"
         android:background="@color/colorPrimary"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <View
@@ -23,28 +22,28 @@
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:layout_marginBottom="?attr/actionBarSize"
-        android:background="@android:color/white"
-        android:alpha="0.12"/>
+        android:alpha="0.12"
+        android:background="@android:color/white" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/image_btn_pre"
             style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
+            android:contentDescription="@string/onboarding_pre_btn_desc"
             android:padding="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_chevron_left_white_24dp"
-            android:contentDescription="@string/onboarding_pre_btn_desc"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,22 +55,23 @@
                 android:id="@+id/img_indicator_0"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:background="@drawable/onboarding_indicator_selected"/>
+                android:background="@drawable/onboarding_indicator_selected" />
+
             <ImageView
                 android:id="@+id/img_indicator_1"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:layout_marginLeft="@dimen/activity_margin_half"
-                android:layout_marginStart="@dimen/activity_margin_half"
                 android:layout_marginEnd="@dimen/activity_margin_half"
+                android:layout_marginLeft="@dimen/activity_margin_half"
                 android:layout_marginRight="@dimen/activity_margin_half"
-                android:background="@drawable/onboarding_indicator_unselected"/>
+                android:layout_marginStart="@dimen/activity_margin_half"
+                android:background="@drawable/onboarding_indicator_unselected" />
 
             <ImageView
                 android:id="@+id/img_indicator_2"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:background="@drawable/onboarding_indicator_unselected"/>
+                android:background="@drawable/onboarding_indicator_unselected" />
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -80,10 +80,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:text="@string/onboarding_finish_btn_desc"
             android:contentDescription="@string/onboarding_finish_btn_desc"
+            android:text="@string/onboarding_finish_btn_desc"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/image_btn_next"
@@ -93,7 +93,7 @@
             android:layout_gravity="end|center"
             android:padding="@dimen/activity_horizontal_margin"
             android:src="@drawable/ic_chevron_right_white_24dp"
-            android:tint="@android:color/white"/>
+            android:tint="@android:color/white" />
     </FrameLayout>
 
 

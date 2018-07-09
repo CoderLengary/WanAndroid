@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.data.source.local;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
@@ -18,6 +19,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
     @NonNull
     private static ReadLaterArticlesLocalSource INSTANCE;
 
+    private static final String TAG = "ReadLaterArticlesLocalS";
     private ReadLaterArticlesLocalSource() {
 
     }
@@ -36,6 +38,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
         List<ReadLaterArticleData> datas=realm.copyFromRealm(realm.where(ReadLaterArticleData.class)
                 .equalTo("userId", userId)
                 .findAll());
+        Log.e(TAG, "getReadLaterArticles: list size + "+datas.size() );
         return Observable.fromIterable(datas).toSortedList(new Comparator<ReadLaterArticleData>() {
             @Override
             public int compare(ReadLaterArticleData data, ReadLaterArticleData t1) {
@@ -51,6 +54,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     @Override
     public void insertReadLaterArticle(int userId, int id, long timeStamp) {
+        Log.e(TAG, "insertReadLaterArticle: " );
         Realm realm = RealmHelper.newRealmInstance();
         ArticleDetailData articleDetailData = realm.copyFromRealm(
                 realm.where(ArticleDetailData.class)
@@ -75,6 +79,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     @Override
     public void removeReadLaterArticle(int userId, int id) {
+        Log.e(TAG, "removeReadLaterArticle: " );
         Realm realm = RealmHelper.newRealmInstance();
         ReadLaterArticleData data = realm.where(ReadLaterArticleData.class)
                 .equalTo("userId", userId)
