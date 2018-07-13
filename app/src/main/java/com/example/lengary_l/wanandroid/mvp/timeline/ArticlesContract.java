@@ -15,7 +15,7 @@ public interface ArticlesContract {
 
         void getBanner();
 
-        void refreshCollectIdList(int userId);
+        void autoLogin(String userName, String password);
     }
 
     interface View extends BaseView<Presenter>{
@@ -32,7 +32,7 @@ public interface ArticlesContract {
 
         void hideBanner();
 
-
+        void navigateToLogin();
 
     }
 }

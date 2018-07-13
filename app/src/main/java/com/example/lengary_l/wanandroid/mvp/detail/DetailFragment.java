@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,10 +27,9 @@ import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.RxBus.RxBus;
+import com.example.lengary_l.wanandroid.appwidget.AppWidgetProvider;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.just.agentweb.AgentWeb;
-
-import java.util.List;
 
 public class DetailFragment extends Fragment implements DetailContract.View{
     private FrameLayout webViewContainer;
@@ -42,10 +40,11 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private int id;
     private AgentWeb agentWeb;
     private int userId;
-
     private boolean isReadLater;
+    private boolean isFavorite;
     private boolean isFromFavoriteFragment;
-    private List<Integer> collectIds;
+    private boolean isFromBanner;
+
 
 
     public DetailFragment(){
@@ -64,11 +63,10 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         url = intent.getStringExtra(DetailActivity.URL);
         title = intent.getStringExtra(DetailActivity.TITLE);
         id = intent.getIntExtra(DetailActivity.ID, -1);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userId=sp.getInt(SettingsUtil.USERID, -1);
+        userId= PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(SettingsUtil.USERID, -1);
         isFromFavoriteFragment = intent.getBooleanExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
-        presenter.checkIsReadLater(userId, id);
-        presenter.refreshCollectIdList(userId);
+        isFromBanner = intent.getBooleanExtra(DetailActivity.FROM_BANNER, false);
+
     }
 
     @Nullable
@@ -91,6 +89,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         }
         super.onResume();
         presenter.subscribe();
+        presenter.checkIsReadLater(userId, id);
 
     }
 
@@ -108,9 +107,9 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 break;
 
             case R.id.action_more:
+                presenter.checkIsFavorite(userId,id);
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
                 View view = getActivity().getLayoutInflater().inflate(R.layout.actions_details_sheet, null);
-                final boolean isFavorite = checkIsFavorite(id);
                 AppCompatTextView textFavorite = view.findViewById(R.id.text_view_favorite);
                 textFavorite.setText(isFavorite ? R.string.detail_uncollect_article : R.string.detail_collect_article);
                 textFavorite.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +123,11 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                         bottomSheetDialog.dismiss();
                     }
                 });
+
+                if (isFromBanner) {
+                    textFavorite.setVisibility(View.GONE);
+                }
+
                 AppCompatTextView textAddToReadLater = view.findViewById(R.id.text_view_read_later);
                 textAddToReadLater.setText(isReadLater ? R.string.detail_remove_from_read_later : R.string.detail_add_to_read_later);
                 textAddToReadLater.setOnClickListener(new View.OnClickListener() {
@@ -135,12 +139,16 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                             presenter.insertReadLaterArticle(userId, id, System.currentTimeMillis());
                         }
                         isReadLater = !isReadLater;
+                        sendRefreshBroadcast();
                         bottomSheetDialog.dismiss();
                     }
                 });
-                if (isFromFavoriteFragment) {
+
+                if (isFromFavoriteFragment||isFromBanner) {
                     textAddToReadLater.setVisibility(View.GONE);
                 }
+
+
                 AppCompatTextView textCopyLink = view.findViewById(R.id.text_view_copy_the_link);
                 textCopyLink.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -258,9 +266,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         Toast.makeText(getContext(),
                 isSuccess?getString(R.string.detail_collect_article_success):getString(R.string.detail_collect_article_error),
                 Toast.LENGTH_LONG).show();
-        if (isSuccess&&!checkIsFavorite(id)) {
-            collectIds.add(id);
-        }
+
     }
 
     @Override
@@ -268,9 +274,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         Toast.makeText(getContext(),
                 isSuccess?getString(R.string.detail_uncollect_article_success):getString(R.string.detail_uncollect_article_error),
                 Toast.LENGTH_LONG).show();
-        if (isSuccess&&checkIsFavorite(id)) {
-            collectIds.remove(id);
-        }
+
     }
 
     @Override
@@ -289,23 +293,13 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     }
 
     @Override
-    public void saveFavoriteArticleIdList(List<Integer> list) {
-        collectIds = list;
+    public void saveFavoriteState(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
-    private boolean checkIsFavorite(int articleId) {
-        if (collectIds == null) {
-            return false;
-        }
-        boolean isFavorite = false;
-        for (Integer collectId : collectIds) {
-            if (articleId == collectId) {
-                isFavorite = true;
-                break;
-            }
-        }
-        return isFavorite;
-    }
 
+    private void sendRefreshBroadcast() {
+        getActivity().sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(getContext()));
+    }
 
 }

@@ -104,4 +104,15 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
         return !list.isEmpty();
 
     }
+
+    @Override
+    public void clearAll() {
+        Realm realm = RealmHelper.newRealmInstance();
+        RealmResults<ReadLaterArticleData> results =
+                realm.where(ReadLaterArticleData.class).findAll();
+        realm.beginTransaction();
+        results.deleteAllFromRealm();
+        realm.commitTransaction();
+        realm.close();
+    }
 }

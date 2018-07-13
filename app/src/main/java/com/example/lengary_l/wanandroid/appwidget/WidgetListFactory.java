@@ -74,10 +74,11 @@ public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory 
         remoteViews.setTextViewText(R.id.text_view_author,data.getAuthor());
         remoteViews.setTextViewText(R.id.text_view_title, data.getTitle());
         Intent intent = new Intent();
-        intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
         intent.putExtra(DetailActivity.ID, data.getId());
         intent.putExtra(DetailActivity.TITLE, data.getTitle());
         intent.putExtra(DetailActivity.URL, data.getLink());
+        intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+        intent.putExtra(DetailActivity.FROM_BANNER, false);
         remoteViews.setOnClickFillInIntent(R.id.item_main, intent);
         return remoteViews;
     }

@@ -59,4 +59,10 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
                     }
                 });
     }
+
+    @Override
+    public boolean isExist(int userId, int id) {
+        //The local has handle it
+        return false;
+    }
 }

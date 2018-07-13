@@ -13,17 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 public class ArticlesDataRepository implements ArticlesDataSource {
 
     @NonNull
     private ArticlesDataSource remoteDataSource;
 
-    @NonNull
-    private ArticlesDataSource localDataSource;
+
 
     private Map<Integer, ArticleDetailData> articlesCache;
 
@@ -37,15 +34,14 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
     private static final String TAG = "ArticlesDataRepository";
 
-    private ArticlesDataRepository(@NonNull ArticlesDataSource remoteDataSource , @NonNull ArticlesDataSource localDataSource){
+    private ArticlesDataRepository(@NonNull ArticlesDataSource remoteDataSource ){
         this.remoteDataSource = remoteDataSource;
-        this.localDataSource = localDataSource;
     }
 
 
-    public static ArticlesDataRepository getInstance(@NonNull ArticlesDataSource remoteDataSource,@NonNull ArticlesDataSource localDataSource){
+    public static ArticlesDataRepository getInstance(@NonNull ArticlesDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new ArticlesDataRepository(remoteDataSource,localDataSource);
+            INSTANCE = new ArticlesDataRepository(remoteDataSource);
         }
         return INSTANCE;
     }
@@ -76,12 +72,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                         }
                     });
 
-            return Observable.merge(ob1, ob2).onErrorResumeNext(new Function<Throwable, ObservableSource<? extends List<ArticleDetailData>>>() {
-                @Override
-                public ObservableSource<? extends List<ArticleDetailData>> apply(Throwable throwable) throws Exception {
-                    return localDataSource.getArticles(INDEX, forceUpdate, clearCache);
-                }
-            });
+            return Observable.merge(ob1, ob2);
         }
 
         Log.e(TAG, "getArticles: update clearcache" );
@@ -147,20 +138,8 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                 });
     }
 
-    @Override
-    public Observable<ArticleDetailData> getArticleFromId(@NonNull int id) {
-        return null;
-    }
 
-    @Override
-    public void addToReadLater(int userId, int articleId, boolean readerLater) {
 
-    }
-
-    @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId) {
-        return null;
-    }
 
     private void refreshQueryCache(boolean clearCache,List<ArticleDetailData> list) {
         if (queryCache == null) {

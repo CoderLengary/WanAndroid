@@ -17,7 +17,7 @@ import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
-import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.local.FavoriteArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
@@ -56,16 +56,16 @@ public class TimelineFragment extends Fragment {
         }
 
         new ArticlesPresenter(articlesFragment,
-                ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()),
+                ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance()),
                 BannerDataRepository.getInstance(BannerDataRemoteSource.getInstance()),
                 LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
 
         new FavoritesPresenter(favoritesFragment,
-                FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance()));
+                FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance(),
+                        FavoriteArticlesDataLocalSource.getInstance()));
 
         new ReadLaterPresenter(readLaterFragment,
-                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
-                LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
+                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()));
     }
 
     @Nullable

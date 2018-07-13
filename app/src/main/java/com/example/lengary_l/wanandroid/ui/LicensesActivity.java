@@ -23,7 +23,7 @@ public class LicensesActivity extends AppCompatActivity{
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         WebView webView = findViewById(R.id.web_view);
-        webView.loadUrl("");
+        webView.loadUrl("file:///android_asset/licenses.html");
     }
 
     @Override

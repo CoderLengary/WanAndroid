@@ -73,10 +73,8 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        int userId = sp.getInt(SettingsUtil.USERID, -1);
-        if (userId != -1) {
-            presenter.login(sp.getString(SettingsUtil.USERNAME,""),
-                    sp.getString(SettingsUtil.PASSWORD,""),LoginType.TYPE_LOGIN);
+        if (sp.getBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE, false)) {
+            navigateToMain();
         }
     }
 
@@ -134,11 +132,17 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         String username = loginDetailData.getUsername();
         String password = loginDetailData.getPassword();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int oldUerId = sp.getInt(SettingsUtil.USERID, -1);
+        if (oldUerId != -1 && userId != oldUerId) {
+            presenter.clearReadLaterData();
+        }
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
+        sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,true).apply();
         navigateToMain();
     }
+
     private void navigateToMain() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

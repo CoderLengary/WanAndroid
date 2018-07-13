@@ -26,6 +26,7 @@ import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
+import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
@@ -48,7 +49,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private int currentPage;
     private ArticlesAdapter adapter;
     private boolean isFirstLoad=true;
-    private int userId;
+    private String userName;
+    private String password;
+    private SharedPreferences sp;
 
 
 
@@ -64,8 +67,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        userId = sp.getInt(SettingsUtil.USERID, -1);
+        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        userName = sp.getString(SettingsUtil.USERNAME, "");
+        password = sp.getString(SettingsUtil.PASSWORD, "");
     }
 
     @Nullable
@@ -98,6 +102,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     public void onResume() {
         super.onResume();
         if (isFirstLoad){
+            presenter.autoLogin(userName,password);
             presenter.getArticles(INDEX, true, true);
             presenter.getBanner();
             currentPage = INDEX;
@@ -105,7 +110,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         }else {
             presenter.getArticles(currentPage,false,false);
         }
-        presenter.refreshCollectIdList(userId);
+
         if (banner != null) {
             banner.startAutoPlay();
         }
@@ -189,6 +194,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     intent.putExtra(DetailActivity.TITLE, data.getTitle());
                     intent.putExtra(DetailActivity.ID, data.getId());
                     intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
                     startActivity(intent);
                 }
             });
@@ -225,6 +231,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                 intent.putExtra(DetailActivity.TITLE, data.getTitle());
                 intent.putExtra(DetailActivity.ID, data.getId());
                 intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                intent.putExtra(DetailActivity.FROM_BANNER, true);
                 startActivity(intent);
             }
         });
@@ -234,6 +241,14 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void hideBanner() {
         banner.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void navigateToLogin() {
+        sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,false).apply();
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void loadMore(){

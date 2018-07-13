@@ -9,7 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,11 +47,11 @@ public class LoginActivity extends AppCompatActivity {
             new LoginPresenter(loginFragment, LoginDataRepository.getInstance(
                     LoginDataLocalSource.getInstance(),
                     LoginDataRemoteSource.getInstance()
-            ));
+            ), ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()));
             new LoginPresenter(signUpFragment, LoginDataRepository.getInstance(
                     LoginDataLocalSource.getInstance(),
                     LoginDataRemoteSource.getInstance()
-            ));
+            ), ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()));
             showLoginFragment();
 
     }

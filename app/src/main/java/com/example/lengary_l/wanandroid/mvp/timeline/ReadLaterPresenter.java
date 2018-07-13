@@ -1,7 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
-import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 
 import java.util.List;
@@ -16,14 +15,13 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
 
     private ReadLaterArticlesRepository repository;
     private CompositeDisposable compositeDisposable;
-    private LoginDataRepository loginDataRepository;
     private ReadLaterContract.View view;
 
-    public ReadLaterPresenter(ReadLaterContract.View view,ReadLaterArticlesRepository repository,LoginDataRepository loginDataRepository) {
+    public ReadLaterPresenter(ReadLaterContract.View view,ReadLaterArticlesRepository repository) {
         this.repository = repository;
         this.view = view;
         this.view.setPresenter(this);
-        this.loginDataRepository = loginDataRepository;
+
         compositeDisposable = new CompositeDisposable();
     }
 

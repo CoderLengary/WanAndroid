@@ -9,22 +9,26 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSource {
     private FavoriteArticlesDataSource remote;
+    private FavoriteArticlesDataSource local;
     private Map<Integer, FavoriteArticleDetailData> favoriteArticlesCache;
     @NonNull
     private static FavoriteArticlesDataRepository INSTANCE;
 
-    private FavoriteArticlesDataRepository(FavoriteArticlesDataSource remote) {
+    private FavoriteArticlesDataRepository(FavoriteArticlesDataSource remote, FavoriteArticlesDataSource local) {
         this.remote = remote;
+        this.local = local;
     }
-    public static FavoriteArticlesDataRepository getInstance(FavoriteArticlesDataSource remote) {
+    public static FavoriteArticlesDataRepository getInstance(FavoriteArticlesDataSource remote, FavoriteArticlesDataSource local) {
         if (INSTANCE == null) {
-            INSTANCE = new FavoriteArticlesDataRepository(remote);
+            INSTANCE = new FavoriteArticlesDataRepository(remote, local);
         }
         return INSTANCE;
     }
@@ -56,7 +60,19 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                             refreshArticlesCache(clearCache, list);
                         }
                     });
-            return Observable.merge(ob1, ob2);
+            return Observable.merge(ob1, ob2).collect(new Callable<ArrayList<FavoriteArticleDetailData>>(){
+
+                @Override
+                public ArrayList<FavoriteArticleDetailData> call() throws Exception {
+                    return new ArrayList<>();
+                }
+            },new BiConsumer<ArrayList<FavoriteArticleDetailData>,FavoriteArticleDetailData>(){
+
+                @Override
+                public void accept(ArrayList<FavoriteArticleDetailData> list, FavoriteArticleDetailData data) throws Exception {
+                    list.add(data);
+                }
+            }).toObservable();
         }
 
         return remote.getFavoriteArticles(page, forceUpdate,clearCache)
@@ -68,9 +84,17 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                 });
     }
 
+    @Override
+    public boolean isExist(int userId, int id) {
+        return local.isExist(userId, id);
+    }
+
     private void refreshArticlesCache(boolean clearCache,List<FavoriteArticleDetailData> list) {
         if (favoriteArticlesCache == null) {
             favoriteArticlesCache = new LinkedHashMap<>();
+        }
+        if (clearCache) {
+            favoriteArticlesCache.clear();
         }
         for (FavoriteArticleDetailData data : list) {
             favoriteArticlesCache.put(data.getOriginId(), data);

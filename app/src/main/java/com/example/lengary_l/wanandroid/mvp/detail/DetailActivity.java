@@ -8,12 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.lengary_l.wanandroid.R;
-import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
-import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
+import com.example.lengary_l.wanandroid.data.source.local.FavoriteArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
-import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
+import com.example.lengary_l.wanandroid.data.source.remote.FavoriteArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.StatusDataRemoteSource;
 
 public class DetailActivity extends AppCompatActivity {
@@ -22,6 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String URL = "URL";
     public static final String TITLE = "TITLE";
     public static final String FROM_FAVORITE_FRAGMENT = "FROM_FAVORITE_FRAGMENT";
+    public static final String FROM_BANNER = "FROM_BANNER";
     private DetailFragment detailFragment;
 
     @Override
@@ -38,7 +39,8 @@ public class DetailActivity extends AppCompatActivity {
         }
         new DetailPresenter(detailFragment, StatusDataRepository.getInstance(StatusDataRemoteSource.getInstance()),
                 ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
-                LoginDataRepository.getInstance(LoginDataLocalSource.getInstance(), LoginDataRemoteSource.getInstance()));
+                FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance(),
+                        FavoriteArticlesDataLocalSource.getInstance()));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.view_pager, detailFragment, DetailFragment.class.getSimpleName())
                 .commit();

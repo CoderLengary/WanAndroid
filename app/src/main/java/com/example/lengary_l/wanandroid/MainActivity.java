@@ -38,8 +38,6 @@ import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = "MainActivity";
-
     private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID = "KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
 
     private NavigationView navigationView;
@@ -272,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void showAlertDialog() {
@@ -288,11 +287,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                sp.edit().putInt(SettingsUtil.USERID,-1).apply();
-                sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(MainActivity.this));
+                sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,false).apply();
                 navigateToLogin();
             }
         });
+        alertDialog.show();
     }
 
 }

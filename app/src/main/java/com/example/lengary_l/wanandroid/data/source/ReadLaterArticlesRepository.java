@@ -44,4 +44,9 @@ public class ReadLaterArticlesRepository implements ReadLaterArticlesDataSource 
     public boolean isExist(int userId, int id) {
         return local.isExist(userId, id);
     }
+
+    @Override
+    public void clearAll() {
+        local.clearAll();
+    }
 }

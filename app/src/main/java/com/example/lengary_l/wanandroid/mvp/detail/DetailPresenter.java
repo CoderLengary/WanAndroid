@@ -1,15 +1,15 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
-import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import android.util.Log;
+
 import com.example.lengary_l.wanandroid.data.Status;
-import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Predicate;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -18,16 +18,17 @@ public class DetailPresenter implements DetailContract.Presenter {
     private StatusDataRepository statusDataRepository;
     private CompositeDisposable compositeDisposable;
     private ReadLaterArticlesRepository readLaterArticlesRepository;
-    private LoginDataRepository loginRepository;
+    private FavoriteArticlesDataRepository favoriteArticlesDataRepository;
+    private static final String TAG = "DetailPresenter";
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,
                            ReadLaterArticlesRepository readLaterArticlesRepository,
-                           LoginDataRepository loginRepository) {
+                           FavoriteArticlesDataRepository favoriteArticlesDataRepository) {
         this.view = view;
         this.statusDataRepository = statusDataRepository;
         this.readLaterArticlesRepository = readLaterArticlesRepository;
-        this.loginRepository = loginRepository;
+        this.favoriteArticlesDataRepository = favoriteArticlesDataRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
     }
@@ -61,6 +62,9 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.showCollectStatus(false);
+                            Log.e(TAG, "onError: "+e.toString() );
+                            Log.e(TAG, "onError: "+e.getMessage());
+
                         }
                     }
 
@@ -91,6 +95,7 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.showUnCollectStatus(false);
+                            Log.e(TAG, "onError: "+e.getMessage() );
                         }
                     }
 
@@ -118,33 +123,8 @@ public class DetailPresenter implements DetailContract.Presenter {
     }
 
     @Override
-    public void refreshCollectIdList(int userId) {
-        Disposable disposable = loginRepository.getLocalLoginData(userId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(new Predicate<LoginDetailData>() {
-                    @Override
-                    public boolean test(LoginDetailData loginDetailData) throws Exception {
-                        return !loginDetailData.getCollectIds().isEmpty();
-                    }
-                })
-                .subscribeWith(new DisposableObserver<LoginDetailData>() {
-                    @Override
-                    public void onNext(LoginDetailData value) {
-                        view.saveFavoriteArticleIdList(value.getCollectIds());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        compositeDisposable.add(disposable);
+    public void checkIsFavorite(int userId, int id) {
+        view.saveFavoriteState(favoriteArticlesDataRepository.isExist(userId, id));
     }
 
 

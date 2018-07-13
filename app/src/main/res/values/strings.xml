@@ -9,8 +9,8 @@
     <string name="onboarding_finish_btn_desc">Finish</string>
     <string name="onboarding_section_1">Here,you can gain lots of high quality articles</string>
     <string name="onboarding_intro_1">Include Gradle,Component,JNI and so on</string>
-    <string name="onboarding_section_2">Push notification if new article has arrived</string>
-    <string name="onboarding_intro_2">To make you keep up with times</string>
+    <string name="onboarding_section_2">We update the articles daily </string>
+    <string name="onboarding_intro_2">To make you access the latest theories</string>
     <string name="onboarding_section_3">A new world is waiting for you</string>
     <string name="onboarding_intro_3">Explore the unknown,at this moment</string>
     <!--onboarding end-->
@@ -119,7 +119,7 @@
 
     <!--Warning-->
     <string name="warning_title">Warning</string>
-    <string name="warning_desc">Are you sure?</string>
+    <string name="warning_desc">If you log out, all the data will be deleted</string>
     <string name="cancel">Cancel</string>
     <string name="sure">Sure</string>
     <!--Warning-->

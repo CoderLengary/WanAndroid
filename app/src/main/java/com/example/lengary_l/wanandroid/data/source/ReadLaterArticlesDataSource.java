@@ -14,4 +14,6 @@ public interface ReadLaterArticlesDataSource {
     void removeReadLaterArticle(int userId, int id);
 
     boolean isExist(int userId, int id);
+
+    void clearAll();
 }

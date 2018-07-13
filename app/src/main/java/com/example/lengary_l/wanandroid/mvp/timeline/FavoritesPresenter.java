@@ -40,6 +40,7 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
 
     @Override
     public void getFavoriteArticles(int page, final boolean forceUpdate, final boolean clearCache) {
+        Log.e(TAG, "getFavoriteArticles: forceUpdate="+forceUpdate+" clearCache="+clearCache );
         Disposable disposable = repository.getFavoriteArticles(page, forceUpdate, clearCache)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -77,6 +78,12 @@ public class FavoritesPresenter implements FavoritesContract.Presenter {
         compositeDisposable.add(disposable);
     }
 
+    @Override
+    public void clearHashMap() {
+        if (hashMap != null) {
+            hashMap.clear();
+        }
+    }
 
 
     @Override

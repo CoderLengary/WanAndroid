@@ -13,6 +13,7 @@ public interface FavoritesContract {
 
         void getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache);
 
+        void clearHashMap();
 
     }
 

@@ -4,10 +4,12 @@ import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
-import com.example.lengary_l.wanandroid.data.LoginDetailData;
+import com.example.lengary_l.wanandroid.data.LoginData;
+import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.util.SortUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,14 +118,20 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     }
 
     @Override
-    public void refreshCollectIdList(int userId) {
-        Disposable disposable = loginDataRepository.getLocalLoginData(userId)
+    public void autoLogin(String userName, String password) {
+        Disposable disposable = loginDataRepository.getRemoteLoginData(userName, password, LoginType.TYPE_LOGIN)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<LoginDetailData>() {
+                .subscribeWith(new DisposableObserver<LoginData>() {
 
                     @Override
-                    public void onNext(LoginDetailData value) {
+                    public void onNext(LoginData value) {
+                        if (!view.isActive()) {
+                            return;
+                        }
+                        if (value.getErrorCode() == -1) {
+                            view.navigateToLogin();
+                        }
                     }
 
                     @Override
@@ -139,6 +147,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
         compositeDisposable.add(disposable);
     }
 
+
     private void addToHashMap(List<ArticleDetailData> value){
         for (ArticleDetailData d:value){
             hashMap.put(d.getId(), d);
@@ -149,11 +158,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
         Collections.sort(list, new Comparator<ArticleDetailData>() {
             @Override
             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                if (articleDetailData.getPublishTime() > t1.getPublishTime()){
-                    return -1;
-                }else {
-                    return 1;
-                }
+               return SortUtil.sortArticleDetailData(articleDetailData, t1);
             }
         });
         return list;

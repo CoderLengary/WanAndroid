@@ -156,6 +156,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                     intent.putExtra(DetailActivity.URL, data.getLink());
                     intent.putExtra(DetailActivity.TITLE, data.getTitle());
                     intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
                     startActivity(intent);
                 }
             });

@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.HotKeyDataRepository;
-import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.HotKeyDataRemoteSource;
 
@@ -33,7 +32,7 @@ public class SearchActivity extends AppCompatActivity{
             searchFragment = SearchFragment.newInstance();
         }
         new SearchPresenter(HotKeyDataRepository.getInstance(HotKeyDataRemoteSource.getInstance())
-                , ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()), searchFragment);
+                , ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance()), searchFragment);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.view_pager, searchFragment, SearchFragment.class.getSimpleName())

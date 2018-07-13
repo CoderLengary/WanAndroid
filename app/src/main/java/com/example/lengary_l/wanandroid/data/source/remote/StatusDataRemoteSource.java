@@ -56,7 +56,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                         );
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (!checkIsFavorite(id, collectIds)) {
-                            collectIds.add(id);
+                            Integer integer = new Integer(id);
+                            collectIds.add(integer);
                             data.setCollectIds(collectIds);
                             realm.beginTransaction();
                             realm.copyToRealmOrUpdate(data);
@@ -92,7 +93,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                         );
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (checkIsFavorite(originId, collectIds)) {
-                            collectIds.remove(originId);
+                            Integer integer = new Integer(originId);
+                            collectIds.remove(integer);
                             data.setCollectIds(collectIds);
                             realm.beginTransaction();
                             realm.copyToRealmOrUpdate(data);
@@ -103,12 +105,12 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 });
     }
 
-    private boolean checkIsFavorite(int articleIds, RealmList<Integer> collectIds) {
+    private boolean checkIsFavorite(int articleId, RealmList<Integer> collectIds) {
         if (collectIds.isEmpty()) {
             return false;
         }
         for (Integer integer : collectIds) {
-            if (integer == articleIds) {
+            if (integer == articleId) {
                 return true;
             }
         }

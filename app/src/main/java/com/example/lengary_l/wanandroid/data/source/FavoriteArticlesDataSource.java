@@ -8,4 +8,6 @@ import io.reactivex.Observable;
 
 public interface FavoriteArticlesDataSource {
     Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(int page, boolean forceUpdate,boolean clearCache);
+
+    boolean isExist(int userId, int id);
 }

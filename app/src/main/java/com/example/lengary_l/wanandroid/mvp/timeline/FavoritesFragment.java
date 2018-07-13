@@ -83,7 +83,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             public void onRefresh() {
                 currentPage = INDEX;
                 presenter.getFavoriteArticles(INDEX, true, true);
-
+                presenter.clearHashMap();
             }
         });
 
@@ -96,6 +96,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         presenter.subscribe();
         if (isFirstLoad){
             presenter.getFavoriteArticles(INDEX, true,true);
+            presenter.clearHashMap();
             currentPage = INDEX;
             isFirstLoad = false;
         }else {
@@ -136,11 +137,12 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra(DetailActivity.URL, list.get(position).getLink());
-                    intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
-                    int originId = list.get(position).getOriginId();
-                    intent.putExtra(DetailActivity.ID, originId);
+                    FavoriteArticleDetailData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getOriginId());
                     intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, true);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
                     startActivity(intent);
                 }
             });
@@ -196,6 +198,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
         }
     }
+
 
 
 }

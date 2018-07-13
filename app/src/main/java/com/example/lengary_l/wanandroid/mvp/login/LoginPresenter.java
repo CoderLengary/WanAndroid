@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -21,11 +22,14 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
     private CompositeDisposable compositeDisposable;
 
+    private ReadLaterArticlesRepository readLaterArticlesRepository;
 
 
-    public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository) {
+    public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository,
+                          @NonNull ReadLaterArticlesRepository readLaterArticlesRepository) {
         this.view = view;
         this.repository = loginDataRepository;
+        this.readLaterArticlesRepository = readLaterArticlesRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
     }
@@ -40,7 +44,10 @@ public class  LoginPresenter implements LoginContract.Presenter{
         getLoginData(username, password,loginType);
     }
 
-
+    @Override
+    public void clearReadLaterData() {
+        readLaterArticlesRepository.clearAll();
+    }
 
 
     private void getLoginData(String username,String password, @NonNull final LoginType loginType){

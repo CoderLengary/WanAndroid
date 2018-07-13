@@ -25,9 +25,6 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
     @NonNull
     private static ArticlesDataRemoteSource INSTANCE;
 
-
-
-
     private ArticlesDataRemoteSource(){
 
     }
@@ -41,7 +38,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(@NonNull final int page, boolean forceUpdate, boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticles(@NonNull  int page, boolean forceUpdate, boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticles(page)
@@ -63,7 +60,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             @Override
                             public void accept(List<ArticleDetailData> list) throws Exception {
                                 for (ArticleDetailData item :list){
-                                    saveToRealm(item, page);
+                                    saveToRealm(item);
                                 }
                             }
                         });
@@ -71,15 +68,14 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 });
     }
 
-    private void saveToRealm(ArticleDetailData article,int page){
-        article.setCurrentPage(page);
+    private void saveToRealm(ArticleDetailData article){
         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                 .name(RealmHelper.DATABASE_NAME)
                 .deleteRealmIfMigrationNeeded()
                 .build());
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(article);
-            realm.commitTransaction();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(article);
+        realm.commitTransaction();
         realm.close();
     }
 
@@ -108,22 +104,6 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 });
     }
 
-    @Override
-    public Observable<ArticleDetailData> getArticleFromId(@NonNull int id) {
-        //The local has handled it
-        return null;
-    }
-
-    @Override
-    public void addToReadLater(int currentUserId, int articleId, boolean readerLater) {
-        //The local has handled it
-    }
-
-    @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId) {
-        //The local has handled it
-        return null;
-    }
 
     @Override
     public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate,boolean clearCache) {

@@ -14,11 +14,5 @@ public interface ArticlesDataSource {
 
     Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords,boolean forceUpdate , boolean clearCache);
 
-    Observable<ArticleDetailData> getArticleFromId(@NonNull int id);
-
-    void addToReadLater(int currentUserId, int articleId, boolean readerLater);
-
-    Observable<List<ArticleDetailData>> getArticlesFromReadLater(int currentUserId, int articleId);
-
     Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId , boolean forceUpdate,boolean clearCache);
 }

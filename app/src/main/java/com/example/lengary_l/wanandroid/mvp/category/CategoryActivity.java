@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
-import com.example.lengary_l.wanandroid.data.source.local.ArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 
 public class CategoryActivity extends AppCompatActivity {
@@ -30,7 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
             fragment = CategoryFragment.newInstance();
         }
 
-        new CategoryPresenter(fragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance(), ArticlesDataLocalSource.getInstance()));
+        new CategoryPresenter(fragment, ArticlesDataRepository.getInstance(ArticlesDataRemoteSource.getInstance()));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.view_pager, fragment, CategoryFragment.class.getSimpleName())
                 .commit();

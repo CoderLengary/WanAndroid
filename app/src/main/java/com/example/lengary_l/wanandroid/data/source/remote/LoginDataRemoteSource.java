@@ -10,8 +10,6 @@ import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
 
-import java.util.List;
-
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -73,17 +71,6 @@ public class LoginDataRemoteSource implements LoginDataSource{
         return null;
     }
 
-    @Override
-    public boolean isAccountExist(@NonNull int userId) {
-        //Not require because the LocalDataSource has handled it
-        return false;
-    }
-
-    @Override
-    public Observable<List<Integer>> getFavoriteArticleIdList(@NonNull int userId) {
-        //Not require because the LocalDataSource has handled it
-        return null;
-    }
 
 
 }
