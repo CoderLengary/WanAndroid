@@ -8,6 +8,11 @@ import com.example.lengary_l.wanandroid.data.LoginType;
 
 import io.reactivex.Observable;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface LoginDataSource {
 
     Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType);

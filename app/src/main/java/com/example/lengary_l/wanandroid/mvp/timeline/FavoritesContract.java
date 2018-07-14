@@ -6,6 +6,11 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface FavoritesContract {
     interface Presenter extends BasePresenter {
 
@@ -13,7 +18,7 @@ public interface FavoritesContract {
 
         void getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache);
 
-        void clearHashMap();
+
 
     }
 

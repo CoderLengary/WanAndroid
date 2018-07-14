@@ -31,6 +31,11 @@ import com.example.lengary_l.wanandroid.appwidget.AppWidgetProvider;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.just.agentweb.AgentWeb;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class DetailFragment extends Fragment implements DetailContract.View{
     private FrameLayout webViewContainer;
     private Toolbar toolbar;
@@ -44,6 +49,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private boolean isFavorite;
     private boolean isFromFavoriteFragment;
     private boolean isFromBanner;
+    private boolean sendRxBus;
+    private boolean sendRefreshBroadcast;
 
 
 
@@ -66,7 +73,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         userId= PreferenceManager.getDefaultSharedPreferences(getContext()).getInt(SettingsUtil.USERID, -1);
         isFromFavoriteFragment = intent.getBooleanExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
         isFromBanner = intent.getBooleanExtra(DetailActivity.FROM_BANNER, false);
-
+        sendRxBus = false;
+        sendRefreshBroadcast = false;
     }
 
     @Nullable
@@ -139,7 +147,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                             presenter.insertReadLaterArticle(userId, id, System.currentTimeMillis());
                         }
                         isReadLater = !isReadLater;
-                        sendRefreshBroadcast();
+                        sendRefreshBroadcast = !sendRefreshBroadcast;
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -215,6 +223,14 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         }
         super.onPause();
         presenter.unSubscribe();
+        if (sendRxBus) {
+            RxBus.getInstance().send(RxBus.REFRESH);
+            sendRxBus = !sendRxBus;
+        }
+        if (sendRefreshBroadcast){
+            getActivity().sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(getContext()));
+            sendRefreshBroadcast = !sendRefreshBroadcast;
+        }
     }
 
 
@@ -283,8 +299,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     }
 
     @Override
-    public void changeFavoriteState() {
-        RxBus.getInstance().send(RxBus.REFRESH);
+    public void saveSendRxBus() {
+        sendRxBus = !sendRxBus;
     }
 
     @Override
@@ -298,8 +314,8 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     }
 
 
-    private void sendRefreshBroadcast() {
-        getActivity().sendBroadcast(AppWidgetProvider.getRefreshBroadcastIntent(getContext()));
-    }
+
+
+
 
 }

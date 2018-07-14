@@ -4,6 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class OnboardingPagerAdapter  extends FragmentPagerAdapter {
 
     private final int pageCount = 3;

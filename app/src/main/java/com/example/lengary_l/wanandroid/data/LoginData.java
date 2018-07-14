@@ -3,6 +3,11 @@ package com.example.lengary_l.wanandroid.data;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LoginData  {
 
 

@@ -17,6 +17,11 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class OnboardingAcitivity extends AppCompatActivity {
 
     private ViewPager viewPager;

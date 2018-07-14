@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class ArticleDetailInnerData extends RealmObject {
 
     public String getName() {

@@ -6,6 +6,11 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface CategoriesContract {
     interface Presenter extends BasePresenter{
         void getCategories(boolean forceUpdate);

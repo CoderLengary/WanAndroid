@@ -10,6 +10,11 @@ import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class CategoryActivity extends AppCompatActivity {
     public static final String CATEGORY_ID = "CATEGORY_ID";
     public static final String CATEGORY_NAME = "CATEGORY_NAME";

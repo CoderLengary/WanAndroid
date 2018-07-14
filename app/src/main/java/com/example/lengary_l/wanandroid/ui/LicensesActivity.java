@@ -11,6 +11,11 @@ import android.webkit.WebView;
 
 import com.example.lengary_l.wanandroid.R;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LicensesActivity extends AppCompatActivity{
 
     @Override

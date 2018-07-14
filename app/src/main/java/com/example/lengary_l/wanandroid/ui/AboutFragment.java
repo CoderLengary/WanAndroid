@@ -12,6 +12,11 @@ import android.widget.Toast;
 import com.example.lengary_l.wanandroid.BuildConfig;
 import com.example.lengary_l.wanandroid.R;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class AboutFragment extends PreferenceFragmentCompat {
 
 

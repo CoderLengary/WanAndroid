@@ -55,7 +55,7 @@
 
         <activity android:name=".ui.LicensesActivity"
             android:label="@string/about_settings"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBarPlus"/>
 
         <service android:name=".appwidget.AppWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

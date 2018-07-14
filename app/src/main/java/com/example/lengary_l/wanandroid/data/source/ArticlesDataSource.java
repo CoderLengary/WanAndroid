@@ -8,11 +8,16 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface ArticlesDataSource {
 
-    Observable<List<ArticleDetailData>> getArticles(@NonNull int page, boolean forceUpdate, boolean clearCache);
+    Observable<List<ArticleDetailData>> getArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache);
 
-    Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords,boolean forceUpdate , boolean clearCache);
+    Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, @NonNull boolean forceUpdate , @NonNull boolean clearCache);
 
-    Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId , boolean forceUpdate,boolean clearCache);
+    Observable<List<ArticleDetailData>> getArticlesFromCatg(@NonNull int page, @NonNull int categoryId , @NonNull boolean forceUpdate, @NonNull boolean clearCache);
 }

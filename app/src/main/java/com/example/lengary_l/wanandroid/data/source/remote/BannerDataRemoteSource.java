@@ -15,6 +15,11 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class BannerDataRemoteSource implements BannerDataSource {
 
     @NonNull

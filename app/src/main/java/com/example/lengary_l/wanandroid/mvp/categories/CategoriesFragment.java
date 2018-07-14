@@ -21,6 +21,11 @@ import com.zhy.view.flowlayout.FlowLayout;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class CategoriesFragment extends Fragment implements CategoriesContract.View{
 
 

@@ -13,21 +13,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
+import com.example.lengary_l.wanandroid.util.NetworkUtil;
 
 import java.util.List;
 
-public class CategoryFragment extends Fragment implements CategoryContract.View {
+/**
+ * Created by CoderLengary
+ */
 
+
+public class CategoryFragment extends Fragment implements CategoryContract.View {
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private Toolbar toolbar;
     private CategoryContract.Presenter presenter;
-
     private boolean isFirstLoad=true;
     private int categoryId;
     private String categoryName;
@@ -126,8 +131,12 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
-                    intent.putExtra(DetailActivity.URL, list.get(position).getLink());
-                    intent.putExtra(DetailActivity.TITLE, list.get(position).getTitle());
+                    ArticleDetailData data = list.get(position);
+                    intent.putExtra(DetailActivity.URL, data.getLink());
+                    intent.putExtra(DetailActivity.TITLE, data.getTitle());
+                    intent.putExtra(DetailActivity.ID, data.getId());
+                    intent.putExtra(DetailActivity.FROM_FAVORITE_FRAGMENT, false);
+                    intent.putExtra(DetailActivity.FROM_BANNER, false);
                     startActivity(intent);
                 }
             });
@@ -150,8 +159,14 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
     }
 
     private void loadMore() {
-        currentPage += 1;
-        presenter.getArticlesFromCatg(currentPage, categoryId, true,false);
+        boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
+        if (isNetworkAvailable) {
+            currentPage += 1;
+            presenter.getArticlesFromCatg(currentPage, categoryId, true, false);
+        }else {
+            Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

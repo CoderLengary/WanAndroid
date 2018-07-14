@@ -9,6 +9,10 @@ import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
 import io.realm.Realm;
 
+/**
+ * Created by CoderLengary
+ */
+
 public class App extends Application {
 
     private static Context context;

@@ -1,5 +1,10 @@
 package com.example.lengary_l.wanandroid.data;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class FavoriteArticleDetailData {
 
     private String author;

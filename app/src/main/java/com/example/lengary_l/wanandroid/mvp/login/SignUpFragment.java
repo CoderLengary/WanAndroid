@@ -23,6 +23,11 @@ import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.example.lengary_l.wanandroid.util.StringUtil;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class SignUpFragment extends Fragment implements LoginContract.View {
 
     private TextInputEditText editUserName;
@@ -113,9 +118,11 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
         String username = loginDetailData.getUsername();
         String password = loginDetailData.getPassword();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        presenter.clearReadLaterData();
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
         sp.edit().putString(SettingsUtil.USERNAME, username).apply();
         sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
+        sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,true).apply();
         navigateToMain();
     }
 

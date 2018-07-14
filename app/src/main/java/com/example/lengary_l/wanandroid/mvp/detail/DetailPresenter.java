@@ -1,7 +1,5 @@
 package com.example.lengary_l.wanandroid.mvp.detail;
 
-import android.util.Log;
-
 import com.example.lengary_l.wanandroid.data.Status;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
@@ -13,13 +11,17 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class DetailPresenter implements DetailContract.Presenter {
     private DetailContract.View view;
     private StatusDataRepository statusDataRepository;
     private CompositeDisposable compositeDisposable;
     private ReadLaterArticlesRepository readLaterArticlesRepository;
     private FavoriteArticlesDataRepository favoriteArticlesDataRepository;
-    private static final String TAG = "DetailPresenter";
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,
@@ -54,7 +56,7 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onNext(Status value) {
                         if (view.isActive()) {
                             view.showCollectStatus(true);
-                            view.changeFavoriteState();
+                            view.saveSendRxBus();
                         }
                     }
 
@@ -62,9 +64,6 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.showCollectStatus(false);
-                            Log.e(TAG, "onError: "+e.toString() );
-                            Log.e(TAG, "onError: "+e.getMessage());
-
                         }
                     }
 
@@ -87,7 +86,7 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onNext(Status value) {
                         if (view.isActive()) {
                             view.showUnCollectStatus(true);
-                            view.changeFavoriteState();
+                            view.saveSendRxBus();
                         }
                     }
 
@@ -95,7 +94,6 @@ public class DetailPresenter implements DetailContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.showUnCollectStatus(false);
-                            Log.e(TAG, "onError: "+e.getMessage() );
                         }
                     }
 

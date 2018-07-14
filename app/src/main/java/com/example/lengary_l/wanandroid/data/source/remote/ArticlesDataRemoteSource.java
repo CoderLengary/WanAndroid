@@ -8,7 +8,7 @@ import com.example.lengary_l.wanandroid.data.source.ArticlesDataSource;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
-import com.example.lengary_l.wanandroid.util.SortUtil;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +20,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class ArticlesDataRemoteSource implements ArticlesDataSource {
     @NonNull
@@ -38,7 +43,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(@NonNull  int page, boolean forceUpdate, boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticles(@NonNull  int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticles(page)
@@ -54,7 +59,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                                return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
                             }
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
@@ -68,7 +73,9 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 });
     }
 
-    private void saveToRealm(ArticleDetailData article){
+    private void saveToRealm(@NonNull ArticleDetailData article){
+        // It is necessary to build a new realm instance
+        // in a different thread.
         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                 .name(RealmHelper.DATABASE_NAME)
                 .deleteRealmIfMigrationNeeded()
@@ -81,7 +88,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, boolean forceUpdate, boolean clearCache) {
+    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, @NonNull boolean forceUpdate, @NonNull  boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .queryArticles(page,keyWords)
@@ -97,16 +104,23 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                                return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
                             }
-                        }).toObservable();
+                        }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
+                            @Override
+                            public void accept(List<ArticleDetailData> list) throws Exception {
+                                for (ArticleDetailData item :list){
+                                    saveToRealm(item);
+                                }
+                            }
+                        });
                     }
                 });
     }
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate,boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(@NonNull int page, @NonNull int categoryId, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticlesFromCatg(page,categoryId)
@@ -122,9 +136,16 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                                return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                                return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
                             }
-                        }).toObservable();
+                        }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
+                            @Override
+                            public void accept(List<ArticleDetailData> list) throws Exception {
+                                for (ArticleDetailData item :list){
+                                    saveToRealm(item);
+                                }
+                            }
+                        });
                     }
                 });
     }

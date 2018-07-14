@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class NetworkUtil {
     public static boolean isNetworkAvailable(Context context){
         ConnectivityManager manager = (ConnectivityManager) context

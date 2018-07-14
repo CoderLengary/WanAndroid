@@ -3,6 +3,11 @@ package com.example.lengary_l.wanandroid.mvp.detail;
 import com.example.lengary_l.wanandroid.mvp.BasePresenter;
 import com.example.lengary_l.wanandroid.mvp.BaseView;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface DetailContract {
     interface Presenter extends BasePresenter{
 
@@ -29,7 +34,7 @@ public interface DetailContract {
 
         boolean isActive();
 
-        void changeFavoriteState();
+        void saveSendRxBus();
 
         void saveReadLaterState(boolean isReadLater);
 

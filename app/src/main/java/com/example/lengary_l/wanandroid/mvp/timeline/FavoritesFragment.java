@@ -30,6 +30,11 @@ import java.util.List;
 
 import io.reactivex.functions.Consumer;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class FavoritesFragment extends Fragment implements FavoritesContract.View{
     private Banner banner;
     private RecyclerView recyclerView;
@@ -83,7 +88,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             public void onRefresh() {
                 currentPage = INDEX;
                 presenter.getFavoriteArticles(INDEX, true, true);
-                presenter.clearHashMap();
+
             }
         });
 
@@ -96,7 +101,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         presenter.subscribe();
         if (isFirstLoad){
             presenter.getFavoriteArticles(INDEX, true,true);
-            presenter.clearHashMap();
+
             currentPage = INDEX;
             isFirstLoad = false;
         }else {

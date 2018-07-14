@@ -1,5 +1,6 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
@@ -26,7 +29,6 @@ import com.example.lengary_l.wanandroid.interfaze.OnCategoryOnClickListener;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
-import com.example.lengary_l.wanandroid.mvp.login.LoginActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.youth.banner.Banner;
@@ -36,6 +38,11 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private NestedScrollView nestedScrollView;
@@ -243,12 +250,21 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         banner.setVisibility(View.GONE);
     }
 
+
     @Override
-    public void navigateToLogin() {
-        sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,false).apply();
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    public void showAutoLoginFail() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle(R.string.warning_title);
+        alertDialog.setMessage(getString(R.string.tip));
+        alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.sure), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MainActivity main = (MainActivity) getActivity();
+                main.navigateToLogin();
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
     }
 
     private void loadMore(){

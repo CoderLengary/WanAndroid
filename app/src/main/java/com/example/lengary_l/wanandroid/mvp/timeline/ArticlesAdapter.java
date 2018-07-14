@@ -18,6 +18,11 @@ import com.example.lengary_l.wanandroid.util.StringUtil;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;

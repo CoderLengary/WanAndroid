@@ -16,6 +16,11 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class StatusDataRemoteSource implements StatusDataSource {
     @NonNull
     private static StatusDataRemoteSource INSTANCE;
@@ -32,7 +37,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
 
 
     @Override
-    public Observable<Status> collectArticle(final int userId, final int id) {
+    public Observable<Status> collectArticle(@NonNull final int userId, @NonNull  final int id) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .collectArticle(id)
@@ -45,6 +50,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .doOnNext(new Consumer<Status>() {
                     @Override
                     public void accept(Status status) throws Exception {
+                        // It is necessary to build a new realm instance
+                        // in a different thread.
                         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                                 .deleteRealmIfMigrationNeeded()
                                 .name(RealmHelper.DATABASE_NAME)
@@ -69,7 +76,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
     }
 
     @Override
-    public Observable<Status> uncollectArticle(final int userId, final int originId) {
+    public Observable<Status> uncollectArticle(@NonNull final int userId,@NonNull  final int originId) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .uncollectArticle(originId)
@@ -82,6 +89,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .doOnNext(new Consumer<Status>() {
                     @Override
                     public void accept(Status status) throws Exception {
+                        // It is necessary to build a new realm instance
+                        // in a different thread.
                         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                                 .deleteRealmIfMigrationNeeded()
                                 .name(RealmHelper.DATABASE_NAME)
@@ -105,7 +114,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 });
     }
 
-    private boolean checkIsFavorite(int articleId, RealmList<Integer> collectIds) {
+    private boolean checkIsFavorite(@NonNull int articleId,@NonNull  RealmList<Integer> collectIds) {
         if (collectIds.isEmpty()) {
             return false;
         }

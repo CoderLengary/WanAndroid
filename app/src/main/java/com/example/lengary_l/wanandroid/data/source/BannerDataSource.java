@@ -6,6 +6,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public interface BannerDataSource {
     Observable<List<BannerDetailData>> getBanner();
 }

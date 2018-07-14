@@ -11,8 +11,12 @@ import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import io.reactivex.Observable;
 import io.realm.Realm;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LoginDataLocalSource implements LoginDataSource{
-    private static final String TAG = "LoginDataLocalSource";
     @NonNull
     private static LoginDataLocalSource INSTANCE;
 
@@ -31,7 +35,7 @@ public class LoginDataLocalSource implements LoginDataSource{
 
     @Override
     public Observable<LoginData> getRemoteLoginData(@NonNull String userName, @NonNull String password, @NonNull LoginType loginType) {
-        //Not require because the RemoteDataSource has handled it
+        //Not required because the {@link LoginDataRemoteSource}  has handled it
         return null;
     }
 

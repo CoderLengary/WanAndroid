@@ -16,6 +16,11 @@ import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocal
 import com.example.lengary_l.wanandroid.data.source.remote.FavoriteArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.StatusDataRemoteSource;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String ID = "ID";

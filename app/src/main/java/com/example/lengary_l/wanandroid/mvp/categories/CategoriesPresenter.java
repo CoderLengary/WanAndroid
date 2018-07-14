@@ -11,6 +11,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class CategoriesPresenter implements CategoriesContract.Presenter {
     private CategoriesDataRepository repository;
     private CompositeDisposable compositeDisposable;
@@ -45,25 +50,25 @@ public class CategoriesPresenter implements CategoriesContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<CategoryDetailData>>() {
                     @Override
                     public void onNext(List<CategoryDetailData> value) {
-                        if (!view.isActive()){
-                            return;
+                        if (view.isActive()){
+                            view.showCategories(value);
                         }
-                        view.showCategories(value);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showEmptyView(true);
+                        if (view.isActive()) {
+                            view.showEmptyView(true);
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        if (!view.isActive()){
-                            return;
-                        }
-                        view.setLoadingIndicator(false);
-                        view.showEmptyView(false);
+                        if (view.isActive()){
+                            view.setLoadingIndicator(false);
+                            view.showEmptyView(false);                        }
+
                     }
                 });
         compositeDisposable.add(disposable);

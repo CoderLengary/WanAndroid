@@ -6,6 +6,11 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class RxBus {
     public static final String REFRESH = "REFRESH";
     private static volatile RxBus INSTANCE;

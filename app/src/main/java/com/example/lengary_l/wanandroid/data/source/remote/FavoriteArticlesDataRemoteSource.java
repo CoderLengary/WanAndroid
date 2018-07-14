@@ -7,6 +7,7 @@ import com.example.lengary_l.wanandroid.data.FavoriteArticlesData;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataSource;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,10 +17,14 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSource {
     @NonNull
     private static FavoriteArticlesDataRemoteSource INSTANCE;
-    private static final String TAG = "FavoriteArticlesDataRem";
     private FavoriteArticlesDataRemoteSource() {
 
     }
@@ -34,7 +39,7 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
 
 
     @Override
-    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(final int page, final boolean forceUpdate, final boolean clearCache) {
+    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(@NonNull final int page, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getFavoriteArticles(page)
@@ -49,11 +54,7 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
                         return Observable.fromIterable(favoriteArticlesData.getData().getDatas()).toSortedList(new Comparator<FavoriteArticleDetailData>() {
                             @Override
                             public int compare(FavoriteArticleDetailData favoriteArticleDetailData, FavoriteArticleDetailData t1) {
-                                if (favoriteArticleDetailData.getPublishTime() > t1.getPublishTime()) {
-                                    return -1;
-                                }else {
-                                    return 1;
-                                }
+                                return SortDescendUtil.sortFavoriteDetailData(favoriteArticleDetailData, t1);
                             }
                         }).toObservable();
                     }
@@ -61,8 +62,8 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
     }
 
     @Override
-    public boolean isExist(int userId, int id) {
-        //The local has handle it
+    public boolean isExist(@NonNull int userId, @NonNull int id) {
+        //Not required because the {@link FavoriteArticlesDataLocalSource} has handled it
         return false;
     }
 }

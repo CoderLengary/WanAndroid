@@ -5,6 +5,11 @@ import com.google.gson.annotations.Expose;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class ReadLaterArticleData  extends RealmObject {
     public int getId() {
         return id;

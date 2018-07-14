@@ -12,6 +12,11 @@ import com.example.lengary_l.wanandroid.data.source.HotKeyDataRepository;
 import com.example.lengary_l.wanandroid.data.source.remote.ArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.HotKeyDataRemoteSource;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class SearchActivity extends AppCompatActivity{
 
 

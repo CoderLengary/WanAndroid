@@ -17,6 +17,11 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private List<CategoryDetailData> list;

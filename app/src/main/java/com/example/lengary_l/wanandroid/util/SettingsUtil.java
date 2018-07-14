@@ -1,5 +1,10 @@
 package com.example.lengary_l.wanandroid.util;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class SettingsUtil {
 
     public static final String USERID = "userId";

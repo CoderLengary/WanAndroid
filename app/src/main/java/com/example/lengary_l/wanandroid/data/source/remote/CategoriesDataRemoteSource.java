@@ -7,6 +7,7 @@ import com.example.lengary_l.wanandroid.data.CategoryDetailData;
 import com.example.lengary_l.wanandroid.data.source.CategoriesDataSource;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,11 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
@@ -35,7 +41,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
 
     @Override
-    public Observable<List<CategoryDetailData>> getCategories( boolean forceUpdate) {
+    public Observable<List<CategoryDetailData>> getCategories(@NonNull boolean forceUpdate) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getCategories()
@@ -51,11 +57,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
                         return Observable.fromIterable(categoriesData.getData()).toSortedList(new Comparator<CategoryDetailData>() {
                             @Override
                             public int compare(CategoryDetailData categoryDetailData, CategoryDetailData t1) {
-                                if (categoryDetailData.getOrder()>t1.getOrder()){
-                                    return 1;
-                                }else {
-                                    return -1;
-                                }
+                                return SortDescendUtil.sortCategoryDetailData(categoryDetailData, t1);
                             }
                         }).toObservable();
                     }

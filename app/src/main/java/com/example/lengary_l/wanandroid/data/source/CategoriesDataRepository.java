@@ -1,6 +1,9 @@
 package com.example.lengary_l.wanandroid.data.source;
 
+import android.support.annotation.NonNull;
+
 import com.example.lengary_l.wanandroid.data.CategoryDetailData;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,23 +15,28 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
-public class CategoriesDataRepository implements CategoriesDataSource {
+/**
+ * Created by CoderLengary
+ */
 
+
+public class CategoriesDataRepository implements CategoriesDataSource {
+    @NonNull
     private static CategoriesDataRepository INSTANCE;
     private CategoriesDataSource remote;
     private HashMap<Integer, CategoryDetailData> cache;
 
-    private CategoriesDataRepository(CategoriesDataSource remote){
+    private CategoriesDataRepository(@NonNull CategoriesDataSource remote){
         this.remote = remote;
     }
-    public static CategoriesDataRepository getInstance(CategoriesDataSource remote){
+    public static CategoriesDataRepository getInstance(@NonNull CategoriesDataSource remote){
         if (INSTANCE==null){
             INSTANCE = new CategoriesDataRepository(remote);
         }
         return INSTANCE;
     }
     @Override
-    public Observable<List<CategoryDetailData>> getCategories(final boolean forceUpdate) {
+    public Observable<List<CategoryDetailData>> getCategories(@NonNull final boolean forceUpdate) {
         if (!forceUpdate){
             return Observable.just(sortCacheItems(new ArrayList<>(cache.values())));
         }
@@ -42,7 +50,7 @@ public class CategoriesDataRepository implements CategoriesDataSource {
                 });
     }
 
-    private void refreshCache(boolean forceUpdate,List<CategoryDetailData> list){
+    private void refreshCache(@NonNull boolean forceUpdate, @NonNull List<CategoryDetailData> list){
         if (cache==null){
             cache = new LinkedHashMap<>();
         }
@@ -54,15 +62,11 @@ public class CategoriesDataRepository implements CategoriesDataSource {
         }
     }
 
-    private List<CategoryDetailData> sortCacheItems(List<CategoryDetailData> list){
+    private List<CategoryDetailData> sortCacheItems(@NonNull List<CategoryDetailData> list){
         Collections.sort(list, new Comparator<CategoryDetailData>() {
             @Override
             public int compare(CategoryDetailData categoryDetailData, CategoryDetailData t1) {
-                if (categoryDetailData.getOrder()>t1.getOrder()){
-                    return 1;
-                }else {
-                    return -1;
-                }
+                return SortDescendUtil.sortCategoryDetailData(categoryDetailData, t1);
             }
         });
         return list;

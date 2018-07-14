@@ -8,9 +8,12 @@ import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class CookieManger implements CookieJar {
-
-
 
 
     private static Context mContext;

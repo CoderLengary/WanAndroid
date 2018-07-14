@@ -23,6 +23,11 @@ import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.example.lengary_l.wanandroid.util.StringUtil;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LoginFragment extends Fragment implements LoginContract.View{
 
     private TextInputEditText editUserName;

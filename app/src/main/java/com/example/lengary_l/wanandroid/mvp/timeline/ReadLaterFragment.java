@@ -27,6 +27,11 @@ import com.youth.banner.Banner;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class ReadLaterFragment extends Fragment implements ReadLaterContract.View{
 
     private Banner banner;

@@ -7,6 +7,7 @@ import com.example.lengary_l.wanandroid.data.HotKeyDetailData;
 import com.example.lengary_l.wanandroid.data.source.HotKeyDataSource;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitClient;
 import com.example.lengary_l.wanandroid.retrofit.RetrofitService;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,6 +16,11 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class HotKeyDataRemoteSource implements HotKeyDataSource {
 
@@ -29,7 +35,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
     }
 
     @Override
-    public Observable<List<HotKeyDetailData>> getHotKeys(boolean forceUpdate) {
+    public Observable<List<HotKeyDetailData>> getHotKeys(@NonNull boolean forceUpdate) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getHotKeys()
@@ -45,11 +51,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
                         return Observable.fromIterable(hotKeysData.getData()).toSortedList(new Comparator<HotKeyDetailData>() {
                             @Override
                             public int compare(HotKeyDetailData hotKeyDetailData, HotKeyDetailData t1) {
-                               if (hotKeyDetailData.getOrder()>t1.getOrder()){
-                                   return 1;
-                               }else {
-                                   return -1;
-                               }
+                                return SortDescendUtil.sortHotKeyDetailData(hotKeyDetailData, t1);
                             }
                         }).toObservable();
                     }

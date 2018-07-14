@@ -25,6 +25,11 @@ import com.example.lengary_l.wanandroid.data.source.remote.BannerDataRemoteSourc
 import com.example.lengary_l.wanandroid.data.source.remote.FavoriteArticlesDataRemoteSource;
 import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class TimelineFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;

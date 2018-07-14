@@ -16,8 +16,12 @@ import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LoginDataRemoteSource implements LoginDataSource{
-    private static final String TAG = "LoginDataRemoteSource";
     @NonNull
     private static LoginDataRemoteSource INSTANCE;
 
@@ -50,7 +54,8 @@ public class LoginDataRemoteSource implements LoginDataSource{
             @Override
             public void accept(LoginData loginData) throws Exception {
                 if (loginData.getErrorCode()!=-1||loginData.getData() != null) {
-                    //save the remote data to local.Only the data which is not null will be saved
+                    // It is necessary to build a new realm instance
+                    // in a different thread.
                     Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
                             .name(RealmHelper.DATABASE_NAME)
                             .deleteRealmIfMigrationNeeded()
@@ -67,7 +72,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     @Override
     public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
-        //Not require because the LocalDataSource has handled it
+        //Not required because the {@link LoginDataLocalSource} has handled it
         return null;
     }
 

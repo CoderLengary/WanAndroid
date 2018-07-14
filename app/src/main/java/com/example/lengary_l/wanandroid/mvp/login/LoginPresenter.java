@@ -13,6 +13,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class  LoginPresenter implements LoginContract.Presenter{
 
     @NonNull
@@ -59,6 +64,9 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
                     @Override
                     public void onNext(LoginData value) {
+                        if (!view.isActive()) {
+                            return;
+                        }
                         if (value.getErrorCode()==-1){
                             view.showLoginError(value.getErrorMsg());
                         }else {
@@ -68,7 +76,9 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showNetworkError();
+                        if (view.isActive()) {
+                            view.showNetworkError();
+                        }
                     }
 
                     @Override

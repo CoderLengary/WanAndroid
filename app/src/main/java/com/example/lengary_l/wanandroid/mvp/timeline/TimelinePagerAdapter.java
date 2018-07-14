@@ -8,6 +8,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.lengary_l.wanandroid.R;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class TimelinePagerAdapter extends FragmentPagerAdapter {
     private ArticlesFragment articlesFragment;
     private FavoritesFragment favoritesFragment;

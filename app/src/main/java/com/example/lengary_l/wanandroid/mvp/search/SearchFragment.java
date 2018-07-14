@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
@@ -24,11 +25,17 @@ import com.example.lengary_l.wanandroid.data.HotKeyDetailData;
 import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListener;
 import com.example.lengary_l.wanandroid.mvp.category.CategoryAdapter;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
+import com.example.lengary_l.wanandroid.util.NetworkUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.List;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class SearchFragment extends Fragment implements SearchContract.View {
     private static final String TAG = "SearchFragment";
@@ -195,8 +202,13 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     }
 
     private void loadMore() {
-        currentPage += 1;
-        presenter.searchArticles(currentPage, keyWords, true,false);
+        boolean isNetworkAvailable = NetworkUtil.isNetworkAvailable(getContext());
+        if (isNetworkAvailable) {
+            currentPage += 1;
+            presenter.searchArticles(currentPage, keyWords, true, false);
+        } else {
+            Toast.makeText(getContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void hideTagFlowLayout(boolean hide) {

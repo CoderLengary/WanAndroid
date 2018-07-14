@@ -7,6 +7,11 @@ import java.io.Serializable;
 
 import okhttp3.Cookie;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class OkHttpCookies implements Serializable {
 
     private transient final Cookie cookies;

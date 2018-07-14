@@ -19,6 +19,11 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.Sort;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context context;

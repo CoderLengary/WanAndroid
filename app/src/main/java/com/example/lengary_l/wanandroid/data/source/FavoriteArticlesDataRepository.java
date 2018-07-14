@@ -3,6 +3,7 @@ package com.example.lengary_l.wanandroid.data.source;
 import android.support.annotation.NonNull;
 
 import com.example.lengary_l.wanandroid.data.FavoriteArticleDetailData;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,6 +16,11 @@ import io.reactivex.Observable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSource {
     private FavoriteArticlesDataSource remote;
     private FavoriteArticlesDataSource local;
@@ -22,11 +28,11 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
     @NonNull
     private static FavoriteArticlesDataRepository INSTANCE;
 
-    private FavoriteArticlesDataRepository(FavoriteArticlesDataSource remote, FavoriteArticlesDataSource local) {
+    private FavoriteArticlesDataRepository(@NonNull FavoriteArticlesDataSource remote, @NonNull FavoriteArticlesDataSource local) {
         this.remote = remote;
         this.local = local;
     }
-    public static FavoriteArticlesDataRepository getInstance(FavoriteArticlesDataSource remote, FavoriteArticlesDataSource local) {
+    public static FavoriteArticlesDataRepository getInstance(@NonNull FavoriteArticlesDataSource remote,@NonNull FavoriteArticlesDataSource local) {
         if (INSTANCE == null) {
             INSTANCE = new FavoriteArticlesDataRepository(remote, local);
         }
@@ -35,24 +41,26 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
 
 
     @Override
-    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(int page, boolean forceUpdate,final boolean clearCache) {
+    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull final boolean clearCache) {
         if (!forceUpdate && favoriteArticlesCache != null) {
-            List<FavoriteArticleDetailData> cacheItems = new ArrayList<>(favoriteArticlesCache.values());
-            return Observable.fromIterable(cacheItems).toSortedList(new Comparator<FavoriteArticleDetailData>() {
-                @Override
-                public int compare(FavoriteArticleDetailData favoriteArticleDetailData, FavoriteArticleDetailData t1) {
-                    if (favoriteArticleDetailData.getPublishTime() > t1.getPublishTime()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                }
-            }).toObservable();
+            return Observable.fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
+                    .toSortedList(new Comparator<FavoriteArticleDetailData>() {
+                        @Override
+                        public int compare(FavoriteArticleDetailData favoriteArticleDetailData, FavoriteArticleDetailData t1) {
+                            return SortDescendUtil.sortFavoriteDetailData(favoriteArticleDetailData, t1);
+                        }
+                    }).toObservable();
         }
 
         if (!clearCache&&favoriteArticlesCache!=null) {
-            List<FavoriteArticleDetailData> cacheItems = new ArrayList<>(favoriteArticlesCache.values());
-            Observable ob1 = Observable.just(cacheItems);
+            Observable ob1 = Observable.fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
+                    .toSortedList(new Comparator<FavoriteArticleDetailData>() {
+                        @Override
+                        public int compare(FavoriteArticleDetailData favoriteArticleDetailData, FavoriteArticleDetailData t1) {
+                            return SortDescendUtil.sortFavoriteDetailData(favoriteArticleDetailData, t1);
+                        }
+                    }).toObservable();
+
             Observable ob2=remote.getFavoriteArticles(page, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<FavoriteArticleDetailData>>() {
                         @Override
@@ -60,19 +68,21 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                             refreshArticlesCache(clearCache, list);
                         }
                     });
-            return Observable.merge(ob1, ob2).collect(new Callable<ArrayList<FavoriteArticleDetailData>>(){
 
-                @Override
-                public ArrayList<FavoriteArticleDetailData> call() throws Exception {
-                    return new ArrayList<>();
-                }
-            },new BiConsumer<ArrayList<FavoriteArticleDetailData>,FavoriteArticleDetailData>(){
+            return Observable.merge(ob1, ob2)
+                    .collect(new Callable<List<FavoriteArticleDetailData>>() {
 
-                @Override
-                public void accept(ArrayList<FavoriteArticleDetailData> list, FavoriteArticleDetailData data) throws Exception {
-                    list.add(data);
-                }
-            }).toObservable();
+                        @Override
+                        public List<FavoriteArticleDetailData> call() throws Exception {
+                            return new ArrayList<>();
+                        }
+                    }, new BiConsumer<List<FavoriteArticleDetailData>, List<FavoriteArticleDetailData>>() {
+
+                        @Override
+                        public void accept(List<FavoriteArticleDetailData> list, List<FavoriteArticleDetailData> dataList) throws Exception {
+                            list.addAll(dataList);
+                        }
+                    }).toObservable();
         }
 
         return remote.getFavoriteArticles(page, forceUpdate,clearCache)
@@ -85,11 +95,11 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
     }
 
     @Override
-    public boolean isExist(int userId, int id) {
+    public boolean isExist(@NonNull int userId, @NonNull int id) {
         return local.isExist(userId, id);
     }
 
-    private void refreshArticlesCache(boolean clearCache,List<FavoriteArticleDetailData> list) {
+    private void refreshArticlesCache(@NonNull boolean clearCache, @NonNull List<FavoriteArticleDetailData> list) {
         if (favoriteArticlesCache == null) {
             favoriteArticlesCache = new LinkedHashMap<>();
         }

@@ -14,6 +14,11 @@ import com.example.lengary_l.wanandroid.data.source.local.LoginDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
 import com.example.lengary_l.wanandroid.data.source.remote.LoginDataRemoteSource;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class LoginActivity extends AppCompatActivity {
     private LoginFragment loginFragment;
     private SignUpFragment signUpFragment;

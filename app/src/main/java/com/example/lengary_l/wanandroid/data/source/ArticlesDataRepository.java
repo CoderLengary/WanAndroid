@@ -1,26 +1,30 @@
 package com.example.lengary_l.wanandroid.data.source;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
-import com.example.lengary_l.wanandroid.util.SortUtil;
+import com.example.lengary_l.wanandroid.util.SortDescendUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class ArticlesDataRepository implements ArticlesDataSource {
 
     @NonNull
     private ArticlesDataSource remoteDataSource;
-
-
 
     private Map<Integer, ArticleDetailData> articlesCache;
 
@@ -31,8 +35,6 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
     @NonNull
     public static ArticlesDataRepository INSTANCE;
-
-    private static final String TAG = "ArticlesDataRepository";
 
     private ArticlesDataRepository(@NonNull ArticlesDataSource remoteDataSource ){
         this.remoteDataSource = remoteDataSource;
@@ -47,23 +49,27 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(@NonNull final int page, final boolean forceUpdate, final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticles(@NonNull final int page, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
 
         if (!forceUpdate && articlesCache != null) {
-            Log.e(TAG, "getArticles: No forceUpdate " );
-            List<ArticleDetailData> cacheItems = new ArrayList<>(articlesCache.values());
-            return Observable.fromIterable(cacheItems).toSortedList(new Comparator<ArticleDetailData>() {
-                @Override
-                public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                    return SortUtil.sortArticleDetailData(articleDetailData, t1);
-                }
-            }).toObservable();
+            return Observable.fromIterable(new ArrayList<>(articlesCache.values()))
+                    .toSortedList(new Comparator<ArticleDetailData>() {
+                        @Override
+                        public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
+                        }
+                    }).toObservable();
         }
 
         if (!clearCache&&articlesCache!=null){
-            Log.e(TAG, "getArticles: update not clearcache, page is "+page);
-            List<ArticleDetailData> cacheItems = new ArrayList<>(articlesCache.values());
-            Observable<List<ArticleDetailData>> ob1 = Observable.just(cacheItems);
+            Observable<List<ArticleDetailData>> ob1 = Observable.fromIterable(new ArrayList<>(articlesCache.values()))
+                    .toSortedList(new Comparator<ArticleDetailData>() {
+                        @Override
+                        public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
+                        }
+                    }).toObservable();
+
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticles(page, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
@@ -72,10 +78,19 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                         }
                     });
 
-            return Observable.merge(ob1, ob2);
+            return Observable.merge(ob1, ob2).collect(new Callable<List<ArticleDetailData>>() {
+                @Override
+                public List<ArticleDetailData> call() throws Exception {
+                    return new ArrayList<>();
+                }
+            }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
+                @Override
+                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                    list.addAll(dataList);
+                }
+            }).toObservable();
         }
 
-        Log.e(TAG, "getArticles: update clearcache" );
         return remoteDataSource.getArticles(INDEX, forceUpdate, clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
@@ -88,7 +103,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
 
-    private void refreshArticlesCache(boolean clearCache,List<ArticleDetailData> list){
+    private void refreshArticlesCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list){
         if (articlesCache == null) {
             articlesCache = new LinkedHashMap<>();
         }
@@ -99,25 +114,30 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             articlesCache.put(item.getId(), item);
         }
 
-        Log.e(TAG, "refreshCache: cacheSize "+articlesCache.size() );
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, boolean forceUpdate, final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, @NonNull boolean forceUpdate, @NonNull final boolean clearCache) {
 
         if (!forceUpdate && queryCache != null) {
             return Observable.fromIterable(new ArrayList<>(queryCache.values()))
                     .toSortedList(new Comparator<ArticleDetailData>() {
                         @Override
                         public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                            return SortUtil.sortArticleDetailData(articleDetailData, t1);
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
                         }
                     }).toObservable();
         }
 
         if (!clearCache && queryCache != null) {
-            List<ArticleDetailData> cacheItems = new ArrayList<>(queryCache.values());
-            Observable ob1 = Observable.just(cacheItems);
+            Observable ob1 = Observable.fromIterable(new ArrayList<>(queryCache.values()))
+                    .toSortedList(new Comparator<ArticleDetailData>() {
+                        @Override
+                        public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
+                        }
+                    }).toObservable();
+
             Observable ob2 = remoteDataSource.queryArticles(page, keyWords, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
@@ -125,10 +145,22 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                             refreshQueryCache(clearCache, list);
                         }
                     });
-            return Observable.merge(ob1, ob2);
+
+            return Observable.merge(ob1, ob2).collect(new Callable<List<ArticleDetailData>>() {
+
+                @Override
+                public List<ArticleDetailData> call() throws Exception {
+                    return new ArrayList<>();
+                }
+
+            }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
+                @Override
+                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                    list.addAll(dataList);
+                }
+            }).toObservable();
         }
 
-        //force update and clear cache
         return remoteDataSource.queryArticles(page, keyWords, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
@@ -141,7 +173,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
 
-    private void refreshQueryCache(boolean clearCache,List<ArticleDetailData> list) {
+    private void refreshQueryCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list) {
         if (queryCache == null) {
             queryCache = new LinkedHashMap<>();
         }
@@ -156,20 +188,27 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, final boolean forceUpdate, final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(@NonNull int page, @NonNull int categoryId, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
         if (!forceUpdate&&categoryCache!=null){
-            List<ArticleDetailData> cacheItems = new ArrayList<>(categoryCache.values());
-            return Observable.fromIterable(cacheItems).toSortedList(new Comparator<ArticleDetailData>() {
-                @Override
-                public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-                    return SortUtil.sortArticleDetailData(articleDetailData, t1);
-                }
-            }).toObservable();
+            return Observable.fromIterable(new ArrayList<>(categoryCache.values()))
+                    .toSortedList(new Comparator<ArticleDetailData>() {
+                        @Override
+                        public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
+                        }
+                    }).toObservable();
         }
 
         if (!clearCache&&categoryCache!=null){
-            List<ArticleDetailData> cacheItems = new ArrayList<>(categoryCache.values());
-            Observable<List<ArticleDetailData>> ob1 = Observable.just(cacheItems);
+
+            Observable<List<ArticleDetailData>> ob1 = Observable.fromIterable(new ArrayList<>(categoryCache.values()))
+                    .toSortedList(new Comparator<ArticleDetailData>() {
+                        @Override
+                        public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
+                            return SortDescendUtil.sortArticleDetailData(articleDetailData, t1);
+                        }
+                    }).toObservable();
+
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
@@ -177,8 +216,21 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                             refreshCategoryCache(clearCache, list);
                         }
                     });
-            return Observable.merge(ob1, ob2);
 
+            return Observable.merge(ob1, ob2)
+                    .collect(new Callable<List<ArticleDetailData>>() {
+
+                        @Override
+                        public List<ArticleDetailData> call() throws Exception {
+                            return new ArrayList<>();
+                        }
+
+                    }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
+                        @Override
+                        public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                            list.addAll(dataList);
+                        }
+                    }).toObservable();
         }
 
         return remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate,clearCache)
@@ -190,7 +242,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                 });
     }
 
-    private void refreshCategoryCache(boolean clearCache,List<ArticleDetailData> list) {
+    private void refreshCategoryCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list) {
         if (categoryCache == null) {
             categoryCache = new LinkedHashMap<>();
         }

@@ -36,6 +36,11 @@ import com.example.lengary_l.wanandroid.mvp.timeline.TimelineFragment;
 import com.example.lengary_l.wanandroid.ui.AboutFragment;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID = "KEY_BOTTOM_NAVIGATION_VIEW_SELECTED_ID";
@@ -266,7 +271,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void navigateToLogin() {
+    public void navigateToLogin() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,false).apply();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -286,8 +293,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.sure), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,false).apply();
                 navigateToLogin();
             }
         });

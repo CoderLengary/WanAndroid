@@ -8,6 +8,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class BannerDataRepository implements BannerDataSource{
 
     private BannerDataSource remote;
@@ -15,11 +20,11 @@ public class BannerDataRepository implements BannerDataSource{
     @NonNull
     private static BannerDataRepository INSTANCE = null;
 
-    private BannerDataRepository(BannerDataSource remote) {
+    private BannerDataRepository(@NonNull BannerDataSource remote) {
         this.remote = remote;
     }
 
-    public static BannerDataRepository getInstance(BannerDataSource remote){
+    public static BannerDataRepository getInstance(@NonNull BannerDataSource remote){
         if (INSTANCE == null) {
             INSTANCE = new BannerDataRepository(remote);
         }

@@ -11,6 +11,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class ReadLaterPresenter implements ReadLaterContract.Presenter {
 
     private ReadLaterArticlesRepository repository;
@@ -33,10 +38,9 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<ReadLaterArticleData>>() {
                     @Override
                     public void onNext(List<ReadLaterArticleData> value) {
-                        if (!view.isActive()) {
-                            return;
+                        if (view.isActive()) {
+                            view.showReadLaterArticles(value);
                         }
-                        view.showReadLaterArticles(value);
                     }
 
                     @Override

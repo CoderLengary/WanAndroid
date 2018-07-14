@@ -11,6 +11,10 @@ import android.widget.RemoteViews;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 
+/**
+ * Created by CoderLengary
+ */
+
 public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
     private static final String REFRESH_ACTION = "com.example.lengary_l.wanandroid";
 

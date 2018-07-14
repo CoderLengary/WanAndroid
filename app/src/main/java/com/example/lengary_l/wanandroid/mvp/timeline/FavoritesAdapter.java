@@ -18,6 +18,11 @@ import com.example.lengary_l.wanandroid.util.StringUtil;
 
 import java.util.List;
 
+/**
+ * Created by CoderLengary
+ */
+
+
 public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<FavoriteArticleDetailData> mList;
     private Context context;

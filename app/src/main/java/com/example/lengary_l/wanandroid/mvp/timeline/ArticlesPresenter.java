@@ -1,7 +1,5 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
-import android.util.Log;
-
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
 import com.example.lengary_l.wanandroid.data.BannerDetailData;
 import com.example.lengary_l.wanandroid.data.LoginData;
@@ -9,20 +7,19 @@ import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.ArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.BannerDataRepository;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
-import com.example.lengary_l.wanandroid.util.SortUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+
+/**
+ * Created by CoderLengary
+ */
+
 
 public class ArticlesPresenter implements ArticlesContract.Presenter {
 
@@ -31,8 +28,6 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     private BannerDataRepository bannerRepository;
     private LoginDataRepository loginDataRepository;
     private ArticlesContract.View view;
-    private Map<Integer, ArticleDetailData> hashMap;
-    private static final String TAG = "ArticlesPresenter";
 
     public ArticlesPresenter(ArticlesContract.View view,
                              ArticlesDataRepository articleRepository,
@@ -44,7 +39,6 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
         this.view = view;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
-        hashMap = new HashMap<>();
     }
 
 
@@ -57,33 +51,26 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
                     public void onNext(List<ArticleDetailData> value) {
-                        if (!view.isActive()){
-                            return;
-                        }
-                        if (forceUpdate&&!clearCache){
-                            addToHashMap(value);
-                        }else {
-                            view.showArticles(value);
+                        if (view.isActive()){
                             view.showEmptyView(false);
+                            view.showArticles(value);
                         }
+
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: "+e.getMessage() );
-                        view.showEmptyView(true);
+                        if (view.isActive()) {
+                            view.showEmptyView(true);
+                        }
                     }
 
                     @Override
                     public void onComplete() {
-                        if (!view.isActive()){
-                            return;
+                        if (view.isActive()){
+                            view.setLoadingIndicator(false);
                         }
-                        if (forceUpdate&&!clearCache){
-                            view.showArticles(sortHashMap(new ArrayList<>(hashMap.values())));
-                            view.showEmptyView(false);
-                        }
-                        view.setLoadingIndicator(false);
                     }
                 });
         compositeDisposable.add(disposable);
@@ -126,17 +113,16 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 
                     @Override
                     public void onNext(LoginData value) {
-                        if (!view.isActive()) {
-                            return;
-                        }
-                        if (value.getErrorCode() == -1) {
-                            view.navigateToLogin();
+                        if (view.isActive() && value.getErrorCode() == -1) {
+                            view.showAutoLoginFail();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (view.isActive()) {
+                            view.showAutoLoginFail();
+                        }
                     }
 
                     @Override
@@ -148,21 +134,6 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     }
 
 
-    private void addToHashMap(List<ArticleDetailData> value){
-        for (ArticleDetailData d:value){
-            hashMap.put(d.getId(), d);
-        }
-    }
-
-    private List<ArticleDetailData> sortHashMap(List<ArticleDetailData> list){
-        Collections.sort(list, new Comparator<ArticleDetailData>() {
-            @Override
-            public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
-               return SortUtil.sortArticleDetailData(articleDetailData, t1);
-            }
-        });
-        return list;
-    }
 
     @Override
     public void subscribe() {
