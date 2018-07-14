@@ -53,7 +53,7 @@
                 android:fadeScrollbars="true"
                 android:scrollbars="vertical"
                 android:visibility="visible"
-                tools:listitem="@layout/item_category" />
+                tools:listitem="@layout/item_category_article" />
 
             <LinearLayout
                 android:id="@+id/empty_view"

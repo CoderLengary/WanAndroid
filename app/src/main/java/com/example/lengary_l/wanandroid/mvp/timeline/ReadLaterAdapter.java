@@ -57,7 +57,7 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_card_view, parent, false);
+        View view = inflater.inflate(R.layout.item_article, parent, false);
         return new NormalViewHolder(view,listener,categoryListener);
     }
 

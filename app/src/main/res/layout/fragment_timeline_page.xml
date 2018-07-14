@@ -59,7 +59,7 @@
                         android:nestedScrollingEnabled="false"
                         android:scrollbars="vertical"
                         android:visibility="visible"
-                        tools:listitem="@layout/item_card_view" />
+                        tools:listitem="@layout/item_article" />
                 </LinearLayout>
 
             </android.support.v4.widget.NestedScrollView>

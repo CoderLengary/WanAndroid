@@ -33,7 +33,7 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
     }
 
     private RemoteViews updateWidgetListView(Context context, int id) {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_widget);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.list_app_widget);
         Intent intent = new Intent(context, AppWidgetService.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));

@@ -23,7 +23,9 @@ And this app is using the WanAndroid API[(doc)](http://www.wanandroid.com/blog/s
 + Support send feedback on using experience from your devices.
 
 ### Screenshots
+![screenshot0](./art/screenshot0.jpg)
 
+![screenshot1](./art/screenshot1.jpg)
 
 
 I hope the source code for this app is useful for you as a reference or starting point for creating your own app. Here is some instructions to help you better build and run the code in Android Studio.

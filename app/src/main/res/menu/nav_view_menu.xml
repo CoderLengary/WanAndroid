@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_sign_out"
             android:icon="@drawable/ic_sign_out_24dp"
-            android:title="@string/nav_sign_out" />
+            android:title="@string/nav_log_out" />
     </group>
 
     <group android:checkableBehavior="single">

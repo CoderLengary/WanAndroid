@@ -51,7 +51,7 @@
     <!--login end-->
 
     <!--main start-->
-    <string name="nav_sign_out">Sign out</string>
+    <string name="nav_log_out">Log out</string>
     <string name="nav_about">About</string>
     <string name="nav_switch_theme">Day/Night Mode</string>
     <string name="nav_settings">Settings</string>
@@ -135,9 +135,9 @@
 
     <!--Warning-->
     <string name="warning_title">Warning</string>
-    <string name="warning_desc">If you log out, all the data will be deleted</string>
+    <string name="warning_desc">If you log out, all the data will be deleted.</string>
     <string name="cancel">Cancel</string>
     <string name="sure">Sure</string>
-    <string name="tip">Fail to login automatically, navigate to login page</string>
+    <string name="tip">Fail to login automatically, navigate to login page.</string>
     <!--Warning-->
 </resources>

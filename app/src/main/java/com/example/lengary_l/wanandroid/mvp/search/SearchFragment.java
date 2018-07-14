@@ -179,7 +179,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         flowLayout.setAdapter(new TagAdapter<HotKeyDetailData>(hotKeyList) {
             @Override
             public View getView(FlowLayout parent, int position, HotKeyDetailData hotKeyDetailData) {
-                TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flow_layout_item, flowLayout, false);
+                TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.item_flow_layout, flowLayout, false);
                 if (hotKeyList == null) {
                     return null;
                 }

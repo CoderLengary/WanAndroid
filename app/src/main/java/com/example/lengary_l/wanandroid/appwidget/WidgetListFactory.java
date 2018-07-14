@@ -65,7 +65,7 @@ public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory 
     @Override
     public RemoteViews getViewAt(int i) {
         RemoteViews remoteViews = new RemoteViews(
-                context.getPackageName(), R.layout.item_list_widget);
+                context.getPackageName(), R.layout.item_list_app_widget);
         Realm realm=Realm.getInstance(new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .name(RealmHelper.DATABASE_NAME)

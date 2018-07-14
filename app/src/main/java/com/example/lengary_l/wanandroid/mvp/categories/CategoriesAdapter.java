@@ -37,7 +37,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(inflater.inflate(R.layout.item_linear_layout, parent, false));
+        return new MyViewHolder(inflater.inflate(R.layout.item_categories, parent, false));
     }
 
     public void updateData(List<CategoryDetailData> list){
@@ -61,7 +61,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             @Override
             public View getView(FlowLayout parent, int position, CategoryDetailData child) {
-                TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.flow_layout_item
+                TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_flow_layout
                         , myViewHolder.flowLayout, false);
                 if (child==null){
                     return null;
