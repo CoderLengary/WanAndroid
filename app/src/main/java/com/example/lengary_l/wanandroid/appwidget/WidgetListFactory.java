@@ -12,6 +12,7 @@ import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.realm.RealmHelper;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
+import com.example.lengary_l.wanandroid.util.StringUtil;
 
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class WidgetListFactory implements RemoteViewsService.RemoteViewsFactory 
                         .findAll());
         ReadLaterArticleData data = list.get(i);
         remoteViews.setTextViewText(R.id.text_view_author,data.getAuthor());
-        remoteViews.setTextViewText(R.id.text_view_title, data.getTitle());
+        remoteViews.setTextViewText(R.id.text_view_title, StringUtil.replaceInvalidChar(data.getTitle()));
         Intent intent = new Intent();
         intent.putExtra(DetailActivity.ID, data.getId());
         intent.putExtra(DetailActivity.TITLE, data.getTitle());

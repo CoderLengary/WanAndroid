@@ -22,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -51,7 +53,6 @@ public class DetailFragment extends Fragment implements DetailContract.View{
     private boolean isFromBanner;
     private boolean sendRxBus;
     private boolean sendRefreshBroadcast;
-
 
 
     public DetailFragment(){
@@ -212,6 +213,18 @@ public class DetailFragment extends Fragment implements DetailContract.View{
                 .createAgentWeb()
                 .ready()
                 .go(url);
+
+        WebView webView = agentWeb.getWebCreator().getWebView();
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
+        settings.setUseWideViewPort(true);
+        settings.setLoadsImagesAutomatically(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+
+
     }
 
 
@@ -224,6 +237,7 @@ public class DetailFragment extends Fragment implements DetailContract.View{
         super.onPause();
         presenter.unSubscribe();
         if (sendRxBus) {
+            //The {@link FavoriteFragment} will receive this message.
             RxBus.getInstance().send(RxBus.REFRESH);
             sendRxBus = !sendRxBus;
         }

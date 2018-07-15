@@ -61,7 +61,7 @@
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_account_hint_text"
+            android:hint="@string/login_password_hint_text"
             android:inputType="textPassword"
             android:textColor="@android:color/white" />
     </android.support.design.widget.TextInputLayout>

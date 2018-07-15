@@ -63,6 +63,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //To make the AgentWeb handle the "On BackPress" logic .
         if (detailFragment.onFragmentKeyDown(keyCode, event)){
             return true;
         }

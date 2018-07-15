@@ -43,5 +43,7 @@
     <color name="layout_background">#fafafa</color>
 
 
+    <color name="web_view_dark_color">#303030</color>
+
 
 </resources>
