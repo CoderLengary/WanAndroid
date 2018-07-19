@@ -10,6 +10,7 @@ WanAndroid App aims to help people access the latest android articles, which is 
 The source code in the repository reflects the app which supports mobile devices running Android 6.0+.
 
 ###About This Repository And App
+
 This app is inspired by [Espresso](https://github.com/TonnyL/Espresso) which is developed by [TonnyL](https://github.com/TonnyL), [Awesome-WanAndroid](https://github.com/JsonChao/Awesome-WanAndroid) and has a lot of similar elements in design.
 And this app is using the WanAndroid API[(doc)](http://www.wanandroid.com/blog/show/2) designed by [HongYang](https://github.com/hongyangAndroid).
 

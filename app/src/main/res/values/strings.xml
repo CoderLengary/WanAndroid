@@ -17,14 +17,14 @@
 <resources>
     <string name="app_name">WanAndroid</string>
 
-    <string name="action_settings">Settings</string>
+
 
 
     <!--onboarding start-->
     <string name="onboarding_pre_btn_desc">Pre</string>
     <string name="onboarding_finish_btn_desc">Finish</string>
-    <string name="onboarding_section_1">Here,you can gain lots of high quality articles</string>
-    <string name="onboarding_intro_1">Include Gradle,Component,JNI and so on</string>
+    <string name="onboarding_section_1">Here, you can gain lots of high quality articles</string>
+    <string name="onboarding_intro_1">Include many kinds of articles.Such as Gradle, Component, JNI and so on</string>
     <string name="onboarding_section_2">We update the articles daily </string>
     <string name="onboarding_intro_2">To make you access the latest theories</string>
     <string name="onboarding_section_3">A new world is waiting for you</string>
@@ -32,14 +32,12 @@
     <!--onboarding end-->
 
     <!--login start-->
-    <string name="title_activity_login_acitivity">Login</string>
     <string name="login_account_hint_text">Enter your username here</string>
     <string name="login_password_hint_text">Enter your password here</string>
     <string name="login_re_password_hint_text">Please enter your password again</string>
     <string name="login_btn_login">Login</string>
     <string name="login_btn_sign_up">Sign Up</string>
-    <string name="register_btn_desc">Register</string>
-    <string name="link_to_sign_up">Don\t have a account?create one</string>
+    <string name="link_to_sign_up">Don\'t have a account? create one</string>
     <string name="link_to_login">Already a member? Login</string>
     <string name="login_account_desc">User Name</string>
     <string name="login_password_desc">PASSWORD</string>
@@ -109,7 +107,7 @@
     <string name="about_navigation_bar_restart_msg">Changes will be applied after restarting app.</string>
     <string name="about_version">Version</string>
     <string name="about_rate">Rate</string>
-    <string name="about_rate_desc">If you like this app,please do rate it</string>
+    <string name="about_rate_desc">If you like this app, please do rate it</string>
     <string name="about_licenses">Licenses</string>
     <string name="about_thanks">Thanks</string>
     <string name="about_lizhaotailang">Li Zhao Tai Lang</string>
