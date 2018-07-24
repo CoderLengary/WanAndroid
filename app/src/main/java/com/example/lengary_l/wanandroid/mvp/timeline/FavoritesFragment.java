@@ -24,7 +24,6 @@ import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListe
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
-import com.youth.banner.Banner;
 
 import java.util.List;
 
@@ -36,7 +35,6 @@ import io.reactivex.functions.Consumer;
 
 
 public class FavoritesFragment extends Fragment implements FavoritesContract.View{
-    private Banner banner;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private NestedScrollView nestedScrollView;
@@ -133,8 +131,12 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                 @Override
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
-                    intent.putExtra(CategoryActivity.CATEGORY_ID, list.get(position).getChapterId());
-                    intent.putExtra(CategoryActivity.CATEGORY_NAME, list.get(position).getChapterName());
+                    FavoriteArticleDetailData data = list.get(position);
+                    if (data.getChapterName().isEmpty()) {
+                        return;
+                    }
+                    intent.putExtra(CategoryActivity.CATEGORY_ID, data.getChapterId());
+                    intent.putExtra(CategoryActivity.CATEGORY_NAME, data.getChapterName());
                     startActivity(intent);
                 }
             });
@@ -179,8 +181,6 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     @Override
     public void initViews(View view) {
-        banner = view.findViewById(R.id.banner);
-        banner.setVisibility(View.GONE);
         nestedScrollView = view.findViewById(R.id.nested_scroll_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

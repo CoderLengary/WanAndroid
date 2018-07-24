@@ -63,6 +63,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.showEmptyView(true);
+                            view.setLoadingIndicator(false);
                         }
                     }
 
@@ -93,12 +94,15 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
                     public void onError(Throwable e) {
                         if (view.isActive()) {
                             view.hideBanner();
+                            view.setLoadingIndicator(false);
                         }
                     }
 
                     @Override
                     public void onComplete() {
-
+                        if (view.isActive()){
+                            view.setLoadingIndicator(false);
+                        }
                     }
                 });
         compositeDisposable.add(disposable);

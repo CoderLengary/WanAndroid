@@ -41,13 +41,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.youth.banner.Banner
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/banner_height"
-                        android:paddingLeft="@dimen/activity_margin_half"
-                        android:paddingRight="@dimen/activity_margin_half"
-                        android:paddingTop="@dimen/activity_margin_half" />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view"

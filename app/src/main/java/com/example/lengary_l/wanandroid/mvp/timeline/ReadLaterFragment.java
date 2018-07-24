@@ -23,7 +23,6 @@ import com.example.lengary_l.wanandroid.interfaze.OnRecyclerViewItemOnClickListe
 import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
-import com.youth.banner.Banner;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ import java.util.List;
 
 public class ReadLaterFragment extends Fragment implements ReadLaterContract.View{
 
-    private Banner banner;
     private RecyclerView recyclerView;
     private LinearLayout emptyView;
     private NestedScrollView nestedScrollView;
@@ -76,8 +74,6 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setEnabled(false);
         emptyView = view.findViewById(R.id.empty_view);
-        banner = view.findViewById(R.id.banner);
-        banner.setVisibility(View.GONE);
     }
 
     @Override
@@ -114,6 +110,9 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
                     ReadLaterArticleData data = list.get(position);
+                    if (data.getChapterName().isEmpty()) {
+                        return;
+                    }
                     intent.putExtra(CategoryActivity.CATEGORY_ID, data.getChapterId());
                     intent.putExtra(CategoryActivity.CATEGORY_NAME, data.getChapterName());
                     startActivity(intent);

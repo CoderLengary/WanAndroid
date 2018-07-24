@@ -55,11 +55,11 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private LinearLayoutManager layoutManager;
     private int currentPage;
     private ArticlesAdapter adapter;
+
     private boolean isFirstLoad=true;
     private String userName;
     private String password;
     private SharedPreferences sp;
-
 
 
     public ArticlesFragment(){
@@ -79,6 +79,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         password = sp.getString(SettingsUtil.PASSWORD, "");
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             }
         });
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
@@ -102,7 +104,14 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         });
 
 
+
         return view;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Toast.makeText(getContext(),"change",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -121,7 +130,10 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         if (banner != null) {
             banner.startAutoPlay();
         }
+
+
     }
+
 
     @Override
     public void onPause() {
@@ -142,7 +154,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     @Override
     public void initViews(View view){
-        banner = view.findViewById(R.id.banner);
+        banner = (Banner) getActivity().getLayoutInflater().inflate(R.layout.container_banner, null);
+        banner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getContext().getResources().getDisplayMetrics().heightPixels/4));
         emptyView = view.findViewById(R.id.empty_view);
         layoutManager = new LinearLayoutManager(getContext());
         nestedScrollView = view.findViewById(R.id.nested_scroll_view);
@@ -187,6 +200,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                 public void onClick(View view, int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
                     ArticleDetailData data = list.get(position);
+                    if (data.getChapterName().isEmpty()) {
+                        return;
+                    }
                     intent.putExtra(CategoryActivity.CATEGORY_ID, data.getChapterId());
                     intent.putExtra(CategoryActivity.CATEGORY_NAME, data.getChapterName());
                     startActivity(intent);
@@ -205,6 +221,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
                     startActivity(intent);
                 }
             });
+            adapter.setHeaderView(banner);
             recyclerView.setAdapter(adapter);
         }
 
@@ -216,6 +233,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         nestedScrollView.setVisibility(!toShow?View.VISIBLE:View.INVISIBLE);
 
     }
+
 
     @Override
     public void showBanner(final List<BannerDetailData> list) {
