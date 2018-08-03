@@ -23,16 +23,16 @@ public class HotKeyDataRepository implements HotKeyDataSource {
     @NonNull
     private static HotKeyDataRepository INSTANCE;
     @NonNull
-    private HotKeyDataSource remote;
+    private HotKeyDataSource remoteDataSource;
     private HashMap<Integer, HotKeyDetailData> cache;
 
-    private HotKeyDataRepository(@NonNull HotKeyDataSource remote) {
-        this.remote = remote;
+    private HotKeyDataRepository(@NonNull HotKeyDataSource remoteDataSource) {
+        this.remoteDataSource = remoteDataSource;
     }
 
-    public static HotKeyDataRepository getInstance(@NonNull HotKeyDataSource remote){
+    public static HotKeyDataRepository getInstance(@NonNull HotKeyDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new HotKeyDataRepository(remote);
+            INSTANCE = new HotKeyDataRepository(remoteDataSource);
         }
         return INSTANCE;
     }
@@ -54,7 +54,7 @@ public class HotKeyDataRepository implements HotKeyDataSource {
         }
 
 
-        return remote.getHotKeys(forceUpdate).doOnNext(new Consumer<List<HotKeyDetailData>>() {
+        return remoteDataSource.getHotKeys(forceUpdate).doOnNext(new Consumer<List<HotKeyDetailData>>() {
             @Override
             public void accept(List<HotKeyDetailData> list) throws Exception {
                 refreshCache(forceUpdate, list);

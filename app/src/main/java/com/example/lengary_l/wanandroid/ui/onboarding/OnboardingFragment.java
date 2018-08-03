@@ -30,10 +30,7 @@ public class OnboardingFragment extends Fragment {
     public OnboardingFragment() {
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
+    //根据sectionNumber返回不同的Fragment
     public static OnboardingFragment newInstance(int sectionNumber) {
         OnboardingFragment fragment = new OnboardingFragment();
         Bundle args = new Bundle();

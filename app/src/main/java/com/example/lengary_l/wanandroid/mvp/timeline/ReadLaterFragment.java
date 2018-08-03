@@ -63,6 +63,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline_page, container, false);
         initViews(view);
+        //由于ReadLater的文章只从数据库中获取，获取到的就是全部的ReadLater文章，所以不需要加载下一页
         return view;
     }
 

@@ -13,13 +13,13 @@ import io.reactivex.Observable;
 
 public class StatusDataRepository implements StatusDataSource {
     @NonNull
-    private StatusDataSource remote;
+    private StatusDataSource remoteDataSource;
 
     @NonNull
     private static StatusDataRepository INSTANCE;
 
-    private StatusDataRepository(@NonNull StatusDataSource remote) {
-        this.remote = remote;
+    private StatusDataRepository(@NonNull StatusDataSource remoteDataSource) {
+        this.remoteDataSource = remoteDataSource;
     }
 
     public static StatusDataRepository getInstance(@NonNull StatusDataSource remote) {
@@ -31,11 +31,11 @@ public class StatusDataRepository implements StatusDataSource {
 
     @Override
     public Observable<Status> collectArticle(@NonNull int userId, @NonNull int id) {
-        return remote.collectArticle(userId,id);
+        return remoteDataSource.collectArticle(userId,id);
     }
 
     @Override
     public Observable<Status> uncollectArticle(@NonNull int userId, @NonNull int originId) {
-        return remote.uncollectArticle(userId, originId);
+        return remoteDataSource.uncollectArticle(userId, originId);
     }
 }

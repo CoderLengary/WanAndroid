@@ -93,6 +93,8 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
             }
         });
+
+        //滑动到底部加载下一页
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
             @Override

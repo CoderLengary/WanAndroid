@@ -15,23 +15,23 @@ import io.reactivex.Observable;
 
 public class BannerDataRepository implements BannerDataSource{
 
-    private BannerDataSource remote;
+    private BannerDataSource remoteDataSource;
 
     @NonNull
     private static BannerDataRepository INSTANCE = null;
 
-    private BannerDataRepository(@NonNull BannerDataSource remote) {
-        this.remote = remote;
+    private BannerDataRepository(@NonNull BannerDataSource remoteDataSource) {
+        this.remoteDataSource = remoteDataSource;
     }
 
-    public static BannerDataRepository getInstance(@NonNull BannerDataSource remote){
+    public static BannerDataRepository getInstance(@NonNull BannerDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new BannerDataRepository(remote);
+            INSTANCE = new BannerDataRepository(remoteDataSource);
         }
         return INSTANCE;
     }
     @Override
     public Observable<List<BannerDetailData>> getBanner() {
-        return remote.getBanner();
+        return remoteDataSource.getBanner();
     }
 }

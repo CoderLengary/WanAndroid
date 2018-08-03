@@ -44,6 +44,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
     @Override
     public Observable<List<ArticleDetailData>> getArticles(@NonNull  int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
+
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getArticles(page)
@@ -53,6 +54,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return articlesData.getErrorCode() != -1;
                     }
                 })
+                //获取的数据类型是ArticlesData，我们需要的是它内部的ArticleDetailData，所以要用到flatMap
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
                     @Override
                     public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {

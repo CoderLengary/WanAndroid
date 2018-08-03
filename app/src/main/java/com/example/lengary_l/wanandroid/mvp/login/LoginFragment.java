@@ -133,6 +133,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     @Override
     public void saveUser2Preference(LoginDetailData loginDetailData) {
+        //登陆成功执行此逻辑
         int userId = loginDetailData.getId();
         String username = loginDetailData.getUsername();
         String password = loginDetailData.getPassword();
@@ -149,6 +150,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     }
 
     private void navigateToMain() {
+        //登陆成功执行此逻辑
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);

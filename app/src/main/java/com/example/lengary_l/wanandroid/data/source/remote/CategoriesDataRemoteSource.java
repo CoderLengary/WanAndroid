@@ -51,6 +51,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
                         return categoriesData.getErrorCode() != -1;
                     }
                 })
+                //获取的数据类型是CategoriesData，我们需要的是它内部的CategoryDetailData，所以要用到flatMap
                 .flatMap(new Function<CategoriesData, ObservableSource<List<CategoryDetailData>>>() {
                     @Override
                     public ObservableSource<List<CategoryDetailData>> apply(CategoriesData categoriesData) throws Exception {

@@ -56,6 +56,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     @Override
     public void insertReadLaterArticle(@NonNull int userId, @NonNull int id, @NonNull long timeStamp) {
+        //搜寻ArticleDetailData数据库的文章，找到后添加到ReadLaterArticleData数据库里面
         Realm realm = RealmHelper.newRealmInstance();
         ArticleDetailData articleDetailData = realm.copyFromRealm(
                 realm.where(ArticleDetailData.class)
@@ -107,6 +108,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     @Override
     public void clearAll() {
+        //该逻辑只有在用户切换账号的时候执行
         Realm realm = RealmHelper.newRealmInstance();
         RealmResults<ReadLaterArticleData> results =
                 realm.where(ReadLaterArticleData.class).findAll();

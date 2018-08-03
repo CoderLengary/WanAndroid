@@ -90,6 +90,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         initViews(view);
 
+        //滑动到底部加载下一页
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

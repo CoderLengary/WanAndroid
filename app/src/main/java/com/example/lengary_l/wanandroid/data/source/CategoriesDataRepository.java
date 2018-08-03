@@ -23,15 +23,15 @@ import io.reactivex.functions.Consumer;
 public class CategoriesDataRepository implements CategoriesDataSource {
     @NonNull
     private static CategoriesDataRepository INSTANCE;
-    private CategoriesDataSource remote;
+    private CategoriesDataSource remoteDataSource;
     private HashMap<Integer, CategoryDetailData> cache;
 
-    private CategoriesDataRepository(@NonNull CategoriesDataSource remote){
-        this.remote = remote;
+    private CategoriesDataRepository(@NonNull CategoriesDataSource remoteDataSource){
+        this.remoteDataSource = remoteDataSource;
     }
-    public static CategoriesDataRepository getInstance(@NonNull CategoriesDataSource remote){
+    public static CategoriesDataRepository getInstance(@NonNull CategoriesDataSource remoteDataSource){
         if (INSTANCE==null){
-            INSTANCE = new CategoriesDataRepository(remote);
+            INSTANCE = new CategoriesDataRepository(remoteDataSource);
         }
         return INSTANCE;
     }
@@ -41,7 +41,7 @@ public class CategoriesDataRepository implements CategoriesDataSource {
             return Observable.just(sortCacheItems(new ArrayList<>(cache.values())));
         }
 
-        return remote.getCategories(forceUpdate)
+        return remoteDataSource.getCategories(forceUpdate)
                 .doOnNext(new Consumer<List<CategoryDetailData>>() {
                     @Override
                     public void accept(List<CategoryDetailData> list) throws Exception {

@@ -15,13 +15,13 @@ import io.reactivex.Observable;
 
 public class ReadLaterArticlesRepository implements ReadLaterArticlesDataSource {
     @NonNull
-    private ReadLaterArticlesDataSource local;
+    private ReadLaterArticlesDataSource localDataSource;
 
     @NonNull
     private static ReadLaterArticlesRepository INSTANCE;
 
     private ReadLaterArticlesRepository(@NonNull ReadLaterArticlesDataSource local) {
-        this.local = local;
+        this.localDataSource = local;
     }
 
     public static ReadLaterArticlesRepository getInstance(@NonNull ReadLaterArticlesDataSource local) {
@@ -33,26 +33,26 @@ public class ReadLaterArticlesRepository implements ReadLaterArticlesDataSource 
 
     @Override
     public Observable<List<ReadLaterArticleData>> getReadLaterArticles(@NonNull int userId) {
-        return local.getReadLaterArticles(userId);
+        return localDataSource.getReadLaterArticles(userId);
     }
 
     @Override
     public void insertReadLaterArticle(@NonNull int userId, @NonNull int id, @NonNull long timeStamp){
-        local.insertReadLaterArticle(userId, id, timeStamp);
+        localDataSource.insertReadLaterArticle(userId, id, timeStamp);
     }
 
     @Override
     public void removeReadLaterArticle(@NonNull int userId, @NonNull int id) {
-        local.removeReadLaterArticle(userId, id);
+        localDataSource.removeReadLaterArticle(userId, id);
     }
 
     @Override
     public boolean isExist(@NonNull int userId, @NonNull int id) {
-        return local.isExist(userId, id);
+        return localDataSource.isExist(userId, id);
     }
 
     @Override
     public void clearAll() {
-        local.clearAll();
+        localDataSource.clearAll();
     }
 }

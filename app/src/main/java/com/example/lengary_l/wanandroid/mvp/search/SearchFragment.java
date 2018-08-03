@@ -68,6 +68,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //确认搜索后就隐藏键盘和热词布局，给文章列表腾出空间
                 hideImn();
                 hideTagFlowLayout(true);
                 presenter.searchArticles(INDEX, query, true,true);
@@ -83,6 +84,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             }
         });
 
+        //滑动到底部加载下一页
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -187,6 +189,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                 flowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
                     public boolean onTagClick(View view, int position, FlowLayout parent) {
+                        //这个逻辑会回调searchView的onQueryTextSubmit方法
                         searchView.setQuery(hotKeyList.get(position).getName(),true);
                         return true;
                     }

@@ -44,7 +44,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
             getWindow().setNavigationBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
         }
         if (sp.getBoolean(SettingsUtil.KEY_SKIP_GUIDE_PAGE,false)){
-            navigateToMain();
+            navigateToLogin();
         }else {
             initViews();
             initDatas();
@@ -76,7 +76,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
                 public void onClick(View view) {
                     SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(OnboardingAcitivity.this);
                     sp.edit().putBoolean(SettingsUtil.KEY_SKIP_GUIDE_PAGE, true).apply();
-                    navigateToMain();
+                    navigateToLogin();
                 }
             });
 
@@ -118,6 +118,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
                 findViewById(R.id.img_indicator_2)};
     }
 
+    //根据页数更新圆形指示器
     private void updateIndicators(int position) {
         for (int i = 0; i < indicators.length; i++) {
             indicators[i].setBackgroundResource(i == position ? R.drawable.onboarding_indicator_selected : R.drawable.onboarding_indicator_unselected);
@@ -125,7 +126,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
     }
 
 
-    private void navigateToMain() {
+    private void navigateToLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

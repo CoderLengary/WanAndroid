@@ -48,6 +48,8 @@ public class FavoriteArticlesDataLocalSource implements FavoriteArticlesDataSour
                         .findFirst()
         );
         List<Integer> collectIds = data.getCollectIds();
+
+        //在{@link LoginDetailData}里面有一个属性collectIds存储所有收藏文章的id
         if (collectIds.isEmpty()) {
             return false;
         }

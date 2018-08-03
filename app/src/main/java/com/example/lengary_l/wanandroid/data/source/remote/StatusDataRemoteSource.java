@@ -56,6 +56,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                                 .deleteRealmIfMigrationNeeded()
                                 .name(RealmHelper.DATABASE_NAME)
                                 .build());
+                        //当收藏/取消收藏成功后，我们要对LoginDetailData里面的收藏文章id列表进行更新
                         LoginDetailData data = realm.copyFromRealm(
                                 realm.where(LoginDetailData.class)
                                         .equalTo("id", userId)
@@ -100,6 +101,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                                         .equalTo("id", userId)
                                         .findFirst()
                         );
+                        //当收藏/取消收藏成功后，我们要对LoginDetailData里面的收藏文章id列表进行更新
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (checkIsFavorite(originId, collectIds)) {
                             Integer integer = new Integer(originId);

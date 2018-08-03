@@ -45,6 +45,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
                         return hotKeysData.getErrorCode() != -1;
                     }
                 })
+                //获取的数据类型是HotKeysData，我们需要的是它内部的HotKeyDetailData，所以要用到flatMap
                 .flatMap(new Function<HotKeysData, ObservableSource<List<HotKeyDetailData>>>() {
                     @Override
                     public ObservableSource<List<HotKeyDetailData>> apply(HotKeysData hotKeysData) throws Exception {

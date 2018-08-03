@@ -48,6 +48,7 @@ public class BannerDataRemoteSource implements BannerDataSource {
                         return bannerData.getErrorCode() != -1;
                     }
                 })
+                //获取的数据类型是BannerData，我们需要的是它内部的BannerDetailData，所以要用到flatMap
                 .flatMap(new Function<BannerData, ObservableSource<List<BannerDetailData>>>() {
                     @Override
                     public ObservableSource<List<BannerDetailData>> apply(BannerData bannerData) throws Exception {
