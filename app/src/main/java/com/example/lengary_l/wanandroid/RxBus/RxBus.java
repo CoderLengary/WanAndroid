@@ -1,6 +1,7 @@
 package com.example.lengary_l.wanandroid.RxBus;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
@@ -16,6 +17,7 @@ public class RxBus {
     private static volatile RxBus INSTANCE;
     private final Subject<Object> subject = PublishSubject.create().toSerialized();
     private Disposable disposable;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private RxBus() {
 
@@ -42,11 +44,11 @@ public class RxBus {
 
     public void subscribe(Class bean, Consumer consumer) {
         disposable = tObservable(bean).subscribe(consumer);
+        compositeDisposable.add(disposable);
     }
 
     public void unSubscribe(){
-        if (disposable != null && disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        compositeDisposable.clear();
+
     }
 }

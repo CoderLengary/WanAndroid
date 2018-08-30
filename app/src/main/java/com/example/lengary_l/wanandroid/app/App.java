@@ -19,6 +19,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         context = getApplicationContext();
         Realm.init(this);
         if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(SettingsUtil.KEY_NIGHT_MODE, false)) {
