@@ -21,10 +21,10 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class SearchPresenter implements SearchContract.Presenter{
-    private HotKeyDataRepository hotKeyDataRepository;
-    private CompositeDisposable compositeDisposable;
-    private ArticlesDataRepository articlesDataRepository;
-    private SearchContract.View view;
+    private final HotKeyDataRepository hotKeyDataRepository;
+    private final CompositeDisposable compositeDisposable;
+    private final ArticlesDataRepository articlesDataRepository;
+    private final SearchContract.View view;
 
     public SearchPresenter(HotKeyDataRepository hotKeyDataRepository, ArticlesDataRepository articlesDataRepository, SearchContract.View view) {
         this.hotKeyDataRepository = hotKeyDataRepository;

@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 
-public interface CategoriesContract {
+interface CategoriesContract {
     interface Presenter extends BasePresenter{
         void getCategories(boolean forceUpdate);
     }

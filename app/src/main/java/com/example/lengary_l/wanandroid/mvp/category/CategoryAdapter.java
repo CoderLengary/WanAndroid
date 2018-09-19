@@ -21,9 +21,9 @@ import java.util.List;
 
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<ArticleDetailData> list;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<ArticleDetailData> list;
     private OnRecyclerViewItemOnClickListener listener;
 
     public CategoryAdapter(Context context,List<ArticleDetailData> list) {
@@ -64,10 +64,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        private OnRecyclerViewItemOnClickListener listener;
-        AppCompatTextView textAuthor;
-        AppCompatTextView textTitle;
-        public CategoryViewHolder(View itemView,OnRecyclerViewItemOnClickListener listener) {
+        private final OnRecyclerViewItemOnClickListener listener;
+        final AppCompatTextView textAuthor;
+        final AppCompatTextView textTitle;
+        CategoryViewHolder(View itemView, OnRecyclerViewItemOnClickListener listener) {
             super(itemView);
             textAuthor = itemView.findViewById(R.id.text_view_author);
             textTitle = itemView.findViewById(R.id.text_view_title);
@@ -78,7 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         @Override
         public void onClick(View view) {
-            listener.onClick(view, getLayoutPosition());
+            listener.onClick(getLayoutPosition());
         }
     }
 }

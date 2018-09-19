@@ -22,8 +22,8 @@ import io.reactivex.functions.Consumer;
 
 
 public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSource {
-    private FavoriteArticlesDataSource remoteDataSource;
-    private FavoriteArticlesDataSource localDataSource;
+    private final FavoriteArticlesDataSource remoteDataSource;
+    private final FavoriteArticlesDataSource localDataSource;
     private Map<Integer, FavoriteArticleDetailData> favoriteArticlesCache;
     @NonNull
     private static FavoriteArticlesDataRepository INSTANCE;
@@ -66,7 +66,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
             Observable ob2=remoteDataSource.getFavoriteArticles(page, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<FavoriteArticleDetailData>>() {
                         @Override
-                        public void accept(List<FavoriteArticleDetailData> list) throws Exception {
+                        public void accept(List<FavoriteArticleDetailData> list) {
                             refreshArticlesCache(clearCache, list);
                         }
                     });
@@ -76,13 +76,13 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                     .collect(new Callable<List<FavoriteArticleDetailData>>() {
 
                         @Override
-                        public List<FavoriteArticleDetailData> call() throws Exception {
+                        public List<FavoriteArticleDetailData> call() {
                             return new ArrayList<>();
                         }
                     }, new BiConsumer<List<FavoriteArticleDetailData>, List<FavoriteArticleDetailData>>() {
 
                         @Override
-                        public void accept(List<FavoriteArticleDetailData> list, List<FavoriteArticleDetailData> dataList) throws Exception {
+                        public void accept(List<FavoriteArticleDetailData> list, List<FavoriteArticleDetailData> dataList) {
                             list.addAll(dataList);
                         }
                     }).toObservable();
@@ -92,7 +92,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
         return remoteDataSource.getFavoriteArticles(page, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<FavoriteArticleDetailData>>() {
                     @Override
-                    public void accept(List<FavoriteArticleDetailData> list) throws Exception {
+                    public void accept(List<FavoriteArticleDetailData> list) {
                         refreshArticlesCache(clearCache,list);
                     }
                 });

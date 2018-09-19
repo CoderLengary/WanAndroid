@@ -50,14 +50,14 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .getArticles(page)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
-                    public boolean test(ArticlesData articlesData) throws Exception {
+                    public boolean test(ArticlesData articlesData) {
                         return articlesData.getErrorCode() != -1;
                     }
                 })
                 //获取的数据类型是ArticlesData，我们需要的是它内部的ArticleDetailData，所以要用到flatMap
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
                     @Override
-                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
@@ -65,7 +65,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             }
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
-                            public void accept(List<ArticleDetailData> list) throws Exception {
+                            public void accept(List<ArticleDetailData> list) {
                                 for (ArticleDetailData item :list){
                                     saveToRealm(item);
                                 }
@@ -96,13 +96,13 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .queryArticles(page,keyWords)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
-                    public boolean test(ArticlesData articlesData) throws Exception {
+                    public boolean test(ArticlesData articlesData) {
                         return articlesData.getErrorCode() != -1;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
                     @Override
-                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
@@ -110,7 +110,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             }
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
-                            public void accept(List<ArticleDetailData> list) throws Exception {
+                            public void accept(List<ArticleDetailData> list) {
                                 for (ArticleDetailData item :list){
                                     saveToRealm(item);
                                 }
@@ -128,13 +128,13 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .getArticlesFromCatg(page,categoryId)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
-                    public boolean test(ArticlesData articlesData) throws Exception {
+                    public boolean test(ArticlesData articlesData) {
                         return articlesData.getErrorCode() != -1;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
                     @Override
-                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) {
                         return Observable.fromIterable(articlesData.getData().getDatas()).toSortedList(new Comparator<ArticleDetailData>() {
                             @Override
                             public int compare(ArticleDetailData articleDetailData, ArticleDetailData t1) {
@@ -142,7 +142,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                             }
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
-                            public void accept(List<ArticleDetailData> list) throws Exception {
+                            public void accept(List<ArticleDetailData> list) {
                                 for (ArticleDetailData item :list){
                                     saveToRealm(item);
                                 }

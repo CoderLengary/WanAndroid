@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 
-public interface ArticlesContract {
+interface ArticlesContract {
 
     interface Presenter extends BasePresenter{
 

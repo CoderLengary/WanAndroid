@@ -18,9 +18,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ReadLaterPresenter implements ReadLaterContract.Presenter {
 
-    private ReadLaterArticlesRepository repository;
-    private CompositeDisposable compositeDisposable;
-    private ReadLaterContract.View view;
+    private final ReadLaterArticlesRepository repository;
+    private final CompositeDisposable compositeDisposable;
+    private final ReadLaterContract.View view;
 
     public ReadLaterPresenter(ReadLaterContract.View view,ReadLaterArticlesRepository repository) {
         this.repository = repository;

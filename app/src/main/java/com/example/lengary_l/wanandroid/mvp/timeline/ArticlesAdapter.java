@@ -23,15 +23,15 @@ import java.util.List;
  */
 
 
-public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<ArticleDetailData> mList;
+class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<ArticleDetailData> mList;
     private OnRecyclerViewItemOnClickListener listener;
     private OnCategoryOnClickListener categoryListener;
 
-    public static final int HEADER_VIEW = 0;
-    public static final int NORMAL_VIEW = 1;
+    private static final int HEADER_VIEW = 0;
+    private static final int NORMAL_VIEW = 1;
     private View mHeaderView;
 
     public ArticlesAdapter(Context context, List<ArticleDetailData> list){
@@ -116,7 +116,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
 
-        public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
+        NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
             super(itemView);
             if (itemView == mHeaderView) {
                 return;
@@ -136,11 +136,11 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.card_view_layout:
-                    listener.onClick(view,getRealPosition(getAdapterPosition()));
+                    listener.onClick(getRealPosition(getAdapterPosition()));
                     break;
 
                 case R.id.btn_category:
-                    categoryListener.onClick(view,getRealPosition(getAdapterPosition()));
+                    categoryListener.onClick(getRealPosition(getAdapterPosition()));
                     break;
                 default:break;
 

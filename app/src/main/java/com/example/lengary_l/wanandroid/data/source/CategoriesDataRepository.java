@@ -23,7 +23,7 @@ import io.reactivex.functions.Consumer;
 public class CategoriesDataRepository implements CategoriesDataSource {
     @NonNull
     private static CategoriesDataRepository INSTANCE;
-    private CategoriesDataSource remoteDataSource;
+    private final CategoriesDataSource remoteDataSource;
     private HashMap<Integer, CategoryDetailData> cache;
 
     private CategoriesDataRepository(@NonNull CategoriesDataSource remoteDataSource){
@@ -44,7 +44,7 @@ public class CategoriesDataRepository implements CategoriesDataSource {
         return remoteDataSource.getCategories(forceUpdate)
                 .doOnNext(new Consumer<List<CategoryDetailData>>() {
                     @Override
-                    public void accept(List<CategoryDetailData> list) throws Exception {
+                    public void accept(List<CategoryDetailData> list) {
                         refreshCache(forceUpdate,list);
                     }
                 });

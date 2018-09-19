@@ -13,11 +13,11 @@ import com.example.lengary_l.wanandroid.R;
  */
 
 
-public class TimelinePagerAdapter extends FragmentPagerAdapter {
-    private ArticlesFragment articlesFragment;
-    private FavoritesFragment favoritesFragment;
-    private ReadLaterFragment readLaterFragment;
-    private String[] titles;
+class TimelinePagerAdapter extends FragmentPagerAdapter {
+    private final ArticlesFragment articlesFragment;
+    private final FavoritesFragment favoritesFragment;
+    private final ReadLaterFragment readLaterFragment;
+    private final String[] titles;
 
 
     private final int pageCount = 3;

@@ -20,10 +20,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FavoritesPresenter implements FavoritesContract.Presenter {
 
-    private FavoriteArticlesDataRepository repository;
+    private final FavoriteArticlesDataRepository repository;
 
-    private FavoritesContract.View view;
-    private CompositeDisposable compositeDisposable;
+    private final FavoritesContract.View view;
+    private final CompositeDisposable compositeDisposable;
     private static final String TAG = "FavoritesPresenter";
 
     public FavoritesPresenter(FavoritesContract.View view,FavoriteArticlesDataRepository repository) {

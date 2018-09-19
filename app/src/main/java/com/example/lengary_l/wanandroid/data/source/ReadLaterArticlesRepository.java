@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 
 public class ReadLaterArticlesRepository implements ReadLaterArticlesDataSource {
     @NonNull
-    private ReadLaterArticlesDataSource localDataSource;
+    private final ReadLaterArticlesDataSource localDataSource;
 
     @NonNull
     private static ReadLaterArticlesRepository INSTANCE;

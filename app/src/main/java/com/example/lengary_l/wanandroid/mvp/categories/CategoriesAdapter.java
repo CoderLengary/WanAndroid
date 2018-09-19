@@ -22,16 +22,16 @@ import java.util.List;
  */
 
 
-public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
-    private List<CategoryDetailData> list;
-    private LayoutInflater inflater;
+class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private final List<CategoryDetailData> list;
+    private final LayoutInflater inflater;
     private OnFlowLayoutItemOnClickListener listener;
 
     public CategoriesAdapter(Context context, List<CategoryDetailData> list){
-        this.context = context;
+
         this.list = list;
-        inflater = LayoutInflater.from(this.context);
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
@@ -71,7 +71,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 myViewHolder.flowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                     @Override
                     public boolean onTagClick(View view, int position, FlowLayout parent) {
-                        listener.onClick(view, position, parent ,children);
+                        listener.onClick(position, children);
                         return true;
                     }
                 });
@@ -86,9 +86,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView textView;
-        TagFlowLayout flowLayout;
-        public MyViewHolder(View itemView) {
+        final TextView textView;
+        final TagFlowLayout flowLayout;
+        MyViewHolder(View itemView) {
             super(itemView);
             textView=itemView.findViewById(R.id.text_category_title);
             flowLayout = itemView.findViewById(R.id.flow_layout);

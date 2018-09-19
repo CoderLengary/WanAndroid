@@ -21,13 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 public class  LoginPresenter implements LoginContract.Presenter{
 
     @NonNull
-    private LoginContract.View view;
+    private final LoginContract.View view;
     @NonNull
-    private LoginDataRepository repository;
+    private final LoginDataRepository repository;
 
-    private CompositeDisposable compositeDisposable;
+    private final CompositeDisposable compositeDisposable;
 
-    private ReadLaterArticlesRepository readLaterArticlesRepository;
+    private final ReadLaterArticlesRepository readLaterArticlesRepository;
 
 
     public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository,

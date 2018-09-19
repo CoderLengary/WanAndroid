@@ -38,7 +38,7 @@ import java.util.List;
 
 
 public class SearchFragment extends Fragment implements SearchContract.View {
-    private static final String TAG = "SearchFragment";
+
     private SearchContract.Presenter presenter;
     private Toolbar toolbar;
     private SearchView searchView;
@@ -158,7 +158,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             adapter = new CategoryAdapter(getContext(),articlesList);
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     ArticleDetailData data = articlesList.get(position);
                     intent.putExtra(DetailActivity.ID, data.getId());
@@ -223,8 +223,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             recyclerView.setVisibility(View.INVISIBLE);
         }
     }
-    @Override
-    public void hideImn() {
+    private void hideImn() {
         InputMethodManager manager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (manager.isActive()) {
             manager.hideSoftInputFromWindow(searchView.getWindowToken(), 0);

@@ -19,6 +19,7 @@ import com.example.lengary_l.wanandroid.util.StringUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by CoderLengary
@@ -26,18 +27,18 @@ import java.util.List;
 
 
 public class ReadLaterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Context context;
-    private LayoutInflater inflater;
-    private List<ReadLaterArticleData> mList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<ReadLaterArticleData> mList;
     private OnRecyclerViewItemOnClickListener listener;
     private OnCategoryOnClickListener categoryListener;
-    SimpleDateFormat simpleDateFormat;
+    private final SimpleDateFormat simpleDateFormat;
 
     public ReadLaterAdapter(Context context, List<ReadLaterArticleData> list){
         this.context = context;
         inflater = LayoutInflater.from(this.context);
         mList = list;
-        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
     }
 
     public void updateData(List<ReadLaterArticleData> list){
@@ -83,13 +84,13 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     class NormalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        OnRecyclerViewItemOnClickListener listener;
-        OnCategoryOnClickListener categoryListener;
-        CardView cardView;
-        AppCompatButton btnCategory;
-        AppCompatTextView textTitle;
-        AppCompatTextView textAuthor;
-        AppCompatTextView textTime;
+        final OnRecyclerViewItemOnClickListener listener;
+        final OnCategoryOnClickListener categoryListener;
+        final CardView cardView;
+        final AppCompatButton btnCategory;
+        final AppCompatTextView textTitle;
+        final AppCompatTextView textAuthor;
+        final AppCompatTextView textTime;
 
 
 
@@ -110,11 +111,11 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.card_view_layout:
-                    listener.onClick(view,getAdapterPosition());
+                    listener.onClick(getAdapterPosition());
                     break;
 
                 case R.id.btn_category:
-                    categoryListener.onClick(view,getAdapterPosition());
+                    categoryListener.onClick(getAdapterPosition());
                     break;
                 default:break;
 

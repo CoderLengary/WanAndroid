@@ -47,14 +47,14 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
                 .getCategories()
                 .filter(new Predicate<CategoriesData>() {
                     @Override
-                    public boolean test(CategoriesData categoriesData) throws Exception {
+                    public boolean test(CategoriesData categoriesData) {
                         return categoriesData.getErrorCode() != -1;
                     }
                 })
                 //获取的数据类型是CategoriesData，我们需要的是它内部的CategoryDetailData，所以要用到flatMap
                 .flatMap(new Function<CategoriesData, ObservableSource<List<CategoryDetailData>>>() {
                     @Override
-                    public ObservableSource<List<CategoryDetailData>> apply(CategoriesData categoriesData) throws Exception {
+                    public ObservableSource<List<CategoryDetailData>> apply(CategoriesData categoriesData) {
                         return Observable.fromIterable(categoriesData.getData()).toSortedList(new Comparator<CategoryDetailData>() {
                             @Override
                             public int compare(CategoryDetailData categoryDetailData, CategoryDetailData t1) {

@@ -15,9 +15,9 @@ import io.reactivex.Observable;
 
 public class LoginDataRepository implements LoginDataSource{
     @NonNull
-    private LoginDataSource localDataSource;
+    private final LoginDataSource localDataSource;
     @NonNull
-    private LoginDataSource remoteDataSource;
+    private final LoginDataSource remoteDataSource;
 
     private LoginDataRepository(@NonNull LoginDataSource localDataSource,@NonNull LoginDataSource remoteDataSource){
         this.localDataSource = localDataSource;

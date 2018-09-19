@@ -17,9 +17,9 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class CategoryPresenter implements CategoryContract.Presenter {
-    private CategoryContract.View view;
-    private ArticlesDataRepository repository;
-    private CompositeDisposable compositeDisposable;
+    private final CategoryContract.View view;
+    private final ArticlesDataRepository repository;
+    private final CompositeDisposable compositeDisposable;
 
     public CategoryPresenter(CategoryContract.View view, ArticlesDataRepository repository) {
         this.view = view;

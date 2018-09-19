@@ -34,6 +34,7 @@
         android:visibility="gone">
 
         <ImageView
+            android:contentDescription="@string/empty_text"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:hapticFeedbackEnabled="true"

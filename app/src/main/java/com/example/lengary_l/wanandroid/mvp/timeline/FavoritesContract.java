@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 
-public interface FavoritesContract {
+interface FavoritesContract {
     interface Presenter extends BasePresenter {
 
 

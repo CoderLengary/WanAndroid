@@ -23,11 +23,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ArticlesPresenter implements ArticlesContract.Presenter {
 
-    private ArticlesDataRepository articleRepository;
-    private CompositeDisposable compositeDisposable;
-    private BannerDataRepository bannerRepository;
-    private LoginDataRepository loginDataRepository;
-    private ArticlesContract.View view;
+    private final ArticlesDataRepository articleRepository;
+    private final CompositeDisposable compositeDisposable;
+    private final BannerDataRepository bannerRepository;
+    private final LoginDataRepository loginDataRepository;
+    private final ArticlesContract.View view;
 
     public ArticlesPresenter(ArticlesContract.View view,
                              ArticlesDataRepository articleRepository,

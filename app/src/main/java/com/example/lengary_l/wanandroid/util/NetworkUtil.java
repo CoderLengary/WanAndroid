@@ -18,10 +18,7 @@ public class NetworkUtil {
             return false;
         }
         NetworkInfo networkinfo = manager.getActiveNetworkInfo();
-        if (networkinfo == null || !networkinfo.isAvailable()) {
-            return false;
-        }
-        return true;
+        return networkinfo != null && networkinfo.isAvailable();
     }
 
 }

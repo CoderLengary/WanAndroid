@@ -75,10 +75,7 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
         return view;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+
 
     @Override
     public void onResume() {

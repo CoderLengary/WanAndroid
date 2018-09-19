@@ -45,12 +45,12 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
                 .getFavoriteArticles(page)
                 .filter(new Predicate<FavoriteArticlesData>() {
                     @Override
-                    public boolean test(FavoriteArticlesData favoriteArticlesData) throws Exception {
+                    public boolean test(FavoriteArticlesData favoriteArticlesData) {
                         return favoriteArticlesData.getErrorCode() != -1;
                     }
                 }).flatMap(new Function<FavoriteArticlesData, ObservableSource<List<FavoriteArticleDetailData>>>() {
                     @Override
-                    public ObservableSource<List<FavoriteArticleDetailData>> apply(FavoriteArticlesData favoriteArticlesData) throws Exception {
+                    public ObservableSource<List<FavoriteArticleDetailData>> apply(FavoriteArticlesData favoriteArticlesData) {
                         return Observable.fromIterable(favoriteArticlesData.getData().getDatas()).toSortedList(new Comparator<FavoriteArticleDetailData>() {
                             @Override
                             public int compare(FavoriteArticleDetailData favoriteArticleDetailData, FavoriteArticleDetailData t1) {

@@ -108,7 +108,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
             adapter = new ReadLaterAdapter(getContext(), list);
             adapter.setCategoryListener(new OnCategoryOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
                     ReadLaterArticleData data = list.get(position);
                     if (data.getChapterName().isEmpty()) {
@@ -121,7 +121,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
             });
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     ReadLaterArticleData data = list.get(position);
                     intent.putExtra(DetailActivity.URL, data.getLink());

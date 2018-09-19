@@ -21,7 +21,6 @@
     <color name="colorAccent">#546dfe</color>
     <color name="colorPrimaryText">#e4e4e4</color>
     <color name="colorSecondaryText">#b5b5b5</color>
-    <color name="colorDivider">#BDBDBD</color>
     <color name="colorHeaderBackground">#35464e</color>
 
     <color name="transparent_black">#33000000</color>
@@ -32,12 +31,7 @@
     <color name="colorNavItemUnselected">#a5a5a5</color>
 
     <color name="cyan_500">#00BCD4</color>
-    <color name="green_500">#4CAF50</color>
     <color name="light_blue_500">#03A9F4</color>
-    <color name="orange_500">#FF9800</color>
-    <color name="lime_500">#CDDC39</color>
-    <color name="amber_500">#FFC107</color>
-    <color name="pink_500">#E91E63</color>
     <color name="iron">#CCCCCC</color>
 
     <color name="layout_background">#303030</color>

@@ -16,12 +16,12 @@ import okhttp3.HttpUrl;
 public class CookieManger implements CookieJar {
 
 
-    private static Context mContext;
+    private  Context mContext;
 
     private static PersistentCookieStore cookieStore;
 
     public CookieManger(Context context) {
-        mContext = context;
+        mContext = context.getApplicationContext();
         if (cookieStore == null) {
             cookieStore = new PersistentCookieStore(mContext);
         }
@@ -40,8 +40,8 @@ public class CookieManger implements CookieJar {
 
     @Override
     public List<Cookie> loadForRequest(HttpUrl url) {
-        List<Cookie> cookies = cookieStore.get(url);
-        return cookies;
+
+        return cookieStore.get(url);
     }
 
     public static void clearAllCookies() {

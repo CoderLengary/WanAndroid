@@ -12,7 +12,7 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
  */
 
 
-public interface LoginContract {
+interface LoginContract {
     interface Presenter extends BasePresenter{
         void login(String username, String password, @NonNull LoginType loginType);
 

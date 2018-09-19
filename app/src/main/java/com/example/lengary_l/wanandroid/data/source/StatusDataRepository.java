@@ -13,7 +13,7 @@ import io.reactivex.Observable;
 
 public class StatusDataRepository implements StatusDataSource {
     @NonNull
-    private StatusDataSource remoteDataSource;
+    private final StatusDataSource remoteDataSource;
 
     @NonNull
     private static StatusDataRepository INSTANCE;

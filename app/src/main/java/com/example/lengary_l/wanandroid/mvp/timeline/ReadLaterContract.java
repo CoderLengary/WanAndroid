@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 
-public interface ReadLaterContract {
+interface ReadLaterContract {
     interface Presenter extends BasePresenter{
         void getReadLaterArticles(int userId);
 

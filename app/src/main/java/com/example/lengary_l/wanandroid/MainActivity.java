@@ -247,10 +247,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
                                 == Configuration.UI_MODE_NIGHT_YES) {
-                            sp.edit().putBoolean(SettingsUtil.KEY_NIGHT_MODE, false);
+                            sp.edit().putBoolean(SettingsUtil.KEY_NIGHT_MODE, false).apply();
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                         } else {
-                            sp.edit().putBoolean(SettingsUtil.KEY_NIGHT_MODE, true);
+                            sp.edit().putBoolean(SettingsUtil.KEY_NIGHT_MODE, true).apply();
                             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                         }
                         getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);

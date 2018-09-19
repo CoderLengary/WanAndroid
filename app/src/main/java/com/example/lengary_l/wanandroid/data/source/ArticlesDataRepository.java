@@ -24,7 +24,7 @@ import io.reactivex.functions.Consumer;
 public class ArticlesDataRepository implements ArticlesDataSource {
 
     @NonNull
-    private ArticlesDataSource remoteDataSource;
+    private final ArticlesDataSource remoteDataSource;
 
     private Map<Integer, ArticleDetailData> articlesCache;
 
@@ -34,7 +34,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     private final int INDEX = 0;
 
     @NonNull
-    public static ArticlesDataRepository INSTANCE;
+    private static ArticlesDataRepository INSTANCE;
 
     private ArticlesDataRepository(@NonNull ArticlesDataSource remoteDataSource ){
         this.remoteDataSource = remoteDataSource;
@@ -75,7 +75,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticles(page, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<ArticleDetailData> list) throws Exception {
+                        public void accept(List<ArticleDetailData> list) {
                             refreshArticlesCache(clearCache, list);
                         }
                     });
@@ -83,12 +83,12 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             //获取到缓存的数据加上新请求的下一页的数据，需要结合这两个数据并统一发送
             return Observable.merge(ob1, ob2).collect(new Callable<List<ArticleDetailData>>() {
                 @Override
-                public List<ArticleDetailData> call() throws Exception {
+                public List<ArticleDetailData> call() {
                     return new ArrayList<>();
                 }
             }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
                 @Override
-                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) {
                     list.addAll(dataList);
                 }
             }).toObservable();
@@ -98,7 +98,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
         return remoteDataSource.getArticles(INDEX, forceUpdate, clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
-                    public void accept(List<ArticleDetailData> list) throws Exception {
+                    public void accept(List<ArticleDetailData> list) {
                         refreshArticlesCache(clearCache, list);
                     }
                 });
@@ -145,7 +145,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             Observable ob2 = remoteDataSource.queryArticles(page, keyWords, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<ArticleDetailData> list) throws Exception {
+                        public void accept(List<ArticleDetailData> list) {
                             refreshQueryCache(clearCache, list);
                         }
                     });
@@ -153,13 +153,13 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             return Observable.merge(ob1, ob2).collect(new Callable<List<ArticleDetailData>>() {
 
                 @Override
-                public List<ArticleDetailData> call() throws Exception {
+                public List<ArticleDetailData> call() {
                     return new ArrayList<>();
                 }
 
             }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
                 @Override
-                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) {
                     list.addAll(dataList);
                 }
             }).toObservable();
@@ -168,7 +168,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
         return remoteDataSource.queryArticles(page, keyWords, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
-                    public void accept(List<ArticleDetailData> list) throws Exception {
+                    public void accept(List<ArticleDetailData> list) {
                         refreshQueryCache(clearCache, list);
                     }
                 });
@@ -216,7 +216,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             Observable<List<ArticleDetailData>> ob2 = remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate, clearCache)
                     .doOnNext(new Consumer<List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<ArticleDetailData> list) throws Exception {
+                        public void accept(List<ArticleDetailData> list) {
                             refreshCategoryCache(clearCache, list);
                         }
                     });
@@ -225,13 +225,13 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                     .collect(new Callable<List<ArticleDetailData>>() {
 
                         @Override
-                        public List<ArticleDetailData> call() throws Exception {
+                        public List<ArticleDetailData> call() {
                             return new ArrayList<>();
                         }
 
                     }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) throws Exception {
+                        public void accept(List<ArticleDetailData> list, List<ArticleDetailData> dataList) {
                             list.addAll(dataList);
                         }
                     }).toObservable();
@@ -240,7 +240,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
         return remoteDataSource.getArticlesFromCatg(page, categoryId, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
-                    public void accept(List<ArticleDetailData> list) throws Exception {
+                    public void accept(List<ArticleDetailData> list) {
                         refreshCategoryCache(clearCache, list);
                     }
                 });

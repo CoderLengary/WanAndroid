@@ -8,7 +8,7 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
  */
 
 
-public interface DetailContract {
+interface DetailContract {
     interface Presenter extends BasePresenter{
 
         void collectArticle(int userId,int originId);

@@ -60,7 +60,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         RxBus.getInstance().subscribe(String.class,new Consumer<String>(){
 
             @Override
-            public void accept(String s) throws Exception {
+            public void accept(String s) {
                 if (s.equals(RxBus.REFRESH)) {
                     isFirstLoad = true;
                 }
@@ -131,7 +131,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             adapter = new FavoritesAdapter(getContext(), list);
             adapter.setCategoryListener(new OnCategoryOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
                     FavoriteArticleDetailData data = list.get(position);
                     if (data.getChapterName().isEmpty()) {
@@ -144,7 +144,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
             });
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     FavoriteArticleDetailData data = list.get(position);
                     intent.putExtra(DetailActivity.URL, data.getLink());

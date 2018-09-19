@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 
-public interface SearchContract {
+interface SearchContract {
     interface Presenter extends BasePresenter{
         void getHotKeys(boolean forceUpdate);
         void searchArticles(@NonNull int page, @NonNull String keyWords, boolean forceUpdate , boolean clearCache);
@@ -26,8 +26,6 @@ public interface SearchContract {
         void showHotKeys(List<HotKeyDetailData> hotKeyList);
 
         boolean isActive();
-
-        void hideImn();
 
         void showEmptyView(boolean toShow);
     }

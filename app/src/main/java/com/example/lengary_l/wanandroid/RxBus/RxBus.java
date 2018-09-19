@@ -17,7 +17,7 @@ public class RxBus {
     private static volatile RxBus INSTANCE;
     private final Subject<Object> subject = PublishSubject.create().toSerialized();
     private Disposable disposable;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private RxBus() {
 

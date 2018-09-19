@@ -23,15 +23,15 @@ import java.util.List;
  */
 
 
-public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<FavoriteArticleDetailData> mList;
-    private Context context;
-    private LayoutInflater inflater;
+class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final List<FavoriteArticleDetailData> mList;
+
+    private final LayoutInflater inflater;
     private OnRecyclerViewItemOnClickListener listener;
     private OnCategoryOnClickListener categoryListener;
 
     public FavoritesAdapter(Context context, List<FavoriteArticleDetailData> list) {
-        this.context = context;
+
         inflater = LayoutInflater.from(context);
         mList = list;
     }
@@ -73,17 +73,17 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         categoryListener = listener;
     }
     class NormalViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        OnRecyclerViewItemOnClickListener listener;
-        OnCategoryOnClickListener categoryListener;
-        CardView cardView;
-        AppCompatButton btnCategory;
-        AppCompatTextView textTitle;
-        AppCompatTextView textAuthor;
-        AppCompatTextView textTime;
+        final OnRecyclerViewItemOnClickListener listener;
+        final OnCategoryOnClickListener categoryListener;
+        final CardView cardView;
+        final AppCompatButton btnCategory;
+        final AppCompatTextView textTitle;
+        final AppCompatTextView textAuthor;
+        final AppCompatTextView textTime;
 
 
 
-        public NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
+        NormalViewHolder(View itemView, final OnRecyclerViewItemOnClickListener listener, final OnCategoryOnClickListener categoryListener) {
             super(itemView);
             btnCategory = itemView.findViewById(R.id.btn_category);
             btnCategory.setOnClickListener(this);
@@ -100,11 +100,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.card_view_layout:
-                    listener.onClick(view,getAdapterPosition());
+                    listener.onClick(getAdapterPosition());
                     break;
 
                 case R.id.btn_category:
-                    categoryListener.onClick(view,getAdapterPosition());
+                    categoryListener.onClick(getAdapterPosition());
                     break;
                 default:break;
 

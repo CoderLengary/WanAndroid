@@ -43,13 +43,13 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .collectArticle(id)
                 .filter(new Predicate<Status>() {
                     @Override
-                    public boolean test(Status status) throws Exception {
+                    public boolean test(Status status) {
                         return status.getErrorCode() != -1;
                     }
                 })
                 .doOnNext(new Consumer<Status>() {
                     @Override
-                    public void accept(Status status) throws Exception {
+                    public void accept(Status status) {
                         // It is necessary to build a new realm instance
                         // in a different thread.
                         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
@@ -64,7 +64,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                         );
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (!checkIsFavorite(id, collectIds)) {
-                            Integer integer = new Integer(id);
+                            Integer integer = id;
                             collectIds.add(integer);
                             data.setCollectIds(collectIds);
                             realm.beginTransaction();
@@ -83,13 +83,13 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .uncollectArticle(originId)
                 .filter(new Predicate<Status>() {
                     @Override
-                    public boolean test(Status status) throws Exception {
+                    public boolean test(Status status) {
                         return status.getErrorCode() != -1;
                     }
                 })
                 .doOnNext(new Consumer<Status>() {
                     @Override
-                    public void accept(Status status) throws Exception {
+                    public void accept(Status status) {
                         // It is necessary to build a new realm instance
                         // in a different thread.
                         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
@@ -104,7 +104,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                         //当收藏/取消收藏成功后，我们要对LoginDetailData里面的收藏文章id列表进行更新
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (checkIsFavorite(originId, collectIds)) {
-                            Integer integer = new Integer(originId);
+                            Integer integer = originId;
                             collectIds.remove(integer);
                             data.setCollectIds(collectIds);
                             realm.beginTransaction();

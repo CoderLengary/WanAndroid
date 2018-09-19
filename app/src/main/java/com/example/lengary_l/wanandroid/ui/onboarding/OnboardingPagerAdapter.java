@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 
-public class OnboardingPagerAdapter  extends FragmentPagerAdapter {
+class OnboardingPagerAdapter  extends FragmentPagerAdapter {
 
     private final int pageCount = 3;
 

@@ -52,7 +52,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
                 .subscribeOn(Schedulers.io())
                 .doOnNext(new Consumer<LoginData>() {
             @Override
-            public void accept(LoginData loginData) throws Exception {
+            public void accept(LoginData loginData) {
                 if (loginData.getErrorCode()!=-1||loginData.getData() != null) {
                     // It is necessary to build a new realm instance
                     // in a different thread.

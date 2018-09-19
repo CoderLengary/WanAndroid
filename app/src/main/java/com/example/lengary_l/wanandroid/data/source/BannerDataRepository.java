@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 
 public class BannerDataRepository implements BannerDataSource{
 
-    private BannerDataSource remoteDataSource;
+    private final BannerDataSource remoteDataSource;
 
     @NonNull
     private static BannerDataRepository INSTANCE = null;

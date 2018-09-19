@@ -5,7 +5,7 @@ package com.example.lengary_l.wanandroid.retrofit;
  */
 
 
-public class Api {
+class Api {
 
     //Base API.
     public static final String API_BASE = "http://www.wanandroid.com/";

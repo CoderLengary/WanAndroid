@@ -17,11 +17,11 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class DetailPresenter implements DetailContract.Presenter {
-    private DetailContract.View view;
-    private StatusDataRepository statusDataRepository;
-    private CompositeDisposable compositeDisposable;
-    private ReadLaterArticlesRepository readLaterArticlesRepository;
-    private FavoriteArticlesDataRepository favoriteArticlesDataRepository;
+    private final DetailContract.View view;
+    private final StatusDataRepository statusDataRepository;
+    private final CompositeDisposable compositeDisposable;
+    private final ReadLaterArticlesRepository readLaterArticlesRepository;
+    private final FavoriteArticlesDataRepository favoriteArticlesDataRepository;
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,

@@ -52,14 +52,12 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private SwipeRefreshLayout refreshLayout;
     private Banner banner;
     private  final int INDEX = 0;
-    private LinearLayoutManager layoutManager;
     private int currentPage;
     private ArticlesAdapter adapter;
 
     private boolean isFirstLoad=true;
     private String userName;
     private String password;
-    private SharedPreferences sp;
 
 
     public ArticlesFragment(){
@@ -74,7 +72,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         userName = sp.getString(SettingsUtil.USERNAME, "");
         password = sp.getString(SettingsUtil.PASSWORD, "");
     }
@@ -149,17 +147,14 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         banner.stopAutoPlay();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
 
     @Override
     public void initViews(View view){
         banner = (Banner) getActivity().getLayoutInflater().inflate(R.layout.container_banner, null);
         banner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getContext().getResources().getDisplayMetrics().heightPixels/4));
         emptyView = view.findViewById(R.id.empty_view);
-        layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         nestedScrollView = view.findViewById(R.id.nested_scroll_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
@@ -199,7 +194,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             adapter = new ArticlesAdapter(getContext(), list);
             adapter.setCategoryListener(new OnCategoryOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), CategoryActivity.class);
                     ArticleDetailData data = list.get(position);
                     if (data.getChapterName().isEmpty()) {
@@ -212,7 +207,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             });
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     ArticleDetailData data = list.get(position);
                     intent.putExtra(DetailActivity.URL, data.getLink());

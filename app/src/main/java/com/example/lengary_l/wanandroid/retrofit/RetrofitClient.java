@@ -20,13 +20,13 @@ public class RetrofitClient {
 
     private static class ClientHolder{
 
-        private static OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 //添加对Cookies的管理
                 .cookieJar(new CookieManger(App.getContext()))
                 .build();
 
 
-        private static Retrofit retrofit = new Retrofit.Builder()
+        private static final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Api.API_BASE)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

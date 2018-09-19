@@ -79,10 +79,6 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
         presenter.unSubscribe();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
     @Nullable
     @Override
@@ -130,7 +126,7 @@ public class CategoryFragment extends Fragment implements CategoryContract.View 
             adapter = new CategoryAdapter(getContext(), list);
             adapter.setItemClickListener(new OnRecyclerViewItemOnClickListener() {
                 @Override
-                public void onClick(View view, int position) {
+                public void onClick(int position) {
                     Intent intent = new Intent(getContext(), DetailActivity.class);
                     ArticleDetailData data = list.get(position);
                     intent.putExtra(DetailActivity.URL, data.getLink());

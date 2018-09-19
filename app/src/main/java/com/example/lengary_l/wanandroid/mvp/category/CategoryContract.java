@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 
-public interface CategoryContract {
+interface CategoryContract {
     interface Presenter extends BasePresenter{
         void getArticlesFromCatg(int page, int categoryId, boolean forceUpdate, boolean clearCache);
     }
