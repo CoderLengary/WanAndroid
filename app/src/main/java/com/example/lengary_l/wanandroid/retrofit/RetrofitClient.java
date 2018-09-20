@@ -1,7 +1,7 @@
 package com.example.lengary_l.wanandroid.retrofit;
 
 import com.example.lengary_l.wanandroid.app.App;
-import com.example.lengary_l.wanandroid.retrofit.Cookies.CookieManger;
+import com.example.lengary_l.wanandroid.retrofit.CookiesInterceptor.CookiesManager;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -19,10 +19,14 @@ public class RetrofitClient {
     }
 
     private static class ClientHolder{
+        private static CookiesManager cookiesManager = new CookiesManager.Builder(App.getContext()).urls("user/login","user/register").build();
+
 
         private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 //添加对Cookies的管理
-                .cookieJar(new CookieManger(App.getContext()))
+                .addInterceptor(cookiesManager.getGetCookieInterceptor())
+                .addInterceptor(cookiesManager.getAddCookiesInterceptor())
+                //.cookieJar(new CookieManger(App.getContext()))
                 .build();
 
 
