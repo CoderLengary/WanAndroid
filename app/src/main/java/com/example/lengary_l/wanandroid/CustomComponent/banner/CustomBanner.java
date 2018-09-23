@@ -24,7 +24,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -180,9 +179,9 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
             Field mField = ViewPager.class.getDeclaredField("mScroller");
             //mScroller是私有的变量
             mField.setAccessible(true);
+
             BannerScroller scroller = new BannerScroller(viewPager.getContext());
-            scroller.setDuration(2000);
-            //scroller.extendDuration(scrollDuration);
+            scroller.setDuration(scrollDuration);
             //设置当前的viewPager的Scroller是我们定义的scroller
             mField.set(viewPager, scroller);
         }catch (Exception e) {
@@ -190,7 +189,7 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
         }
     }
 
-    /*
+
     public CustomBanner setDelayTime(int time) {
         delayTime = time;
         return this;
@@ -204,18 +203,9 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
     public CustomBanner isAutoPlay(boolean e) {
         isAutoPlay = e;
         return this;
-    }*/
-
-    public CustomBanner setBannerAnimation(ViewPager.PageTransformer transformer) {
-        setBannerAnimation(true, transformer);
-        return this;
     }
 
-    //reverseDrawingOrder：是否支持从尾页滑动到首页，即可循环滑动
-    public CustomBanner setBannerAnimation(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
-        viewPager.setPageTransformer(reverseDrawingOrder, transformer);
-        return this;
-    }
+
 
     public CustomBanner setImageLoader(ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
@@ -364,20 +354,15 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
     }
 
     public void startAutoPlay() {
-        Log.e(TAG, "startAutoPlay: " );
         handler.removeCallbacks(task);
         handler.postDelayed(task, delayTime);
     }
 
     public void stopAutoPlay() {
-        Log.e(TAG, "stopAutoPlay: currentItem is "+currentItem );
         handler.removeCallbacks(task);
     }
 
-    public void stop() {
-        Log.e(TAG, "stop: currentItem is " + currentItem  );
-        viewPager.setCurrentItem(currentItem , false);
-    }
+
     private final Runnable task = new Runnable() {
         @Override
         public void run() {
@@ -390,11 +375,9 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
                 if (currentItem == 1) {
                     viewPager.setCurrentItem(currentItem, false);
                     handler.post(task);
-                    Log.e(TAG, "run: post non delay item "+currentItem );
                 }else {
                     viewPager.setCurrentItem(currentItem);
                     handler.postDelayed(task, delayTime);
-                    Log.e(TAG, "run: post delay item "+currentItem );
                 }
 
             }
@@ -448,7 +431,6 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
 
     @Override
     public void onPageSelected(int position) {
-        Log.e(TAG, "onPageSelected: position "+position );
         currentItem = position;
         if (onPageChangeListener != null) {
             onPageChangeListener.onPageSelected(position);
@@ -469,16 +451,13 @@ public class CustomBanner extends FrameLayout implements ViewPager.OnPageChangeL
         //当currentItem为4的时候，会被重置为1
         switch (state) {
             case ViewPager.SCROLL_STATE_IDLE://无操作
-                Log.e(TAG, "onPageScrollStateChanged: 无操作,currentItem为" + currentItem +"重置为" + getRealCurrentPosition(currentItem));
                 viewPager.setCurrentItem(getRealCurrentPosition(currentItem), false);
                 break;
             case ViewPager.SCROLL_STATE_DRAGGING://开始滑动
-                Log.e(TAG, "onPageScrollStateChanged: 开始滑动,currentItem为" + currentItem +"重置为" + getRealCurrentPosition(currentItem) );
                 viewPager.setCurrentItem(getRealCurrentPosition(currentItem), false);
                 break;
 
             case ViewPager.SCROLL_STATE_SETTLING://停止滑动
-                Log.e(TAG, "onPageScrollStateChanged: 停止滑动,currentItem为" + currentItem  );
                 break;
         }
 

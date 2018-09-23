@@ -38,5 +38,5 @@ public class BannerConfig {
     public static final boolean IS_AUTO_PLAY = true;
     public static final boolean IS_SCROLL = true;
     public static final int DELAY_TIME = 5000;
-    public static final int SCROLL_DURATION = 200;
+    public static final int SCROLL_DURATION = 400;
 }

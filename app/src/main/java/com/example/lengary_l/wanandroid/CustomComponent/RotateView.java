@@ -29,7 +29,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.util.BitmapUtil;
@@ -109,7 +108,6 @@ public class RotateView extends android.support.v7.widget.AppCompatImageView {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float newZ = -metrics.density * 6;
         camera.setLocation(0, 0, newZ);
-        Log.e("RotateView", "RotateView: ");
     }
 
     @Override
@@ -132,33 +130,7 @@ public class RotateView extends android.support.v7.widget.AppCompatImageView {
         animatorSet.cancel();
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-
-        /*int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(bitmapWidth, bitmapHeight);
-            bitmapWidth = bitmap.getWidth();
-            bitmapHeight = bitmap.getHeight();
-        }else if (widthSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(bitmapWidth, heightSpecSize);
-            bitmapWidth = bitmap.getWidth();
-            bitmapHeight = heightSpecSize;
-        }else if (heightSpecMode == MeasureSpec.AT_MOST) {
-            setMeasuredDimension(widthSpecSize, bitmapHeight);
-            bitmapWidth = widthSpecSize;
-            bitmapHeight = bitmap.getHeight();
-        }else {
-            bitmapWidth = widthSpecSize;
-            bitmapHeight = heightSpecSize;
-        }*/
-
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
