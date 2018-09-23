@@ -35,6 +35,11 @@
 
         </activity>
 
+        <activity android:name=".ui.WelcomeActivity"
+            android:theme="@style/AppTheme.Onboarding"
+            android:noHistory="true">
+
+        </activity>
         <activity android:name=".mvp.detail.DetailActivity"
             android:label="@string/detail_label"
             android:theme="@style/AppTheme.NoActionBarPlus">

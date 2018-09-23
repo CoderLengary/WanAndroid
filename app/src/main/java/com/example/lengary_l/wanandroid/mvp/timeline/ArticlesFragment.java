@@ -14,12 +14,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.lengary_l.wanandroid.CustomComponent.banner.CustomBanner;
+import com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.OnBannerListener;
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;
@@ -31,10 +34,6 @@ import com.example.lengary_l.wanandroid.mvp.category.CategoryActivity;
 import com.example.lengary_l.wanandroid.mvp.detail.DetailActivity;
 import com.example.lengary_l.wanandroid.util.NetworkUtil;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     private LinearLayout emptyView;
     private ArticlesContract.Presenter presenter;
     private SwipeRefreshLayout refreshLayout;
-    private Banner banner;
+    private CustomBanner banner;
     private  final int INDEX = 0;
     private int currentPage;
     private ArticlesAdapter adapter;
@@ -86,9 +85,9 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Log.e("Custom", "onRefresh: " );
                 currentPage = INDEX;
                 presenter.getArticles(INDEX,true,true);
-
             }
         });
 
@@ -144,21 +143,25 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
     @Override
     public void onStop() {
         super.onStop();
-        banner.stopAutoPlay();
+        if (banner != null) {
+            banner.stopAutoPlay();
+        }
     }
 
 
 
     @Override
     public void initViews(View view){
-        banner = (Banner) getActivity().getLayoutInflater().inflate(R.layout.container_banner, null);
-        banner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getContext().getResources().getDisplayMetrics().heightPixels/4));
+
+
         emptyView = view.findViewById(R.id.empty_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         nestedScrollView = view.findViewById(R.id.nested_scroll_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setVisibility(View.VISIBLE);
+        banner = (CustomBanner) getActivity().getLayoutInflater().inflate(R.layout.container_banner, null);
+        banner.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getContext().getResources().getDisplayMetrics().heightPixels/4));
         emptyView.setVisibility(View.INVISIBLE);
         refreshLayout = view.findViewById(R.id.refresh_layout);
         refreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorPrimary));
@@ -178,6 +181,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     @Override
     public void setLoadingIndicator(final boolean isActive) {
+
         refreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -239,14 +243,11 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
             urls.add(item.getImagePath());
         }
         banner.setImages(urls);
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+
         banner.setImageLoader(new GlideLoader());
-        banner.setBannerAnimation(Transformer.ZoomOutSlide);
-        banner.isAutoPlay(true);
-        banner.setDelayTime(7800);
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
-            public void OnBannerClick(int position) {
+            public void onBannerClick(int position) {
                 Intent intent = new Intent(getContext(),DetailActivity.class);
                 BannerDetailData data = list.get(position);
                 intent.putExtra(DetailActivity.URL, data.getUrl());

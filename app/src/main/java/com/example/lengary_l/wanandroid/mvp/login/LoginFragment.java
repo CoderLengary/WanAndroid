@@ -16,10 +16,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.LoginDetailData;
 import com.example.lengary_l.wanandroid.data.LoginType;
+import com.example.lengary_l.wanandroid.ui.WelcomeActivity;
 import com.example.lengary_l.wanandroid.util.SettingsUtil;
 import com.example.lengary_l.wanandroid.util.StringUtil;
 
@@ -151,7 +151,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     private void navigateToMain() {
         //登陆成功执行此逻辑
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);
     }
