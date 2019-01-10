@@ -24,11 +24,12 @@ import io.realm.RealmList;
 public class StatusDataRemoteSource implements StatusDataSource {
 
     private static StatusDataRemoteSource INSTANCE;
+
     private StatusDataRemoteSource() {
 
     }
 
-    public static StatusDataRemoteSource getInstance(){
+    public static StatusDataRemoteSource getInstance() {
         if (INSTANCE == null) {
             synchronized (StatusDataRemoteSource.class) {
                 if (INSTANCE == null) {
@@ -41,7 +42,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
 
 
     @Override
-    public Observable<Status> collectArticle(@NonNull final int userId, @NonNull  final int id) {
+    public Observable<Status> collectArticle(final int userId, final int id) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .collectArticle(id)
@@ -60,7 +61,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                                 .deleteRealmIfMigrationNeeded()
                                 .name(RealmHelper.DATABASE_NAME)
                                 .build());
-                        //当收藏/取消收藏成功后，我们要对LoginDetailData里面的收藏文章id列表进行更新
+                        //When we bookmark this article successfully
+                        //, we should update the bookmark state of the article in database.
                         LoginDetailData data = realm.copyFromRealm(
                                 realm.where(LoginDetailData.class)
                                         .equalTo("id", userId)
@@ -81,7 +83,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
     }
 
     @Override
-    public Observable<Status> uncollectArticle(@NonNull final int userId,@NonNull  final int originId) {
+    public Observable<Status> uncollectArticle(final int userId, final int originId) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .uncollectArticle(originId)
@@ -105,7 +107,8 @@ public class StatusDataRemoteSource implements StatusDataSource {
                                         .equalTo("id", userId)
                                         .findFirst()
                         );
-                        //当收藏/取消收藏成功后，我们要对LoginDetailData里面的收藏文章id列表进行更新
+                        //When we cancel bookmark this article successfully
+                        //, we should update the bookmark state of the article in database.
                         RealmList<Integer> collectIds = data.getCollectIds();
                         if (checkIsFavorite(originId, collectIds)) {
                             Integer integer = originId;
@@ -120,7 +123,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 });
     }
 
-    private boolean checkIsFavorite(@NonNull int articleId,@NonNull  RealmList<Integer> collectIds) {
+    private boolean checkIsFavorite(int articleId, @NonNull RealmList<Integer> collectIds) {
         if (collectIds.isEmpty()) {
             return false;
         }

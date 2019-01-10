@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.CustomComponent.banner;
+package com.example.lengary_l.wanandroid.component.banner;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -33,9 +33,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.lengary_l.wanandroid.CustomComponent.banner.ViewPager.CustomBannerViewPager;
-import com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.ImageLoader;
-import com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.OnBannerListener;
+import com.example.lengary_l.wanandroid.component.banner.ViewPager.CustomBannerViewPager;
+import com.example.lengary_l.wanandroid.component.banner.interfaze.ImageLoader;
+import com.example.lengary_l.wanandroid.component.banner.interfaze.OnBannerListener;
 import com.example.lengary_l.wanandroid.R;
 
 import java.lang.reflect.Field;

@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.lengary_l.wanandroid.CustomComponent.banner.ViewPager.CustomBannerViewPager
+    <com.example.lengary_l.wanandroid.component.banner.ViewPager.CustomBannerViewPager
         android:id="@+id/custom_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

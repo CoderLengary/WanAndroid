@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.glide;
-
-import android.content.Context;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
+package com.example.lengary_l.wanandroid.component.banner.interfaze;
 
 /**
  * Created by CoderLengary
  */
-
-
-public class GlideLoader2 extends com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.ImageLoader{
-    @Override
-    public void displayImage(Context context, Object path, ImageView imageView) {
-        Glide.with(context).load(path).into(imageView);
-    }
+public interface OnBannerListener {
+    void onBannerClick(int position);
 }

@@ -34,7 +34,7 @@ public class StatusDataRepository implements StatusDataSource {
     }
 
     @Override
-    public Observable<Status> collectArticle(@NonNull int userId, @NonNull int id) {
+    public Observable<Status> collectArticle( int userId,  int id) {
         return remoteDataSource.collectArticle(userId,id);
     }
 

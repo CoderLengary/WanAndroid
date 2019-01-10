@@ -15,6 +15,6 @@ import io.reactivex.Observable;
 
 public interface HotKeyDataSource {
 
-    Observable<List<HotKeyDetailData>> getHotKeys(@NonNull boolean forceUpdate);
+    Observable<List<HotKeyDetailData>> getHotKeys(boolean forceUpdate);
 
 }

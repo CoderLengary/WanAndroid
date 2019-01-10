@@ -133,7 +133,6 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
     @Override
     public void saveUser2Preference(int userId, String userName, String password) {
-        //登陆成功执行此逻辑
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         int oldUerId = sp.getInt(SettingsUtil.USERID, -1);
         if (oldUerId != -1 && userId != oldUerId) {
@@ -147,7 +146,6 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     }
 
     private void navigateToMain() {
-        //登陆成功执行此逻辑
         Intent intent = new Intent(getContext(), WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getActivity().startActivity(intent);

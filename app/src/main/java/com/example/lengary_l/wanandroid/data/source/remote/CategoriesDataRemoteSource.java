@@ -44,7 +44,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
 
     @Override
-    public Observable<List<CategoryDetailData>> getCategories(@NonNull boolean forceUpdate) {
+    public Observable<List<CategoryDetailData>> getCategories(boolean forceUpdate) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getCategories()
@@ -54,7 +54,7 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
                         return categoriesData.getErrorCode() != -1;
                     }
                 })
-                //获取的数据类型是CategoriesData，我们需要的是它内部的CategoryDetailData，所以要用到flatMap
+                //Use flatMap function to gain the  CategoryDetailData of CategoriesData
                 .flatMap(new Function<CategoriesData, ObservableSource<List<CategoryDetailData>>>() {
                     @Override
                     public ObservableSource<List<CategoryDetailData>> apply(CategoriesData categoriesData) {

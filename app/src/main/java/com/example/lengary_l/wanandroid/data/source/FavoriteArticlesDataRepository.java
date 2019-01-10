@@ -45,7 +45,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
 
 
     @Override
-    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull final boolean clearCache) {
+    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(int page, boolean forceUpdate, final boolean clearCache) {
         //!forceUpdate即用户按home键然后再返回我们的APP的情况，这时候直接返回缓存的文章列表
         if (!forceUpdate && favoriteArticlesCache != null) {
             return Observable.fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
@@ -103,11 +103,11 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
     }
 
     @Override
-    public boolean isExist(@NonNull int userId, @NonNull int id) {
+    public boolean isExist(int userId, int id) {
         return localDataSource.isExist(userId, id);
     }
 
-    private void refreshArticlesCache(@NonNull boolean clearCache, @NonNull List<FavoriteArticleDetailData> list) {
+    private void refreshArticlesCache(boolean clearCache, @NonNull List<FavoriteArticleDetailData> list) {
         if (favoriteArticlesCache == null) {
             favoriteArticlesCache = new LinkedHashMap<>();
         }

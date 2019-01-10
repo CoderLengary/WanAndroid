@@ -16,7 +16,6 @@ import com.example.lengary_l.wanandroid.R;
  * Created by CoderLengary
  */
 
-//“关于”界面
 public class AboutFragment extends PreferenceFragmentCompat {
 
 

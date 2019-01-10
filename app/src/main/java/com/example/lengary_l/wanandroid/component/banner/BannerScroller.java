@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.CustomComponent.banner;
+package com.example.lengary_l.wanandroid.component.banner;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

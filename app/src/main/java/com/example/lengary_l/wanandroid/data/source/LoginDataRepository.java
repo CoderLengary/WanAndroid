@@ -43,7 +43,7 @@ public class LoginDataRepository implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
+    public Observable<LoginDetailData> getLocalLoginData(int userId) {
         return localDataSource.getLocalLoginData(userId);
     }
 

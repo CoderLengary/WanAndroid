@@ -14,11 +14,29 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze;
+package com.example.lengary_l.wanandroid.component.banner;
 
 /**
  * Created by CoderLengary
  */
-public interface OnBannerListener {
-    void onBannerClick(int position);
+public class BannerConfig {
+
+
+    /**
+     * indicator style
+     */
+    public static final int LEFT = 0;
+    public static final int CENTER = 1;
+    public static final int RIGHT = 2;
+    public static final int MARGINING_SIZE = 5;
+
+
+    /**
+     * banner
+     */
+
+    public static final boolean IS_AUTO_PLAY = true;
+    public static final boolean IS_SCROLL = true;
+    public static final int DELAY_TIME = 5000;
+    public static final int SCROLL_DURATION = 400;
 }

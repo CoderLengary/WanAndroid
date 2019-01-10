@@ -31,23 +31,22 @@ public interface RetrofitService {
     @POST(Api.REGISTER)
     Observable<LoginData> register(@Field("username") String username, @Field("password") String password,@Field("repassword") String repassword);
 
-    //获取首页文章
+    //Gain the articles of homepage.
     @GET(Api.ARTICLE_LIST + "{page}/json")
     Observable<ArticlesData> getArticles(@Path("page") int page);
 
-    //获取分类文章，cid指的是类别
+    //Gain the articles according to category.Parameter "cid" represents category.
     @GET(Api.ARTICLE_LIST + "{page}/json")
     Observable<ArticlesData> getArticlesFromCatg(@Path("page") int page, @Query("cid") int cid);
 
-    //获取文章的所有分类
+    //Gain all the categories of articles
     @GET(Api.CATEGORIES)
     Observable<CategoriesData> getCategories();
 
-    //获取查询的文章，k指的是用户输入的词
+    //Query the article.Parameter "k" represents the key word.
     @POST(Api.QUERY_ARTICLES + "{page}/json")
     Observable<ArticlesData> queryArticles(@Path("page") int page, @Query("k") String k);
 
-    //获取热搜词
     @GET(Api.HOT_KEY)
     Observable<HotKeysData> getHotKeys();
 
@@ -60,7 +59,6 @@ public interface RetrofitService {
     @POST(Api.CANCEL_COLLECTING_ARTICLE + "{originId}/json")
     Observable<Status> uncollectArticle(@Path("originId") int originId);
 
-    //获取收藏文章的列表
     @GET(Api.GET_FAVORITE_ARTICLES + "{page}/json")
     Observable<FavoriteArticlesData> getFavoriteArticles(@Path("page") int page);
 

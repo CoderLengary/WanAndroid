@@ -39,7 +39,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
     }
 
     @Override
-    public Observable<List<HotKeyDetailData>> getHotKeys(@NonNull boolean forceUpdate) {
+    public Observable<List<HotKeyDetailData>> getHotKeys(boolean forceUpdate) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getHotKeys()
@@ -49,7 +49,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
                         return hotKeysData.getErrorCode() == 0;
                     }
                 })
-                //获取的数据类型是HotKeysData，我们需要的是它内部的HotKeyDetailData，所以要用到flatMap
+                //Use flatMap function to gain the  HotKeyDetailData of HotKeysData
                 .flatMap(new Function<HotKeysData, ObservableSource<List<HotKeyDetailData>>>() {
                     @Override
                     public ObservableSource<List<HotKeyDetailData>> apply(HotKeysData hotKeysData) {

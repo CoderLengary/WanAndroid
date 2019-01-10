@@ -40,9 +40,9 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
 
     @Override
-    public Observable<List<ReadLaterArticleData>> getReadLaterArticles(@NonNull int userId) {
+    public Observable<List<ReadLaterArticleData>> getReadLaterArticles(int userId) {
         Realm realm = RealmHelper.newRealmInstance();
-        List<ReadLaterArticleData> datas=realm.copyFromRealm(realm.where(ReadLaterArticleData.class)
+        List<ReadLaterArticleData> datas = realm.copyFromRealm(realm.where(ReadLaterArticleData.class)
                 .equalTo("userId", userId)
                 .findAll());
         return Observable.fromIterable(datas).toSortedList(new Comparator<ReadLaterArticleData>() {
@@ -59,8 +59,9 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
     }
 
     @Override
-    public void insertReadLaterArticle(@NonNull int userId, @NonNull int id, @NonNull long timeStamp) {
-        //搜寻ArticleDetailData数据库的文章，找到后添加到ReadLaterArticleData数据库里面
+    public void insertReadLaterArticle(int userId, int id, long timeStamp) {
+        //Build a new instance of ReadLaterArticleData by the article searched by its id in database of ArticleDetailData
+        // then insert the instance to the database of ReadLaterArticleData
         Realm realm = RealmHelper.newRealmInstance();
         ArticleDetailData articleDetailData = realm.copyFromRealm(
                 realm.where(ArticleDetailData.class)
@@ -84,7 +85,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
     }
 
     @Override
-    public void removeReadLaterArticle(@NonNull int userId, @NonNull int id) {
+    public void removeReadLaterArticle(int userId, int id) {
         Realm realm = RealmHelper.newRealmInstance();
         ReadLaterArticleData data = realm.where(ReadLaterArticleData.class)
                 .equalTo("userId", userId)
@@ -98,7 +99,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
     }
 
     @Override
-    public boolean isExist(@NonNull int userId, @NonNull int id) {
+    public boolean isExist(int userId, int id) {
         Realm realm = RealmHelper.newRealmInstance();
         RealmResults<ReadLaterArticleData> list =
                 realm.where(ReadLaterArticleData.class)
@@ -112,7 +113,7 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     @Override
     public void clearAll() {
-        //该逻辑只有在用户切换账号的时候执行
+        //When we use a different account to login in ,we should delete all the ReadLaterArticleData in realm
         Realm realm = RealmHelper.newRealmInstance();
         RealmResults<ReadLaterArticleData> results =
                 realm.where(ReadLaterArticleData.class).findAll();

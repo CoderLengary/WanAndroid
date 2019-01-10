@@ -40,7 +40,7 @@ public class CategoriesDataRepository implements CategoriesDataSource {
         return INSTANCE;
     }
     @Override
-    public Observable<List<CategoryDetailData>> getCategories(@NonNull final boolean forceUpdate) {
+    public Observable<List<CategoryDetailData>> getCategories(final boolean forceUpdate) {
         if (!forceUpdate){
             return Observable.just(sortCacheItems(new ArrayList<>(cache.values())));
         }
@@ -54,7 +54,7 @@ public class CategoriesDataRepository implements CategoriesDataSource {
                 });
     }
 
-    private void refreshCache(@NonNull boolean forceUpdate, @NonNull List<CategoryDetailData> list){
+    private void refreshCache(boolean forceUpdate, @NonNull List<CategoryDetailData> list){
         if (cache==null){
             cache = new LinkedHashMap<>();
         }

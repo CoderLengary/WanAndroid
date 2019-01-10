@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.lengary_l.wanandroid.CustomComponent.RotateView
+    <com.example.lengary_l.wanandroid.component.RotateView
         android:id="@+id/my_filiper_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -10,7 +10,7 @@ import io.reactivex.Observable;
 
 
 public interface FavoriteArticlesDataSource {
-    Observable getFavoriteArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache);
+    Observable getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache);
 
-    boolean isExist(@NonNull int userId, @NonNull int id);
+    boolean isExist(int userId, int id);
 }

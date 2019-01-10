@@ -11,7 +11,7 @@ import io.reactivex.subjects.Subject;
  * Created by CoderLengary
  */
 
-//负责通知
+
 public class RxBus {
     public static final String REFRESH = "REFRESH";
     private static volatile RxBus INSTANCE;

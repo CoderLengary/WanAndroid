@@ -15,7 +15,6 @@ import com.example.lengary_l.wanandroid.R;
  * Created by CoderLengary
  */
 
-//“许可证”界面
 public class LicensesActivity extends AppCompatActivity{
 
     @Override

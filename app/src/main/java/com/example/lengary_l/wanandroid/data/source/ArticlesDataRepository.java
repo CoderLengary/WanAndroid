@@ -53,9 +53,10 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(@NonNull final int page, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticles(final int page, final boolean forceUpdate, final boolean clearCache) {
 
         //!forceUpdate即用户按home键然后再返回我们的APP的情况，这时候直接返回缓存的文章列表
+
         if (!forceUpdate && articlesCache != null) {
             return Observable.fromIterable(new ArrayList<>(articlesCache.values()))
                     .toSortedList(new Comparator<ArticleDetailData>() {
@@ -66,7 +67,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                     }).toObservable();
         }
 
-        //forceUpdate&&!clearCache 即用户向下滑动列表的情况，我们需要请求下一页的数据，并保存到缓存里
+        //forceUpdate&&!clearCache: When scrolling to the last item of recycler view, we need to request the data of next page and cache it.
         if (!clearCache&&articlesCache!=null){
             Observable<List<ArticleDetailData>> ob1 = Observable.fromIterable(new ArrayList<>(articlesCache.values()))
                     .toSortedList(new Comparator<ArticleDetailData>() {
@@ -84,7 +85,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                         }
                     });
 
-            //获取到缓存的数据加上新请求的下一页的数据，需要结合这两个数据并统一发送
+            //We need to return the data combining network source and cache source
             return Observable.merge(ob1, ob2).collect(new Callable<List<ArticleDetailData>>() {
                 @Override
                 public List<ArticleDetailData> call() {
@@ -99,6 +100,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
         }
 
         //forceUpdate&&clearCache 即下拉刷新，还有第一次加载的情况
+        //forceUpdate&&clearCache: Pull-to-refresh.
         return remoteDataSource.getArticles(INDEX, forceUpdate, clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
@@ -111,7 +113,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
 
-    private void refreshArticlesCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list){
+    private void refreshArticlesCache(boolean clearCache, @NonNull List<ArticleDetailData> list){
         if (articlesCache == null) {
             articlesCache = new LinkedHashMap<>();
         }
@@ -125,7 +127,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, @NonNull boolean forceUpdate, @NonNull final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> queryArticles(int page, @NonNull String keyWords, boolean forceUpdate, final boolean clearCache) {
 
         if (!forceUpdate && queryCache != null) {
             return Observable.fromIterable(new ArrayList<>(queryCache.values()))
@@ -181,7 +183,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
 
-    private void refreshQueryCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list) {
+    private void refreshQueryCache(boolean clearCache, @NonNull List<ArticleDetailData> list) {
         if (queryCache == null) {
             queryCache = new LinkedHashMap<>();
         }
@@ -196,7 +198,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromCatg(@NonNull int page, @NonNull int categoryId, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, final boolean forceUpdate, final boolean clearCache) {
         if (!forceUpdate&&categoryCache!=null){
             return Observable.fromIterable(new ArrayList<>(categoryCache.values()))
                     .toSortedList(new Comparator<ArticleDetailData>() {
@@ -250,7 +252,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
                 });
     }
 
-    private void refreshCategoryCache(@NonNull boolean clearCache, @NonNull List<ArticleDetailData> list) {
+    private void refreshCategoryCache(boolean clearCache, @NonNull List<ArticleDetailData> list) {
         if (categoryCache == null) {
             categoryCache = new LinkedHashMap<>();
         }

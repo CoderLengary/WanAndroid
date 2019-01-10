@@ -13,8 +13,8 @@ import io.reactivex.Observable;
 
 public interface StatusDataSource {
 
-    Observable<Status> collectArticle(@NonNull int userId, @NonNull int id);
+    Observable<Status> collectArticle(int userId, int id);
 
-    Observable<Status> uncollectArticle(@NonNull int userId, @NonNull int originId);
+    Observable<Status> uncollectArticle(int userId, int originId);
 
 }

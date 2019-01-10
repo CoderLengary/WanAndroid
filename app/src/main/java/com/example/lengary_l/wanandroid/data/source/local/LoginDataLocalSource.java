@@ -18,6 +18,7 @@ import io.realm.Realm;
 
 public class LoginDataLocalSource implements LoginDataSource{
 
+
     private static LoginDataLocalSource INSTANCE;
 
 
@@ -44,7 +45,7 @@ public class LoginDataLocalSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
+    public Observable<LoginDetailData> getLocalLoginData(int userId) {
         Realm realm = RealmHelper.newRealmInstance();
         LoginDetailData loginDetailData = realm.copyFromRealm(
                 realm.where(LoginDetailData.class)

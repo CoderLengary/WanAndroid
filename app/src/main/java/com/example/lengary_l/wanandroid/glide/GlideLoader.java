@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
  */
 
 
-public class GlideLoader extends com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.ImageLoader{
+public class GlideLoader extends com.example.lengary_l.wanandroid.component.banner.interfaze.ImageLoader{
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         Glide.with(context).load(path).into(imageView);

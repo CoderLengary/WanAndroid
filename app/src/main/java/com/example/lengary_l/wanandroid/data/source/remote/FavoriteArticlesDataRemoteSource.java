@@ -25,6 +25,7 @@ import io.reactivex.functions.Predicate;
 public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSource {
 
     private static FavoriteArticlesDataRemoteSource INSTANCE;
+
     private FavoriteArticlesDataRemoteSource() {
 
     }
@@ -41,9 +42,8 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
     }
 
 
-
     @Override
-    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(@NonNull final int page, @NonNull final boolean forceUpdate, @NonNull final boolean clearCache) {
+    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(final int page, final boolean forceUpdate, final boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
                 .getFavoriteArticles(page)
@@ -66,7 +66,7 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
     }
 
     @Override
-    public boolean isExist(@NonNull int userId, @NonNull int id) {
+    public boolean isExist(int userId, int id) {
         //Not required because the {@link FavoriteArticlesDataLocalSource} has handled it
         return false;
     }

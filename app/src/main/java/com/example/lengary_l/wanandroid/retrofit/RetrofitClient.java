@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by CoderLengary
  */
 
-//单例模式
 public class RetrofitClient {
 
     private RetrofitClient() {
@@ -23,10 +22,9 @@ public class RetrofitClient {
 
 
         private static final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                //添加对Cookies的管理
+                //Manager the cookies
                 .addInterceptor(cookiesManager.getGetCookieInterceptor())
                 .addInterceptor(cookiesManager.getAddCookiesInterceptor())
-                //.cookieJar(new CookieManger(App.getContext()))
                 .build();
 
 

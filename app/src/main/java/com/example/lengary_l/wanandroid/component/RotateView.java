@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.CustomComponent;
+package com.example.lengary_l.wanandroid.component;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

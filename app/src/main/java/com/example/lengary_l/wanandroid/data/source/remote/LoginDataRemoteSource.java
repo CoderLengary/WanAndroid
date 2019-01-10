@@ -75,7 +75,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(@NonNull int userId) {
+    public Observable<LoginDetailData> getLocalLoginData(int userId) {
         //Not required because the {@link LoginDataLocalSource} has handled it
         return null;
     }

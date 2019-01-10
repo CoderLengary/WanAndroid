@@ -30,11 +30,11 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
     private static ArticlesDataRemoteSource INSTANCE;
 
-    private ArticlesDataRemoteSource(){
+    private ArticlesDataRemoteSource() {
 
     }
 
-    public static ArticlesDataRemoteSource getInstance(){
+    public static ArticlesDataRemoteSource getInstance() {
         if (INSTANCE == null) {
             synchronized (ArticlesDataRemoteSource.class) {
                 if (INSTANCE == null) {
@@ -47,7 +47,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(@NonNull  int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticles(int page, boolean forceUpdate, boolean clearCache) {
 
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
@@ -58,7 +58,8 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         return articlesData.getErrorCode() == 0;
                     }
                 })
-                //获取的数据类型是ArticlesData，我们需要的是它内部的ArticleDetailData，所以要用到flatMap
+
+                //Use flatMap function to gain the  ArticleDetailData of ArticlesData
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
                     @Override
                     public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) {
@@ -70,7 +71,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
                             public void accept(List<ArticleDetailData> list) {
-                                for (ArticleDetailData item :list){
+                                for (ArticleDetailData item : list) {
                                     saveToRealm(item);
                                 }
                             }
@@ -79,7 +80,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 });
     }
 
-    private void saveToRealm(@NonNull ArticleDetailData article){
+    private void saveToRealm(@NonNull ArticleDetailData article) {
         // It is necessary to build a new realm instance
         // in a different thread.
         Realm realm = Realm.getInstance(new RealmConfiguration.Builder()
@@ -94,10 +95,10 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> queryArticles(@NonNull int page, @NonNull String keyWords, @NonNull boolean forceUpdate, @NonNull  boolean clearCache) {
+    public Observable<List<ArticleDetailData>> queryArticles(int page, @NonNull String keyWords, boolean forceUpdate, boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
-                .queryArticles(page,keyWords)
+                .queryArticles(page, keyWords)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) {
@@ -115,7 +116,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
                             public void accept(List<ArticleDetailData> list) {
-                                for (ArticleDetailData item :list){
+                                for (ArticleDetailData item : list) {
                                     saveToRealm(item);
                                 }
                             }
@@ -126,10 +127,10 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticlesFromCatg(@NonNull int page, @NonNull int categoryId, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
+    public Observable<List<ArticleDetailData>> getArticlesFromCatg(int page, int categoryId, boolean forceUpdate, boolean clearCache) {
         return RetrofitClient.getInstance()
                 .create(RetrofitService.class)
-                .getArticlesFromCatg(page,categoryId)
+                .getArticlesFromCatg(page, categoryId)
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) {
@@ -147,7 +148,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                         }).toObservable().doOnNext(new Consumer<List<ArticleDetailData>>() {
                             @Override
                             public void accept(List<ArticleDetailData> list) {
-                                for (ArticleDetailData item :list){
+                                for (ArticleDetailData item : list) {
                                     saveToRealm(item);
                                 }
                             }

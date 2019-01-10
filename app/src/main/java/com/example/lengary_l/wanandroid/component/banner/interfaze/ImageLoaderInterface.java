@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze;
+package com.example.lengary_l.wanandroid.component.banner.interfaze;
 
 import android.content.Context;
 import android.view.View;

@@ -15,5 +15,5 @@ import io.reactivex.Observable;
 
 public interface CategoriesDataSource {
 
-    Observable<List<CategoryDetailData>> getCategories(@NonNull boolean forceUpdate);
+    Observable<List<CategoryDetailData>> getCategories(boolean forceUpdate);
 }

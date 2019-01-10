@@ -44,7 +44,7 @@ public class HotKeyDataRepository implements HotKeyDataSource {
 
 
     @Override
-    public Observable<List<HotKeyDetailData>> getHotKeys(@NonNull final boolean forceUpdate) {
+    public Observable<List<HotKeyDetailData>> getHotKeys(final boolean forceUpdate) {
 
         if (!forceUpdate && cache != null) {
             return Observable.fromIterable(new ArrayList<>(cache.values())).toSortedList(
@@ -66,7 +66,7 @@ public class HotKeyDataRepository implements HotKeyDataSource {
         });
     }
 
-    private void refreshCache(@NonNull boolean forceUpdate, @NonNull List<HotKeyDetailData> list){
+    private void refreshCache(boolean forceUpdate, @NonNull List<HotKeyDetailData> list){
         if (cache == null) {
             cache = new LinkedHashMap<>();
         }

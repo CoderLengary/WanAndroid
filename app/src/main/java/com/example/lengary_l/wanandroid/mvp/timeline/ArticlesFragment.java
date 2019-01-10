@@ -21,8 +21,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.lengary_l.wanandroid.CustomComponent.banner.CustomBanner;
-import com.example.lengary_l.wanandroid.CustomComponent.banner.interfaze.OnBannerListener;
+import com.example.lengary_l.wanandroid.component.banner.CustomBanner;
+import com.example.lengary_l.wanandroid.component.banner.interfaze.OnBannerListener;
 import com.example.lengary_l.wanandroid.MainActivity;
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.ArticleDetailData;

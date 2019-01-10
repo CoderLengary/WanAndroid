@@ -38,13 +38,13 @@ public class FavoriteArticlesDataLocalSource implements FavoriteArticlesDataSour
     }
 
     @Override
-    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache) {
+    public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(int page, boolean forceUpdate, boolean clearCache) {
         //Not required because the {@link FavoriteArticlesDataRemoteSource} has handled it.
         return null;
     }
 
     @Override
-    public boolean isExist(@NonNull int userId, @NonNull int id) {
+    public boolean isExist(int userId, int id) {
         Realm realm = RealmHelper.newRealmInstance();
         LoginDetailData data = realm.copyFromRealm(
                 realm.where(LoginDetailData.class)
@@ -53,7 +53,6 @@ public class FavoriteArticlesDataLocalSource implements FavoriteArticlesDataSour
         );
         List<Integer> collectIds = data.getCollectIds();
 
-        //在{@link LoginDetailData}里面有一个属性collectIds存储所有收藏文章的id
         if (collectIds.isEmpty()) {
             return false;
         }

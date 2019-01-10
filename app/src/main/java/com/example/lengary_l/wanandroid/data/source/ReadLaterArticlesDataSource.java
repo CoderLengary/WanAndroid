@@ -14,13 +14,13 @@ import io.reactivex.Observable;
 
 
 public interface ReadLaterArticlesDataSource {
-    Observable<List<ReadLaterArticleData>> getReadLaterArticles(@NonNull int userId);
+    Observable<List<ReadLaterArticleData>> getReadLaterArticles(int userId);
 
-    void insertReadLaterArticle(int userId, @NonNull int id, @NonNull long timeStamp);
+    void insertReadLaterArticle(int userId, int id, long timeStamp);
 
-    void removeReadLaterArticle(int userId, @NonNull int id);
+    void removeReadLaterArticle(int userId, int id);
 
-    boolean isExist(int userId, @NonNull int id);
+    boolean isExist(int userId, int id);
 
     void clearAll();
 }

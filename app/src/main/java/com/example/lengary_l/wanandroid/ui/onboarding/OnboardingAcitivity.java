@@ -118,7 +118,7 @@ public class OnboardingAcitivity extends AppCompatActivity {
                 findViewById(R.id.img_indicator_2)};
     }
 
-    //根据页数更新圆形指示器
+    //Update the circle indicators according to the page
     private void updateIndicators(int position) {
         for (int i = 0; i < indicators.length; i++) {
             indicators[i].setBackgroundResource(i == position ? R.drawable.onboarding_indicator_selected : R.drawable.onboarding_indicator_unselected);

@@ -32,22 +32,22 @@ public class ReadLaterArticlesDataRepository implements ReadLaterArticlesDataSou
     }
 
     @Override
-    public Observable<List<ReadLaterArticleData>> getReadLaterArticles(@NonNull int userId) {
+    public Observable<List<ReadLaterArticleData>> getReadLaterArticles(int userId) {
         return localDataSource.getReadLaterArticles(userId);
     }
 
     @Override
-    public void insertReadLaterArticle(@NonNull int userId, @NonNull int id, @NonNull long timeStamp){
+    public void insertReadLaterArticle(int userId, int id, long timeStamp){
         localDataSource.insertReadLaterArticle(userId, id, timeStamp);
     }
 
     @Override
-    public void removeReadLaterArticle(@NonNull int userId, @NonNull int id) {
+    public void removeReadLaterArticle(int userId, int id) {
         localDataSource.removeReadLaterArticle(userId, id);
     }
 
     @Override
-    public boolean isExist(@NonNull int userId, @NonNull int id) {
+    public boolean isExist(int userId, int id) {
         return localDataSource.isExist(userId, id);
     }
 
