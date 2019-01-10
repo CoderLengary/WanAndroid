@@ -20,7 +20,7 @@ import io.realm.RealmResults;
 
 
 public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource {
-    @NonNull
+
     private static ReadLaterArticlesLocalSource INSTANCE;
 
     private ReadLaterArticlesLocalSource() {
@@ -29,7 +29,11 @@ public class ReadLaterArticlesLocalSource implements ReadLaterArticlesDataSource
 
     public static ReadLaterArticlesDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new ReadLaterArticlesLocalSource();
+            synchronized (ReadLaterArticlesDataSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ReadLaterArticlesLocalSource();
+                }
+            }
         }
         return INSTANCE;
     }

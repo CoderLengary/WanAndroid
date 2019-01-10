@@ -2,7 +2,7 @@ package com.example.lengary_l.wanandroid.mvp.detail;
 
 import com.example.lengary_l.wanandroid.data.Status;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
-import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,16 +20,16 @@ public class DetailPresenter implements DetailContract.Presenter {
     private final DetailContract.View view;
     private final StatusDataRepository statusDataRepository;
     private final CompositeDisposable compositeDisposable;
-    private final ReadLaterArticlesRepository readLaterArticlesRepository;
+    private final ReadLaterArticlesDataRepository readLaterArticlesDataRepository;
     private final FavoriteArticlesDataRepository favoriteArticlesDataRepository;
 
     public DetailPresenter(DetailContract.View view,
                            StatusDataRepository statusDataRepository,
-                           ReadLaterArticlesRepository readLaterArticlesRepository,
+                           ReadLaterArticlesDataRepository readLaterArticlesDataRepository,
                            FavoriteArticlesDataRepository favoriteArticlesDataRepository) {
         this.view = view;
         this.statusDataRepository = statusDataRepository;
-        this.readLaterArticlesRepository = readLaterArticlesRepository;
+        this.readLaterArticlesDataRepository = readLaterArticlesDataRepository;
         this.favoriteArticlesDataRepository = favoriteArticlesDataRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
@@ -107,17 +107,17 @@ public class DetailPresenter implements DetailContract.Presenter {
 
     @Override
     public void insertReadLaterArticle(int userId, int id, long timeStamp) {
-        readLaterArticlesRepository.insertReadLaterArticle(userId, id, timeStamp);
+        readLaterArticlesDataRepository.insertReadLaterArticle(userId, id, timeStamp);
     }
 
     @Override
     public void removeReadLaterArticle(int userId, int id) {
-        readLaterArticlesRepository.removeReadLaterArticle(userId, id);
+        readLaterArticlesDataRepository.removeReadLaterArticle(userId, id);
     }
 
     @Override
     public void checkIsReadLater(int userId, int id) {
-        view.saveReadLaterState(readLaterArticlesRepository.isExist(userId, id));
+        view.saveReadLaterState(readLaterArticlesDataRepository.isExist(userId, id));
     }
 
     @Override

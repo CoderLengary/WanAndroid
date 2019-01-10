@@ -22,7 +22,7 @@ import io.realm.RealmConfiguration;
 
 
 public class LoginDataRemoteSource implements LoginDataSource{
-    @NonNull
+
     private static LoginDataRemoteSource INSTANCE;
 
     private LoginDataRemoteSource(){
@@ -31,7 +31,11 @@ public class LoginDataRemoteSource implements LoginDataSource{
 
     public static LoginDataRemoteSource getInstance(){
         if (INSTANCE == null) {
-            INSTANCE = new LoginDataRemoteSource();
+            synchronized (LoginDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new LoginDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -53,7 +57,7 @@ public class LoginDataRemoteSource implements LoginDataSource{
                 .doOnNext(new Consumer<LoginData>() {
             @Override
             public void accept(LoginData loginData) {
-                if (loginData.getErrorCode()!=-1||loginData.getData() != null) {
+                if (loginData.getErrorCode() == 0 || loginData.getData() != null) {
                     // It is necessary to build a new realm instance
                     // in a different thread.
                     Realm realm = Realm.getInstance(new RealmConfiguration.Builder()

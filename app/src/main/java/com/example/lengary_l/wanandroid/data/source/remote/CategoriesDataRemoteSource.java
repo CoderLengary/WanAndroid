@@ -24,7 +24,6 @@ import io.reactivex.functions.Predicate;
 
 public class CategoriesDataRemoteSource implements CategoriesDataSource{
 
-    @NonNull
     private static CategoriesDataRemoteSource INSTANCE;
 
     private CategoriesDataRemoteSource() {
@@ -32,8 +31,12 @@ public class CategoriesDataRemoteSource implements CategoriesDataSource{
     }
 
     public static CategoriesDataRemoteSource getInstance(){
-        if (INSTANCE==null){
-            INSTANCE = new CategoriesDataRemoteSource();
+        if (INSTANCE == null){
+            synchronized (CategoriesDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CategoriesDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }

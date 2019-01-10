@@ -33,7 +33,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     private Map<Integer, ArticleDetailData> categoryCache;
     private final int INDEX = 0;
 
-    @NonNull
+
     private static ArticlesDataRepository INSTANCE;
 
     private ArticlesDataRepository(@NonNull ArticlesDataSource remoteDataSource ){
@@ -43,7 +43,11 @@ public class ArticlesDataRepository implements ArticlesDataSource {
 
     public static ArticlesDataRepository getInstance(@NonNull ArticlesDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new ArticlesDataRepository(remoteDataSource);
+            synchronized (ArticlesDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ArticlesDataRepository(remoteDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

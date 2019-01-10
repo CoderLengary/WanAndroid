@@ -13,20 +13,20 @@ import io.reactivex.Observable;
  */
 
 
-public class ReadLaterArticlesRepository implements ReadLaterArticlesDataSource {
+public class ReadLaterArticlesDataRepository implements ReadLaterArticlesDataSource {
     @NonNull
     private final ReadLaterArticlesDataSource localDataSource;
 
-    @NonNull
-    private static ReadLaterArticlesRepository INSTANCE;
 
-    private ReadLaterArticlesRepository(@NonNull ReadLaterArticlesDataSource local) {
+    private static ReadLaterArticlesDataRepository INSTANCE;
+
+    private ReadLaterArticlesDataRepository(@NonNull ReadLaterArticlesDataSource local) {
         this.localDataSource = local;
     }
 
-    public static ReadLaterArticlesRepository getInstance(@NonNull ReadLaterArticlesDataSource local) {
+    public static ReadLaterArticlesDataRepository getInstance(@NonNull ReadLaterArticlesDataSource local) {
         if (INSTANCE == null) {
-            INSTANCE = new ReadLaterArticlesRepository(local);
+            INSTANCE = new ReadLaterArticlesDataRepository(local);
         }
         return INSTANCE;
     }

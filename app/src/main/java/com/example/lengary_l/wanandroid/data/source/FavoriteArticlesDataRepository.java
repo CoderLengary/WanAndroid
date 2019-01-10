@@ -25,7 +25,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
     private final FavoriteArticlesDataSource remoteDataSource;
     private final FavoriteArticlesDataSource localDataSource;
     private Map<Integer, FavoriteArticleDetailData> favoriteArticlesCache;
-    @NonNull
+
     private static FavoriteArticlesDataRepository INSTANCE;
 
     private FavoriteArticlesDataRepository(@NonNull FavoriteArticlesDataSource remoteDataSource, @NonNull FavoriteArticlesDataSource localDataSource) {
@@ -34,7 +34,11 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
     }
     public static FavoriteArticlesDataRepository getInstance(@NonNull FavoriteArticlesDataSource remoteDataSource,@NonNull FavoriteArticlesDataSource localDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new FavoriteArticlesDataRepository(remoteDataSource, localDataSource);
+            synchronized (FavoriteArticlesDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new FavoriteArticlesDataRepository(remoteDataSource, localDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

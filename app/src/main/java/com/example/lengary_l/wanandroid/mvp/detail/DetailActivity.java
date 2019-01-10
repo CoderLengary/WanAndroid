@@ -9,7 +9,7 @@ import android.view.KeyEvent;
 
 import com.example.lengary_l.wanandroid.R;
 import com.example.lengary_l.wanandroid.data.source.FavoriteArticlesDataRepository;
-import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesDataRepository;
 import com.example.lengary_l.wanandroid.data.source.StatusDataRepository;
 import com.example.lengary_l.wanandroid.data.source.local.FavoriteArticlesDataLocalSource;
 import com.example.lengary_l.wanandroid.data.source.local.ReadLaterArticlesLocalSource;
@@ -43,7 +43,7 @@ public class DetailActivity extends AppCompatActivity {
             detailFragment = DetailFragment.newInstance();
         }
         new DetailPresenter(detailFragment, StatusDataRepository.getInstance(StatusDataRemoteSource.getInstance()),
-                ReadLaterArticlesRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
+                ReadLaterArticlesDataRepository.getInstance(ReadLaterArticlesLocalSource.getInstance()),
                 FavoriteArticlesDataRepository.getInstance(FavoriteArticlesDataRemoteSource.getInstance(),
                         FavoriteArticlesDataLocalSource.getInstance()));
         getSupportFragmentManager().beginTransaction()

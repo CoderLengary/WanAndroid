@@ -132,18 +132,15 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     }
 
     @Override
-    public void saveUser2Preference(LoginDetailData loginDetailData) {
+    public void saveUser2Preference(int userId, String userName, String password) {
         //登陆成功执行此逻辑
-        int userId = loginDetailData.getId();
-        String username = loginDetailData.getUsername();
-        String password = loginDetailData.getPassword();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         int oldUerId = sp.getInt(SettingsUtil.USERID, -1);
         if (oldUerId != -1 && userId != oldUerId) {
             presenter.clearReadLaterData();
         }
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
-        sp.edit().putString(SettingsUtil.USERNAME, username).apply();
+        sp.edit().putString(SettingsUtil.USERNAME, userName).apply();
         sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
         sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,true).apply();
         navigateToMain();

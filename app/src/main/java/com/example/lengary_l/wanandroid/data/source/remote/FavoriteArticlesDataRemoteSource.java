@@ -23,7 +23,7 @@ import io.reactivex.functions.Predicate;
 
 
 public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSource {
-    @NonNull
+
     private static FavoriteArticlesDataRemoteSource INSTANCE;
     private FavoriteArticlesDataRemoteSource() {
 
@@ -31,7 +31,11 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
 
     public static FavoriteArticlesDataRemoteSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new FavoriteArticlesDataRemoteSource();
+            synchronized (FavoriteArticlesDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new FavoriteArticlesDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -46,7 +50,7 @@ public class FavoriteArticlesDataRemoteSource implements FavoriteArticlesDataSou
                 .filter(new Predicate<FavoriteArticlesData>() {
                     @Override
                     public boolean test(FavoriteArticlesData favoriteArticlesData) {
-                        return favoriteArticlesData.getErrorCode() != -1;
+                        return favoriteArticlesData.getErrorCode() == 0;
                     }
                 }).flatMap(new Function<FavoriteArticlesData, ObservableSource<List<FavoriteArticleDetailData>>>() {
                     @Override

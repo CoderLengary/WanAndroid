@@ -23,12 +23,16 @@ public class LoginDataRepository implements LoginDataSource{
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
     }
-    @NonNull
+
     private static LoginDataRepository INSTANCE;
 
     public static LoginDataRepository getInstance(@NonNull LoginDataSource localDataSource,@NonNull LoginDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new LoginDataRepository(localDataSource, remoteDataSource);
+            synchronized (LoginDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new LoginDataRepository(localDataSource, remoteDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

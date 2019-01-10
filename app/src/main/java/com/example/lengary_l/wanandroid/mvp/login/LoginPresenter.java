@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.example.lengary_l.wanandroid.data.LoginData;
 import com.example.lengary_l.wanandroid.data.LoginType;
 import com.example.lengary_l.wanandroid.data.source.LoginDataRepository;
-import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesDataRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,14 +27,14 @@ public class  LoginPresenter implements LoginContract.Presenter{
 
     private final CompositeDisposable compositeDisposable;
 
-    private final ReadLaterArticlesRepository readLaterArticlesRepository;
+    private final ReadLaterArticlesDataRepository readLaterArticlesDataRepository;
 
 
     public LoginPresenter(@NonNull LoginContract.View view, @NonNull LoginDataRepository loginDataRepository,
-                          @NonNull ReadLaterArticlesRepository readLaterArticlesRepository) {
+                          @NonNull ReadLaterArticlesDataRepository readLaterArticlesDataRepository) {
         this.view = view;
         this.repository = loginDataRepository;
-        this.readLaterArticlesRepository = readLaterArticlesRepository;
+        this.readLaterArticlesDataRepository = readLaterArticlesDataRepository;
         this.view.setPresenter(this);
         compositeDisposable = new CompositeDisposable();
     }
@@ -45,19 +45,19 @@ public class  LoginPresenter implements LoginContract.Presenter{
     }
 
     @Override
-    public void login(String username, String password, @NonNull LoginType loginType) {
-        getLoginData(username, password,loginType);
+    public void login(String userName, String password, @NonNull LoginType loginType) {
+        getLoginData(userName, password,loginType);
     }
 
     @Override
     public void clearReadLaterData() {
-        readLaterArticlesRepository.clearAll();
+        readLaterArticlesDataRepository.clearAll();
     }
 
 
-    private void getLoginData(String username,String password, @NonNull final LoginType loginType){
+    private void getLoginData(final String userName, final String password, @NonNull final LoginType loginType){
 
-        Disposable disposable=repository.getRemoteLoginData(username, password,loginType)
+        Disposable disposable=repository.getRemoteLoginData(userName, password,loginType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<LoginData>() {
@@ -67,10 +67,10 @@ public class  LoginPresenter implements LoginContract.Presenter{
                         if (!view.isActive()) {
                             return;
                         }
-                        if (value.getErrorCode()==-1){
+                        if (value.getErrorCode() != 0){
                             view.showLoginError(value.getErrorMsg());
                         }else {
-                           view.saveUser2Preference(value.getData());
+                           view.saveUser2Preference(value.getData().getId(), userName, password);
                         }
                     }
 

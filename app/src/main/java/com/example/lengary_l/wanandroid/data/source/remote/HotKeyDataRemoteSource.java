@@ -24,12 +24,16 @@ import io.reactivex.functions.Predicate;
 
 public class HotKeyDataRemoteSource implements HotKeyDataSource {
 
-    @NonNull
+
     private static HotKeyDataRemoteSource INSTANCE;
 
     public static HotKeyDataRemoteSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new HotKeyDataRemoteSource();
+            synchronized (HotKeyDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new HotKeyDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -42,7 +46,7 @@ public class HotKeyDataRemoteSource implements HotKeyDataSource {
                 .filter(new Predicate<HotKeysData>() {
                     @Override
                     public boolean test(HotKeysData hotKeysData) {
-                        return hotKeysData.getErrorCode() != -1;
+                        return hotKeysData.getErrorCode() == 0;
                     }
                 })
                 //获取的数据类型是HotKeysData，我们需要的是它内部的HotKeyDetailData，所以要用到flatMap

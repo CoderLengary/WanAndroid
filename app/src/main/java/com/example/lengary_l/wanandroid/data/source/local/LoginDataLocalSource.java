@@ -17,7 +17,7 @@ import io.realm.Realm;
 
 
 public class LoginDataLocalSource implements LoginDataSource{
-    @NonNull
+
     private static LoginDataLocalSource INSTANCE;
 
 
@@ -27,7 +27,11 @@ public class LoginDataLocalSource implements LoginDataSource{
 
     public static LoginDataLocalSource getInstance(){
         if (INSTANCE == null) {
-            INSTANCE = new LoginDataLocalSource();
+            synchronized (LoginDataLocalSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new LoginDataLocalSource();
+                }
+            }
         }
         return INSTANCE;
     }

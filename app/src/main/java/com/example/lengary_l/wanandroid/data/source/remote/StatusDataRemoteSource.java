@@ -22,7 +22,7 @@ import io.realm.RealmList;
 
 
 public class StatusDataRemoteSource implements StatusDataSource {
-    @NonNull
+
     private static StatusDataRemoteSource INSTANCE;
     private StatusDataRemoteSource() {
 
@@ -30,7 +30,11 @@ public class StatusDataRemoteSource implements StatusDataSource {
 
     public static StatusDataRemoteSource getInstance(){
         if (INSTANCE == null) {
-            INSTANCE = new StatusDataRemoteSource();
+            synchronized (StatusDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new StatusDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -44,7 +48,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .filter(new Predicate<Status>() {
                     @Override
                     public boolean test(Status status) {
-                        return status.getErrorCode() != -1;
+                        return status.getErrorCode() == 0;
                     }
                 })
                 .doOnNext(new Consumer<Status>() {
@@ -84,7 +88,7 @@ public class StatusDataRemoteSource implements StatusDataSource {
                 .filter(new Predicate<Status>() {
                     @Override
                     public boolean test(Status status) {
-                        return status.getErrorCode() != -1;
+                        return status.getErrorCode() == 0;
                     }
                 })
                 .doOnNext(new Consumer<Status>() {

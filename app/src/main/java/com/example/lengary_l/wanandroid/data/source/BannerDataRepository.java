@@ -17,8 +17,8 @@ public class BannerDataRepository implements BannerDataSource{
 
     private final BannerDataSource remoteDataSource;
 
-    @NonNull
-    private static BannerDataRepository INSTANCE = null;
+
+    private static BannerDataRepository INSTANCE ;
 
     private BannerDataRepository(@NonNull BannerDataSource remoteDataSource) {
         this.remoteDataSource = remoteDataSource;
@@ -26,7 +26,11 @@ public class BannerDataRepository implements BannerDataSource{
 
     public static BannerDataRepository getInstance(@NonNull BannerDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new BannerDataRepository(remoteDataSource);
+            synchronized (BannerDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new BannerDataRepository(remoteDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

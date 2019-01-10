@@ -15,7 +15,7 @@ public class StatusDataRepository implements StatusDataSource {
     @NonNull
     private final StatusDataSource remoteDataSource;
 
-    @NonNull
+
     private static StatusDataRepository INSTANCE;
 
     private StatusDataRepository(@NonNull StatusDataSource remoteDataSource) {
@@ -24,7 +24,11 @@ public class StatusDataRepository implements StatusDataSource {
 
     public static StatusDataRepository getInstance(@NonNull StatusDataSource remote) {
         if (INSTANCE == null) {
-            INSTANCE = new StatusDataRepository(remote);
+            synchronized (StatusDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new StatusDataRepository(remote);
+                }
+            }
         }
         return INSTANCE;
     }

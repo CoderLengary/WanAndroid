@@ -1,7 +1,7 @@
 package com.example.lengary_l.wanandroid.mvp.timeline;
 
 import com.example.lengary_l.wanandroid.data.ReadLaterArticleData;
-import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesRepository;
+import com.example.lengary_l.wanandroid.data.source.ReadLaterArticlesDataRepository;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ReadLaterPresenter implements ReadLaterContract.Presenter {
 
-    private final ReadLaterArticlesRepository repository;
+    private final ReadLaterArticlesDataRepository repository;
     private final CompositeDisposable compositeDisposable;
     private final ReadLaterContract.View view;
 
-    public ReadLaterPresenter(ReadLaterContract.View view,ReadLaterArticlesRepository repository) {
+    public ReadLaterPresenter(ReadLaterContract.View view,ReadLaterArticlesDataRepository repository) {
         this.repository = repository;
         this.view = view;
         this.view.setPresenter(this);

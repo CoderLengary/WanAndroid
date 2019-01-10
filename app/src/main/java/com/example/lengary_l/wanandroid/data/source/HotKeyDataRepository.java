@@ -20,7 +20,7 @@ import io.reactivex.functions.Consumer;
 
 
 public class HotKeyDataRepository implements HotKeyDataSource {
-    @NonNull
+
     private static HotKeyDataRepository INSTANCE;
     @NonNull
     private final HotKeyDataSource remoteDataSource;
@@ -32,7 +32,11 @@ public class HotKeyDataRepository implements HotKeyDataSource {
 
     public static HotKeyDataRepository getInstance(@NonNull HotKeyDataSource remoteDataSource){
         if (INSTANCE == null) {
-            INSTANCE = new HotKeyDataRepository(remoteDataSource);
+            synchronized (HotKeyDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new HotKeyDataRepository(remoteDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

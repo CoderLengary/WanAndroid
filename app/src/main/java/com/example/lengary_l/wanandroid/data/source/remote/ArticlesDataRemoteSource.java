@@ -27,7 +27,7 @@ import io.realm.RealmConfiguration;
 
 
 public class ArticlesDataRemoteSource implements ArticlesDataSource {
-    @NonNull
+
     private static ArticlesDataRemoteSource INSTANCE;
 
     private ArticlesDataRemoteSource(){
@@ -36,7 +36,11 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
 
     public static ArticlesDataRemoteSource getInstance(){
         if (INSTANCE == null) {
-            INSTANCE = new ArticlesDataRemoteSource();
+            synchronized (ArticlesDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ArticlesDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -51,7 +55,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) {
-                        return articlesData.getErrorCode() != -1;
+                        return articlesData.getErrorCode() == 0;
                     }
                 })
                 //获取的数据类型是ArticlesData，我们需要的是它内部的ArticleDetailData，所以要用到flatMap
@@ -97,7 +101,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) {
-                        return articlesData.getErrorCode() != -1;
+                        return articlesData.getErrorCode() == 0;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
@@ -129,7 +133,7 @@ public class ArticlesDataRemoteSource implements ArticlesDataSource {
                 .filter(new Predicate<ArticlesData>() {
                     @Override
                     public boolean test(ArticlesData articlesData) {
-                        return articlesData.getErrorCode() != -1;
+                        return articlesData.getErrorCode() == 0;
                     }
                 })
                 .flatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {

@@ -22,7 +22,7 @@ import io.reactivex.functions.Predicate;
 
 public class BannerDataRemoteSource implements BannerDataSource {
 
-    @NonNull
+
     private static BannerDataRemoteSource INSTANCE;
 
     private BannerDataRemoteSource() {
@@ -31,7 +31,11 @@ public class BannerDataRemoteSource implements BannerDataSource {
 
     public static BannerDataRemoteSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new BannerDataRemoteSource();
+            synchronized (BannerDataRemoteSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new BannerDataRemoteSource();
+                }
+            }
         }
         return INSTANCE;
     }
@@ -45,7 +49,7 @@ public class BannerDataRemoteSource implements BannerDataSource {
                 .filter(new Predicate<BannerData>() {
                     @Override
                     public boolean test(BannerData bannerData) {
-                        return bannerData.getErrorCode() != -1;
+                        return bannerData.getErrorCode() == 0;
                     }
                 })
                 //获取的数据类型是BannerData，我们需要的是它内部的BannerDetailData，所以要用到flatMap

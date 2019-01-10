@@ -14,7 +14,7 @@ import com.example.lengary_l.wanandroid.mvp.BaseView;
 
 interface LoginContract {
     interface Presenter extends BasePresenter{
-        void login(String username, String password, @NonNull LoginType loginType);
+        void login(String userName, String password, @NonNull LoginType loginType);
 
         void clearReadLaterData();
 
@@ -25,7 +25,7 @@ interface LoginContract {
 
         boolean isActive();
 
-        void saveUser2Preference(LoginDetailData loginDetailData);
+        void saveUser2Preference(int userId, String userName, String password);
 
         void showNetworkError();
     }

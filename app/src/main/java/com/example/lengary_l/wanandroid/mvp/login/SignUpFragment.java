@@ -110,14 +110,11 @@ public class SignUpFragment extends Fragment implements LoginContract.View {
 
 
     @Override
-    public void saveUser2Preference(LoginDetailData loginDetailData) {
-        int userId = loginDetailData.getId();
-        String username = loginDetailData.getUsername();
-        String password = loginDetailData.getPassword();
+    public void saveUser2Preference(int userId, String userName, String password) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         presenter.clearReadLaterData();
         sp.edit().putInt(SettingsUtil.USERID, userId).apply();
-        sp.edit().putString(SettingsUtil.USERNAME, username).apply();
+        sp.edit().putString(SettingsUtil.USERNAME, userName).apply();
         sp.edit().putString(SettingsUtil.PASSWORD, password).apply();
         sp.edit().putBoolean(SettingsUtil.KEY_SKIP_LOGIN_PAGE,true).apply();
         navigateToMain();

@@ -19,7 +19,7 @@ import io.realm.Realm;
 
 public class FavoriteArticlesDataLocalSource implements FavoriteArticlesDataSource {
 
-    @NonNull
+
     private static FavoriteArticlesDataLocalSource INSTANCE;
 
     private FavoriteArticlesDataLocalSource() {
@@ -28,7 +28,11 @@ public class FavoriteArticlesDataLocalSource implements FavoriteArticlesDataSour
 
     public static FavoriteArticlesDataLocalSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new FavoriteArticlesDataLocalSource();
+            synchronized (FavoriteArticlesDataLocalSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new FavoriteArticlesDataLocalSource();
+                }
+            }
         }
         return INSTANCE;
     }

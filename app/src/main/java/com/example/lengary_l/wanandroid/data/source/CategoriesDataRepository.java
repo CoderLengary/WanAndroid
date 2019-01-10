@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer;
 
 
 public class CategoriesDataRepository implements CategoriesDataSource {
-    @NonNull
+
     private static CategoriesDataRepository INSTANCE;
     private final CategoriesDataSource remoteDataSource;
     private HashMap<Integer, CategoryDetailData> cache;
@@ -30,8 +30,12 @@ public class CategoriesDataRepository implements CategoriesDataSource {
         this.remoteDataSource = remoteDataSource;
     }
     public static CategoriesDataRepository getInstance(@NonNull CategoriesDataSource remoteDataSource){
-        if (INSTANCE==null){
-            INSTANCE = new CategoriesDataRepository(remoteDataSource);
+        if (INSTANCE == null){
+            synchronized (CategoriesDataRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CategoriesDataRepository(remoteDataSource);
+                }
+            }
         }
         return INSTANCE;
     }

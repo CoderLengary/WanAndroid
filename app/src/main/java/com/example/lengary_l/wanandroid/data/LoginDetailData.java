@@ -37,6 +37,11 @@ public class LoginDetailData extends RealmObject {
     @Expose
     @SerializedName("password")
     private String password;
+
+    @Expose
+    @SerializedName("token")
+    private String token;
+
     @Expose
     @SerializedName("type")
     private int type;
@@ -94,4 +99,11 @@ public class LoginDetailData extends RealmObject {
         this.username = username;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
