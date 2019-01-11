@@ -55,8 +55,6 @@ public class ArticlesDataRepository implements ArticlesDataSource {
     @Override
     public Observable<List<ArticleDetailData>> getArticles(final int page, final boolean forceUpdate, final boolean clearCache) {
 
-        //!forceUpdate即用户按home键然后再返回我们的APP的情况，这时候直接返回缓存的文章列表
-
         if (!forceUpdate && articlesCache != null) {
             return Observable.fromIterable(new ArrayList<>(articlesCache.values()))
                     .toSortedList(new Comparator<ArticleDetailData>() {
@@ -99,8 +97,7 @@ public class ArticlesDataRepository implements ArticlesDataSource {
             }).toObservable();
         }
 
-        //forceUpdate&&clearCache 即下拉刷新，还有第一次加载的情况
-        //forceUpdate&&clearCache: Pull-to-refresh.
+        //forceUpdate&&clearCache: Pull-to-refresh.Initial Article Fragment.
         return remoteDataSource.getArticles(INDEX, forceUpdate, clearCache)
                 .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override

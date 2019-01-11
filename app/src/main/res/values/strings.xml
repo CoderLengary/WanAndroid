@@ -95,6 +95,7 @@
     <string name="search_tint">Search articles</string>
     <!--Search end-->
 
+
     <!--About start-->
     <string name="about_settings">Settings</string>
     <string name="about_navigation_bar_tint">Navigation bar tint</string>

@@ -46,7 +46,6 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
 
     @Override
     public Observable<List<FavoriteArticleDetailData>> getFavoriteArticles(int page, boolean forceUpdate, final boolean clearCache) {
-        //!forceUpdate即用户按home键然后再返回我们的APP的情况，这时候直接返回缓存的文章列表
         if (!forceUpdate && favoriteArticlesCache != null) {
             return Observable.fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
                     .toSortedList(new Comparator<FavoriteArticleDetailData>() {
@@ -57,7 +56,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                     }).toObservable();
         }
 
-        //forceUpdate&&!clearCache 即用户向下滑动列表的情况，我们需要请求下一页的数据，并保存到缓存里
+        //forceUpdate&&!clearCache: When scrolling to the last item of recycler view, we need to request the data of next page and cache it.
         if (!clearCache&&favoriteArticlesCache!=null) {
             Observable ob1 = Observable.fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
                     .toSortedList(new Comparator<FavoriteArticleDetailData>() {
@@ -75,7 +74,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                         }
                     });
 
-            //获取到缓存的数据加上新请求的下一页的数据，需要结合这两个数据并统一发送
+            //We need to return the data combining network source and cache source
             return Observable.merge(ob1, ob2)
                     .collect(new Callable<List<FavoriteArticleDetailData>>() {
 
@@ -92,7 +91,7 @@ public class FavoriteArticlesDataRepository implements FavoriteArticlesDataSourc
                     }).toObservable();
         }
 
-        //forceUpdate&&clearCache 即下拉刷新，还有第一次加载的情况
+        //forceUpdate&&clearCache: Pull-to-refresh.Initial Article Fragment.
         return remoteDataSource.getFavoriteArticles(page, forceUpdate,clearCache)
                 .doOnNext(new Consumer<List<FavoriteArticleDetailData>>() {
                     @Override
